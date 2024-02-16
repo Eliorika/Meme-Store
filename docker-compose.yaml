@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: meme-store-postgres
+    image: postgres:13-alpine
+    env_file: .env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB_NAME}
+      - POSTGRES_USER=${POSTGRES_DB_USER}
+      - POSTGRES_PASSWORD={POSTGRES_DB_PASSWORD}
+    ports:
+      - "5500:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio:latest
+    container_name: meme-store-minio
+    environment:
+      - MINIO_ROOT_USER=${MINIO_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD}
+    command: server ~/minio --console-address :9090
+    ports:
+      - '9090:9090'
+      - '9000:9000'
+    volumes:
+      - minio-data:/minio
+
+volumes:
+  dbdata:
+    driver: local
+  minio-data:
+    driver: local
