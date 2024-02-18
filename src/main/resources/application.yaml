@@ -1,8 +1,14 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
 
   liquibase:
     enabled: true
+    change-log: classpath:liquibase/db.changelog.yaml
+  datasource:
+    username: ${POSTGRES_DB_USER}
+    password: ${POSTGRES_DB_PASSWORD}
+    url: ${POSTGRES_DB_URL}
+    driver-class-name: org.postgresql.Driver
