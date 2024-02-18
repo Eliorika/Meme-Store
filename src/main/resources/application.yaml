@@ -12,3 +12,12 @@ spring:
     password: ${POSTGRES_DB_PASSWORD}
     url: ${POSTGRES_DB_URL}
     driver-class-name: org.postgresql.Driver
+
+#todo CHANGE SECRET AND REMOVE TO ENV. THAT'S ONLY FOR TEST!
+
+#access and refresh in hours.
+security:
+  jwt:
+    secret: amJ1eWd0aXZmdHlyY2Z5dWdpdW9ndW95Z2l1Z295dWd5dW9ndXlmdHlmdXlndXR5dWpndXlvZ3l2aXBqaWhpdWl1aGlqbmlqbg==
+    access: 1
+    refresh: 30
