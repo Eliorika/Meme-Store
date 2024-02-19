@@ -5,6 +5,7 @@ import dev.chipichapa.memestore.dto.auth.JwtRequest;
 import dev.chipichapa.memestore.dto.auth.JwtResponse;
 import dev.chipichapa.memestore.dto.auth.RegisterRequest;
 import dev.chipichapa.memestore.service.ifc.AuthService;
+import dev.chipichapa.memestore.usecase.UserRegisterUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserRegisterUseCase userRegisterUseCase;
 
     @PostMapping("/login")
     public JwtResponse login(@RequestBody JwtRequest loginRequest) {
@@ -26,5 +28,10 @@ public class AuthController {
     @PostMapping("/refresh")
     public JwtResponse refresh(@RequestBody JwtRefreshRequest refreshRequest) {
         return authService.refresh(refreshRequest.getRefreshToken());
+    }
+
+    @PostMapping("/register")
+    public void register(@RequestBody RegisterRequest registrationRequest){
+        userRegisterUseCase.register(registrationRequest);
     }
 }
