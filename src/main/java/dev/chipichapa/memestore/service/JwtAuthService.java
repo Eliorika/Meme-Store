@@ -1,8 +1,8 @@
 package dev.chipichapa.memestore.service;
 
 import dev.chipichapa.memestore.domain.user.User;
-import dev.chipichapa.memestore.dto.JwtRequest;
-import dev.chipichapa.memestore.dto.JwtResponse;
+import dev.chipichapa.memestore.dto.auth.JwtRequest;
+import dev.chipichapa.memestore.dto.auth.JwtResponse;
 import dev.chipichapa.memestore.security.jwt.JwtTokenProvider;
 import dev.chipichapa.memestore.service.ifc.AuthService;
 import dev.chipichapa.memestore.service.ifc.UserService;

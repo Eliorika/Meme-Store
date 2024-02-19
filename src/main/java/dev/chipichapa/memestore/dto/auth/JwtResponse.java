@@ -1,4 +1,4 @@
-package dev.chipichapa.memestore.dto;
+package dev.chipichapa.memestore.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;

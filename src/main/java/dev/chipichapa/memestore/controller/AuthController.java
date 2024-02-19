@@ -1,8 +1,9 @@
 package dev.chipichapa.memestore.controller;
 
-import dev.chipichapa.memestore.dto.JwtRefreshRequest;
-import dev.chipichapa.memestore.dto.JwtRequest;
-import dev.chipichapa.memestore.dto.JwtResponse;
+import dev.chipichapa.memestore.dto.auth.JwtRefreshRequest;
+import dev.chipichapa.memestore.dto.auth.JwtRequest;
+import dev.chipichapa.memestore.dto.auth.JwtResponse;
+import dev.chipichapa.memestore.dto.auth.RegisterRequest;
 import dev.chipichapa.memestore.service.ifc.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

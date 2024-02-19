@@ -2,7 +2,7 @@ package dev.chipichapa.memestore.security.jwt;
 
 import dev.chipichapa.memestore.domain.user.Role;
 import dev.chipichapa.memestore.domain.user.User;
-import dev.chipichapa.memestore.dto.JwtResponse;
+import dev.chipichapa.memestore.dto.auth.JwtResponse;
 import dev.chipichapa.memestore.security.exception.AccessDeniedException;
 import dev.chipichapa.memestore.security.jwt.properties.JwtProperties;
 import dev.chipichapa.memestore.service.ifc.UserService;

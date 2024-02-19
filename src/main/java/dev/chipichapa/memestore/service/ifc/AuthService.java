@@ -1,7 +1,7 @@
 package dev.chipichapa.memestore.service.ifc;
 
-import dev.chipichapa.memestore.dto.JwtRequest;
-import dev.chipichapa.memestore.dto.JwtResponse;
+import dev.chipichapa.memestore.dto.auth.JwtRequest;
+import dev.chipichapa.memestore.dto.auth.JwtResponse;
 
 public interface AuthService {
 
