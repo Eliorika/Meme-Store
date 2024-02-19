@@ -21,3 +21,6 @@ security:
     secret: amJ1eWd0aXZmdHlyY2Z5dWdpdW9ndW95Z2l1Z295dWd5dW9ndXlmdHlmdXlndXR5dWpndXlvZ3l2aXBqaWhpdWl1aGlqbmlqbg==
     access: 1
     refresh: 30
+
+springdoc:
+  override-with-generic-response: false
