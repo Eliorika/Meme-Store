@@ -1,4 +1,6 @@
 package dev.chipichapa.memestore.dto.file;
 
-public record SaveFileResponse(String uuid) {
+import java.util.List;
+
+public record SaveFileResponse(String uuid, List<String> potentialTags) {
 }
