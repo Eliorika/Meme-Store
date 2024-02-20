@@ -6,7 +6,7 @@ spring:
 
   liquibase:
     enabled: true
-    change-log: classpath:liquibase/db.changelog.yaml
+    change-log: db/changelog/master.xml
   datasource:
     username: ${POSTGRES_DB_USER}
     password: ${POSTGRES_DB_PASSWORD}

@@ -1,4 +1,4 @@
-package dev.chipichapa.memestore.controller;
+package dev.chipichapa.memestore.exception;
 
 import dev.chipichapa.memestore.exception.ExceptionBodyResponse;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
