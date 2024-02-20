@@ -5,6 +5,7 @@ import dev.chipichapa.memestore.domain.user.User;
 import dev.chipichapa.memestore.dto.auth.RegisterRequest;
 import dev.chipichapa.memestore.exception.IllegalArgumentException;
 import dev.chipichapa.memestore.repository.UserRepository;
+import dev.chipichapa.memestore.usecase.ifc.UserRegisterUseCase;
 import dev.chipichapa.memestore.utils.mapper.RegisterRequestToUserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
