@@ -5,7 +5,7 @@ import dev.chipichapa.memestore.dto.auth.JwtRequest;
 import dev.chipichapa.memestore.dto.auth.JwtResponse;
 import dev.chipichapa.memestore.dto.auth.RegisterRequest;
 import dev.chipichapa.memestore.service.ifc.AuthService;
-import dev.chipichapa.memestore.usecase.UserRegisterUseCase;
+import dev.chipichapa.memestore.usecase.ifc.UserRegisterUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
