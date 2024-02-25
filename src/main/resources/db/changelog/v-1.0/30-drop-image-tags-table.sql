@@ -1,1 +1,1 @@
-drop table if exists image_tag;
+drop table if exists image_tags;

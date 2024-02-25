@@ -1,0 +1,1 @@
+drop table if exists user_tag_votes;
