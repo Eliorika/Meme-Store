@@ -12,7 +12,7 @@
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"
-                 path="40-create-boards-table.sql"
+                 path="40-create-album-table.sql"
         />
 
         <rollback>
@@ -22,7 +22,7 @@
                      relativeToChangelogFile="true"
                      splitStatements="true"
                      stripComments="true"
-                     path="40-drop-boards-table.sql"/>
+                     path="40-drop-album-table.sql"/>
         </rollback>
 
     </changeSet>

@@ -1,6 +1,6 @@
 CREATE TABLE tags (
-    id bigserial PRIMARY KEY,
-    tag varchar(20) not null
+    id serial PRIMARY KEY,
+    tag varchar(50) not null
 )
 
 GO

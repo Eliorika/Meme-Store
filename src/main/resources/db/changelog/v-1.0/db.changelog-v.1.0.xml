@@ -8,7 +8,10 @@
     <include file="10-changeset-images-table.xml" relativeToChangelogFile="true"/>
     <include file="20-changeset-tags-table.xml" relativeToChangelogFile="true"/>
     <include file="30-changeset-image-tags-table.xml" relativeToChangelogFile="true"/>
-    <include file="40-changeset-boards-table.xml" relativeToChangelogFile="true"/>
+    <include file="40-changeset-album-table.xml" relativeToChangelogFile="true"/>
     <include file="50-changeset-images-boards-table.xml" relativeToChangelogFile="true"/>
+    <include file="60-changeset-user-tag-votes.xml" relativeToChangelogFile="true"/>
+    <include file="70-changeset-trigger-user-tag-votes.xml" relativeToChangelogFile="true"/>
+<!--    <include file="80-changeset-trigger-album-images.xml" relativeToChangelogFile="true"/>-->
 
 </databaseChangeLog>
