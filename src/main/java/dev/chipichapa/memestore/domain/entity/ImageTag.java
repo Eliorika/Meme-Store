@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "image_tags", schema = "public")
+@Table(name = "image_tags")
 public class ImageTag {
 
     @Id
