@@ -1,6 +1,6 @@
 package dev.chipichapa.memestore.service;
 
-import dev.chipichapa.memestore.domain.user.User;
+import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.UserRepository;
 import dev.chipichapa.memestore.service.ifc.UserService;

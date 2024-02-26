@@ -1,7 +1,7 @@
 package dev.chipichapa.memestore.usecase;
 
-import dev.chipichapa.memestore.domain.user.Role;
-import dev.chipichapa.memestore.domain.user.User;
+import dev.chipichapa.memestore.domain.entity.user.Role;
+import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.dto.auth.RegisterRequest;
 import dev.chipichapa.memestore.exception.IllegalArgumentException;
 import dev.chipichapa.memestore.repository.UserRepository;

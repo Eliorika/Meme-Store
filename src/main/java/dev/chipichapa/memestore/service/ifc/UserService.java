@@ -1,6 +1,6 @@
 package dev.chipichapa.memestore.service.ifc;
 
-import dev.chipichapa.memestore.domain.user.User;
+import dev.chipichapa.memestore.domain.entity.user.User;
 
 public interface UserService {
 

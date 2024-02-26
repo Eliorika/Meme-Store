@@ -1,6 +1,6 @@
 package dev.chipichapa.memestore.repository;
 
-import dev.chipichapa.memestore.domain.user.User;
+import dev.chipichapa.memestore.domain.entity.user.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

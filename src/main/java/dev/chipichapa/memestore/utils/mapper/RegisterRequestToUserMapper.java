@@ -1,6 +1,6 @@
 package dev.chipichapa.memestore.utils.mapper;
 
-import dev.chipichapa.memestore.domain.user.User;
+import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.dto.auth.RegisterRequest;
 import org.mapstruct.Mapper;
 

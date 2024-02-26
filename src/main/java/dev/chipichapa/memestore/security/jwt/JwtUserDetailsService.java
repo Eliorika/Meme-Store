@@ -1,6 +1,6 @@
 package dev.chipichapa.memestore.security.jwt;
 
-import dev.chipichapa.memestore.domain.user.User;
+import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.service.ifc.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

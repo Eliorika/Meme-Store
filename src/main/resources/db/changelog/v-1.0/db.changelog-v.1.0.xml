@@ -12,6 +12,6 @@
     <include file="50-changeset-images-boards-table.xml" relativeToChangelogFile="true"/>
     <include file="60-changeset-user-tag-votes.xml" relativeToChangelogFile="true"/>
     <include file="70-changeset-trigger-user-tag-votes.xml" relativeToChangelogFile="true"/>
-<!--    <include file="80-changeset-trigger-album-images.xml" relativeToChangelogFile="true"/>-->
+    <include file="80-changeset-user-add-column.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

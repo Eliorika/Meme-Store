@@ -1,4 +1,4 @@
-package dev.chipichapa.memestore.domain.user;
+package dev.chipichapa.memestore.domain.entity.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,6 +22,8 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    private String displayName;
+
     @Column(name = "password")
     private String password;
 
@@ -36,6 +38,10 @@ public class User {
     @CreationTimestamp
     @Column(updatable = false)
     private Date createdAt;
+
+    private Boolean isExtremist;
+
+
 
     public void addRole(Role role) {
         if (roles == null) {
