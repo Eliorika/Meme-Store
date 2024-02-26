@@ -1,4 +1,4 @@
-package dev.chipichapa.memestore.client.config;
+package dev.chipichapa.memestore.s3storage.config;
 
 
 import lombok.Data;
@@ -12,4 +12,5 @@ public class S3Properties {
     private String url;
     private String accessKey;
     private String secretKey;
+    private String bucket;
 }

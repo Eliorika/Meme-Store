@@ -24,6 +24,8 @@
 
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<commons-io.version>2.15.1</commons-io.version>
+
+		<djl-ai.version>0.26.0</djl-ai.version>
 	</properties>
 
 	<dependencies>
@@ -121,6 +123,30 @@
 			<version>${commons-io.version}</version>
 		</dependency>
 
+		<!--		AI		-->
+		<dependency>
+			<groupId>ai.djl</groupId>
+			<artifactId>api</artifactId>
+			<version>${djl-ai.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ai.djl</groupId>
+			<artifactId>model-zoo</artifactId>
+			<version>${djl-ai.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ai.djl.pytorch</groupId>
+			<artifactId>pytorch-engine</artifactId>
+			<version>${djl-ai.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ai.djl.pytorch</groupId>
+			<artifactId>pytorch-model-zoo</artifactId>
+			<version>${djl-ai.version}</version>
+		</dependency>
 		<!--		TEST (QA)		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
