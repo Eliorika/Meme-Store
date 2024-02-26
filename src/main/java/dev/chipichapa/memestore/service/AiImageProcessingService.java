@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ImageProcessingServiceAi implements ImageProcessingService {
+public class AiImageProcessingService implements ImageProcessingService {
 
     private final Predictor<Image, DetectedObjects> predictor;
 

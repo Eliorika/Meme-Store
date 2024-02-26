@@ -26,6 +26,7 @@ s3-aws:
   url: http://localhost:9000
   accessKey: minioroot
   secretKey: minioroot
+  bucket: meme-store-bucket
 
 springdoc:
   override-with-generic-response: false

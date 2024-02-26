@@ -1,4 +1,4 @@
-package dev.chipichapa.memestore.client.config;
+package dev.chipichapa.memestore.s3storage.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
