@@ -1,10 +1,13 @@
 package dev.chipichapa.memestore.domain.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;
 
-@Getter
+@Data
+@AllArgsConstructor
 public class Gallery extends BaseModel{
     private long ownerId;
     private List<Long> contributorIds;
@@ -13,15 +16,4 @@ public class Gallery extends BaseModel{
     private boolean isPublic;
     private boolean ownerByExtremist;
     private boolean currentTenantCanEdit;
-
-    public Gallery(long id, long ownerId, List<Long> contributorIds, String name, String description, boolean isPublic, boolean ownerByExtremist, boolean currentTenantCanEdit) {
-        super(id);
-        this.ownerId = ownerId;
-        this.contributorIds = contributorIds;
-        this.name = name;
-        this.description = description;
-        this.isPublic = isPublic;
-        this.ownerByExtremist = ownerByExtremist;
-        this.currentTenantCanEdit = currentTenantCanEdit;
-    }
 }
