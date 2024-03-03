@@ -41,18 +41,20 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
         User user = registerToUserMapper.toUser(request);
 
         int i = 1;
+        String newName = user.getUsername();
 
         while (userRepository.existsByUsername(user.getUsername())) {
             User ex = userRepository.findByUsername(user.getUsername()).orElse(null);
             if(ex != null && ex.getTgId()!= null && ex.getTgId().equals(user.getTgId())){
                 return;
             }
-            String newName = user.getUsername() + i;
-            user.setUsername(newName);
+            String name = newName + i;
+            i++;
+            user.setUsername(name);
         }
 
         user.setPassword(passwordEncoder.encode("tgbot"));
-        user.setEmail("tg");
+        //user.setEmail("tg");
         user.setRoles(Set.of(Role.USER_ROLE));
         userRepository.save(user);
     }
