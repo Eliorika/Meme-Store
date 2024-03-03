@@ -48,6 +48,8 @@ public class User {
 
     private Boolean isExtremist;
 
+    private Long tgId;
+
 
 
     public void addRole(Role role) {
@@ -56,4 +58,6 @@ public class User {
         }
         roles.add(role);
     }
+
+
 }
