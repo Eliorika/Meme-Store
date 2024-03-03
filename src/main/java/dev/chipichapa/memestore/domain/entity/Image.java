@@ -1,23 +1,21 @@
 package dev.chipichapa.memestore.domain.entity;
 
-import dev.chipichapa.memestore.domain.entity.user.Role;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "images")
+@Accessors(chain = true)
 public class Image {
 
     @Id
@@ -31,6 +29,9 @@ public class Image {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
+    private String extension;
+
+    //TODO Пересмотреть
     private String status;
 
     @OneToMany(mappedBy = "image")
