@@ -1,8 +1,8 @@
 package dev.chipichapa.memestore.service.ifc;
 
-import java.util.List;
+import java.util.Set;
 
 public interface ImageProcessingService {
 
-    List<String> predictTags(byte[] image);
+    Set<String> predictTags(byte[] image);
 }
