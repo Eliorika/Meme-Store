@@ -1,10 +1,7 @@
 package dev.chipichapa.memestore.controller;
 
-import dev.chipichapa.memestore.domain.entity.Album;
-import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.model.Gallery;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
-import dev.chipichapa.memestore.service.ifc.AlbumService;
 import dev.chipichapa.memestore.usecase.ifc.GalleryUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

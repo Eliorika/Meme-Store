@@ -32,6 +32,7 @@ public class AlbumServiceImpl implements AlbumService {
                 .setName(galleryCreateRequest.name())
                 .setDescription(galleryCreateRequest.description())
                 .setAuthor(user);
+        album.setStatus(galleryCreateRequest.isPublic());
         return albumRepository.save(album);
     }
 
