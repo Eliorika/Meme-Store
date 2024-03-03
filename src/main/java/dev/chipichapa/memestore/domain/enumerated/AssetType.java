@@ -1,5 +1,5 @@
 package dev.chipichapa.memestore.domain.enumerated;
 
-public enum AssertType {
+public enum AssetType {
     IMAGE
 }
