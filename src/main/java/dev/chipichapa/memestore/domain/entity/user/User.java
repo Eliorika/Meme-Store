@@ -33,6 +33,13 @@ public class User {
     @Column(name = "role")
     private Set<Role> roles;
 
+    @ManyToMany
+    @JoinTable(
+            name = "album_images",
+            joinColumns = @JoinColumn(name = "album_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
+    private Set<TenantRole> tenantRoles;
+
     private String email;
 
     @CreationTimestamp
@@ -40,6 +47,8 @@ public class User {
     private Date createdAt;
 
     private Boolean isExtremist;
+
+    private Long tgId;
 
 
 
@@ -49,4 +58,6 @@ public class User {
         }
         roles.add(role);
     }
+
+
 }

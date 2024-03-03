@@ -13,5 +13,8 @@
     <include file="60-changeset-user-tag-votes.xml" relativeToChangelogFile="true"/>
     <include file="70-changeset-trigger-user-tag-votes.xml" relativeToChangelogFile="true"/>
     <include file="80-changeset-user-add-column.xml" relativeToChangelogFile="true"/>
+    <include file="90-changeset-create-table-tenant-roles.xml" relativeToChangelogFile="true"/>
+    <include file="100-changeset-user-add-column-tg-id.xml" relativeToChangelogFile="true"/>
+    <include file="110-changeset-images-add-column-description.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
