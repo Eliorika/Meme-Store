@@ -1,7 +1,7 @@
-package dev.chipichapa.tgBot;
+package dev.chipichapa.memestore.tgBot;
 
-import dev.chipichapa.tgBot.process.UpdateProcessor;
-import lombok.AllArgsConstructor;
+import dev.chipichapa.memestore.tgBot.process.UpdateProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -15,7 +15,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Component
-@AllArgsConstructor
 public class Bot extends TelegramLongPollingBot {
 
     @Value("${telegram.bot-name}")
@@ -27,10 +26,13 @@ public class Bot extends TelegramLongPollingBot {
 
     private static final Logger LOG = Logger.getLogger(Bot.class);
 
+    public Bot(UpdateProcessor updateProcessor) {
+        this.updateProcessor = updateProcessor;
+    }
+
 
     @Override
     public void onUpdateReceived(Update update) {
-        LOG.debug("update received");
         if(update.hasMessage()&& update.getMessage().hasText()) {
             SendMessage sm = updateProcessor.process(update);
             try {
@@ -45,6 +47,11 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         return botName;
+    }
+
+    @Override
+    public String getBotToken() {
+        return this.token;
     }
 
     @EventListener({ContextRefreshedEvent.class})

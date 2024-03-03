@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 public interface AlbumRepository extends CrudRepository<Album, Integer> {
 
-    Optional<Album> findByGalleryId(Integer id);
+    //Optional<Album> findByGalleryId(Integer id);
 }

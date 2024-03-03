@@ -1,24 +1,27 @@
-package ru.tinkoff.edu.java.bot.commands;
+package dev.chipichapa.memestore.tgBot.commands;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.tinkoff.edu.java.bot.UpdateProcessor;
-import ru.tinkoff.edu.java.bot.client.ScrapperClient;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
+@Component("/help")
 public class HelpCommand implements Command{
 
-    private final ScrapperClient scrapperClient;
+    private final List<Command> commands;
+
     @Override
-    public String command() {
+    public String getCommand() {
         return "/help";
     }
 
     @Override
-    public String about() {
-        return "prints all commans";
+    public String getAbout() {
+        return "справка о работе бота";
     }
 
     @Override
@@ -26,13 +29,17 @@ public class HelpCommand implements Command{
         SendMessage sm = new SendMessage();
         sm.setChatId(update.getMessage().getChatId());
         StringBuilder answer = new StringBuilder();
-        answer.append("Commands I understand:\n");
-        for (Command c : UpdateProcessor.getCommands()) {
-            answer.append(c.command());
+        answer.append("Что я умею:\n");
+        for (Command c : commands) {
+            answer.append(c.getCommand());
             answer.append(" - ");
-            answer.append(c.about());
+            answer.append(c.getAbout());
             answer.append("\n");
         }
+        answer.append(this.getCommand());
+        answer.append(" - ");
+        answer.append(this.getAbout());
+        answer.append("\n");
         sm.setText(answer.toString());
         return sm;
     }

@@ -3,6 +3,7 @@ package dev.chipichapa.memestore.usecase;
 import dev.chipichapa.memestore.domain.entity.user.Role;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.dto.auth.RegisterRequest;
+import dev.chipichapa.memestore.dto.auth.TgRegisterRequest;
 import dev.chipichapa.memestore.exception.IllegalArgumentException;
 import dev.chipichapa.memestore.repository.UserRepository;
 import dev.chipichapa.memestore.usecase.ifc.UserRegisterUseCase;
@@ -31,6 +32,27 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Set.of(Role.USER_ROLE));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void registerTg(TgRegisterRequest request) {
+        User user = registerToUserMapper.toUser(request);
+
+        int i = 1;
+
+        while (userRepository.existsByUsername(user.getUsername())) {
+            User ex = userRepository.findByUsername(user.getUsername()).orElse(null);
+            if(ex != null && ex.getTgId()!= null && ex.getTgId().equals(user.getTgId())){
+                return;
+            }
+            String newName = user.getUsername() + i;
+            user.setUsername(newName);
+        }
+
+        user.setPassword(passwordEncoder.encode("tgbot"));
+        user.setEmail("tg");
         user.setRoles(Set.of(Role.USER_ROLE));
         userRepository.save(user);
     }

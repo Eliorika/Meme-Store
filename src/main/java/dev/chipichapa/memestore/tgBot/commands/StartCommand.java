@@ -1,32 +1,41 @@
-package ru.tinkoff.edu.java.bot.commands;
+package dev.chipichapa.memestore.tgBot.commands;
 
+import dev.chipichapa.memestore.dto.auth.TgRegisterRequest;
+import dev.chipichapa.memestore.usecase.ifc.UserRegisterUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.tinkoff.edu.java.bot.client.ScrapperClient;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 @RequiredArgsConstructor
+@Component("/start")
 public class StartCommand implements Command{
-    private final ScrapperClient scrapperClient;
+
+    private final UserRegisterUseCase userRegisterUseCase;
+
     @Override
-    public String command() {
+    public String getCommand() {
         return "/start";
     }
 
     @Override
-    public String about() {
-        return "registers new user";
+    public String getAbout() {
+        return "начать работу";
     }
 
     @Override
     public SendMessage handleCommand(Update update) {
         SendMessage sm = new SendMessage();
-        //String msText = update.getMessage().getText();
         sm.setChatId(update.getMessage().getChatId());
-        String answer = "Hi, " + update.getMessage().getChat().getFirstName() +
-            "! What's up! \nEnter /help to find out what I can!";
+        User user = update.getMessage().getFrom();
+        TgRegisterRequest tgRegisterRequest = new TgRegisterRequest(user.getUserName(),
+                user.getFirstName()+" "+user.getLastName(),
+                user.getId());
+        userRegisterUseCase.registerTg(tgRegisterRequest);
+        String answer = "Привет, " + update.getMessage().getChat().getFirstName() +
+            "! Как дела? \nВведи /help, чтобы узнать, что я умею!";
         sm.setText(answer);
-        scrapperClient.registerChat(update.getMessage().getChat().getId());
         return sm;
     }
 
