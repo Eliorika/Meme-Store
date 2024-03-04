@@ -34,4 +34,22 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
     public Gallery getById(int id) {
         return AlbumMapper.map(albumService.getGalleryById(id));
     }
+
+    @Override
+    public Gallery saveGalleryChanges(GalleryCreateRequest galleryChanges, int id) {
+        return AlbumMapper.map(albumService.saveChangesGallery(galleryChanges, id));
+    }
+
+    @Override
+    public boolean deleteGallery(int id) {
+        try {
+            albumService.deleteGallery(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
 }

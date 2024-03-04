@@ -8,4 +8,6 @@ public interface AlbumService {
     Album getGalleryById(int id);
 
     Album saveGallery(GalleryCreateRequest galleryCreateRequest, User user);
+    Album saveChangesGallery(GalleryCreateRequest request, int id);
+    void deleteGallery(int id);
 }

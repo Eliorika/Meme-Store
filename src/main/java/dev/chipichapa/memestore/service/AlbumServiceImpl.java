@@ -6,10 +6,11 @@ import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.AlbumRepository;
 import dev.chipichapa.memestore.service.ifc.AlbumService;
-import dev.chipichapa.memestore.usecase.GalleryUseCaseImpl;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,21 @@ public class AlbumServiceImpl implements AlbumService {
         return albumRepository.save(album);
     }
 
+    @Override
+    @Transactional
+    public Album saveChangesGallery(GalleryCreateRequest galleryChanges, int id) {
+        Album album = getGalleryById(id);
+        album
+                .setName(galleryChanges.name())
+                .setDescription(galleryChanges.description())
+                .setStatus(galleryChanges.isPublic());
+        return albumRepository.save(album);
+    }
+
+    @Override
+    public void deleteGallery(int id) {
+        albumRepository.deleteById(id);
+    }
 
 
 }

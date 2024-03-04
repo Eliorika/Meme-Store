@@ -26,15 +26,15 @@ public class GalleryController {
         return ResponseEntity.ok(gallery);
     }
 
-    //@PostMapping("/update")
-    //public void GallaryUpdate(Integer id, String name, String description, boolean isPublic){
-      /*  Optional<Album> thisGallery = repo.findById(id);
-        thisGallery.name = name;
-        thisGallery.description = description;
-        thisGallery.isPublic = isPublic;
-        repo.save(thisGallery)
-    }*/
+    @PutMapping("/{id}")
+    public ResponseEntity<Gallery> saveGalleryChanges(@PathVariable int id, @RequestBody GalleryCreateRequest galleryCreateRequest){
+        Gallery gallery = galleryUseCase.saveGalleryChanges(galleryCreateRequest, id);
+        return ResponseEntity.ok(gallery);
+    }
 
-    //@PostMapping("/delete");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteGallery(@PathVariable int id){
+        return ResponseEntity.ok(galleryUseCase.deleteGallery(id));
+    }
 
 }
