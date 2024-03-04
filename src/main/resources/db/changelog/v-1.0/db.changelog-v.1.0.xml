@@ -16,5 +16,7 @@
     <include file="90-changeset-create-table-tenant-roles.xml" relativeToChangelogFile="true"/>
     <include file="100-changeset-user-add-column-tg-id.xml" relativeToChangelogFile="true"/>
     <include file="110-changeset-images-add-column-description.xml" relativeToChangelogFile="true"/>
+    <include file="120-changeset-add-user-column-ex.xml" relativeToChangelogFile="true"/>
+    <include file="130-changeset-create-contributor-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

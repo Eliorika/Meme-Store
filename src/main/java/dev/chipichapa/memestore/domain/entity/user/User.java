@@ -46,7 +46,8 @@ public class User {
     @Column(updatable = false)
     private Date createdAt;
 
-    private Boolean isExtremist;
+    private Date extremistDate;
+    private Date foreignAgentDate;
 
     private Long tgId;
 
