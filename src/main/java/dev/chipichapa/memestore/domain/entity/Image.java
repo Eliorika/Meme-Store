@@ -38,4 +38,6 @@ public class Image {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ImageTag> imageTags;
 
+    private String description;
+
 }
