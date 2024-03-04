@@ -26,7 +26,7 @@ public class Album {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
-    private String status;
+    private Boolean status;
 
     private String description;
 

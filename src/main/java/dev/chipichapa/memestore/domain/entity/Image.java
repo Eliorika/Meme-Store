@@ -31,8 +31,6 @@ public class Image {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    private String status;
-
     @OneToMany(mappedBy = "image")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ImageTag> imageTags;

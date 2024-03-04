@@ -18,5 +18,7 @@
     <include file="110-changeset-images-add-column-description.xml" relativeToChangelogFile="true"/>
     <include file="120-changeset-add-user-column-ex.xml" relativeToChangelogFile="true"/>
     <include file="130-changeset-create-contributor-table.xml" relativeToChangelogFile="true"/>
+    <include file="140-changeset-status-bool.xml" relativeToChangelogFile="true"/>
+    <include file="150-changeset-table-draft.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
