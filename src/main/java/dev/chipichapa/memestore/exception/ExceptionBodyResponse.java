@@ -3,7 +3,6 @@ package dev.chipichapa.memestore.exception;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.Map;
 
 @Data
 public class ExceptionBodyResponse {

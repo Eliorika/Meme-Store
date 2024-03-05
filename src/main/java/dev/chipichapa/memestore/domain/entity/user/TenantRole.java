@@ -1,7 +1,9 @@
 package dev.chipichapa.memestore.domain.entity.user;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 

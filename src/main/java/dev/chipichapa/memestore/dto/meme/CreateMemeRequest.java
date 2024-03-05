@@ -1,7 +1,6 @@
 package dev.chipichapa.memestore.dto.meme;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

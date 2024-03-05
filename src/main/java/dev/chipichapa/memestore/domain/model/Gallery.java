@@ -2,7 +2,6 @@ package dev.chipichapa.memestore.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.List;
 

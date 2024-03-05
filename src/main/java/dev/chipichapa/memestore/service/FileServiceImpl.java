@@ -7,11 +7,7 @@ import dev.chipichapa.memestore.service.ifc.FileService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
