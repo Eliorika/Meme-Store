@@ -30,15 +30,14 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @SneakyThrows
-    public String save(MultipartFile file) {
-        String filename = file.getOriginalFilename();
-        UUID uuid = UUID.randomUUID();
+    public void save(File file) {
+        minioClient.put(file, bucket);
+    }
 
-        if (FilenameUtils.isExtension(filename, "png", "gif", "bmp", "jpg")) {
-            filename = uuid + ".jpg";
-        }
+    @Override
+    public File get(String filename) {
+        byte[] bytes = minioClient.get(new File(filename), bucket);
 
-        minioClient.put(new File(filename, file.getBytes()), bucket);
-        return uuid.toString();
+        return new File(filename, bytes);
     }
 }

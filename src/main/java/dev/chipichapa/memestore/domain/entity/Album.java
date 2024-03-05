@@ -49,4 +49,17 @@ public class Album {
             inverseJoinColumns = @JoinColumn(name = "tenant_role_id"))
     private Set<Image> images;
 
+    //TODO Переделать ЭТО на Boolean нормальный, обсудить с Ариной
+
+    public boolean getStatus() {
+        return "true".equals(status);
+    }
+
+    public void setStatus(boolean status) {
+        if (status) {
+            this.status = "true";
+        } else {
+            this.status = "false";
+        }
+    }
 }

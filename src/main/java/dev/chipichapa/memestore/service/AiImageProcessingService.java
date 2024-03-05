@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class AiImageProcessingService implements ImageProcessingService {
 
     @Override
     @SneakyThrows
-    public List<String> predictTags(byte[] image) {
+    public Set<String> predictTags(byte[] image) {
         @Cleanup ByteArrayInputStream inputStream = new ByteArrayInputStream(image);
         Image img = getImageFromInputStream(inputStream);
 
@@ -36,8 +36,8 @@ public class AiImageProcessingService implements ImageProcessingService {
         return ImageFactory.getInstance().fromInputStream(stream);
     }
 
-    private List<String> extractTags(DetectedObjects objects) {
-        List<String> result = new ArrayList<>(objects.getNumberOfObjects());
+    private Set<String> extractTags(DetectedObjects objects) {
+        Set<String> result = new HashSet<>(objects.getNumberOfObjects());
 
         for (int i = 0; i < objects.getNumberOfObjects(); i++) {
             String detectedTag = objects.item(i).getClassName();

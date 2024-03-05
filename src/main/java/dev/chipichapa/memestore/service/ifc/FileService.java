@@ -1,7 +1,9 @@
 package dev.chipichapa.memestore.service.ifc;
 
-import org.springframework.web.multipart.MultipartFile;
+import dev.chipichapa.memestore.s3storage.dto.File;
 
 public interface FileService {
-    String save(MultipartFile file);
+    void save(File file);
+
+    File get(String filename);
 }

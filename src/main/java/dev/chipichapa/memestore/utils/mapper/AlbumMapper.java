@@ -11,7 +11,7 @@ public class AlbumMapper {
                 null,
                 album.getName(),
                 album.getDescription(),
-                true,
+                album.getStatus(),
                 false,
                 false);
     }
