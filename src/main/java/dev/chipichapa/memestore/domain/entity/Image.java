@@ -1,14 +1,17 @@
 package dev.chipichapa.memestore.domain.entity;
 
+import dev.chipichapa.memestore.domain.entity.user.Role;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -30,9 +33,6 @@ public class Image {
     private User author;
 
     private String extension;
-
-    //TODO Пересмотреть
-    private String status;
 
     @OneToMany(mappedBy = "image")
     @OnDelete(action = OnDeleteAction.CASCADE)
