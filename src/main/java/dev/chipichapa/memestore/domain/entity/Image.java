@@ -37,4 +37,8 @@ public class Image {
     private String title;
     private String description;
 
+    public String getFilenameWithExtension(){
+        return this.uuid + "." + this.getExtension();
+    }
+
 }

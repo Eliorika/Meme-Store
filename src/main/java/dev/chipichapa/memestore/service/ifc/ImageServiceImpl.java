@@ -16,7 +16,16 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
 
     @Override
-    public Image getByTemporaryTicket(String ticket) {
+    public Image getById(Long id) {
+        return imageRepository.findById(id)
+                .orElseThrow(() -> {
+                    String message = "Not found Image with id=(%d)";
+                    return new ResourceNotFoundException(String.format(message, id));
+                });
+    }
+
+    @Override
+    public Image getByTicket(String ticket) {
         UUID uuid = ticketToUuid(ticket);
 
         return imageRepository.findByUuid(uuid)
@@ -26,7 +35,7 @@ public class ImageServiceImpl implements ImageService {
                 });
     }
 
-    private UUID ticketToUuid(String ticket){
+    private UUID ticketToUuid(String ticket) {
         return UUID.fromString(ticket);
     }
 }
