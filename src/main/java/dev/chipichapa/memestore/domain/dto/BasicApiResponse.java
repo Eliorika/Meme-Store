@@ -10,4 +10,9 @@ import java.util.List;
 public class BasicApiResponse <T> {
     private boolean error;
     private List<T> result;
+
+    public BasicApiResponse(boolean error, T result) {
+        this.error = error;
+        this.result = List.of(result);
+    }
 }

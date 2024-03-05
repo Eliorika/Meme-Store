@@ -1,5 +1,6 @@
 package dev.chipichapa.memestore.controller;
 
+import dev.chipichapa.memestore.domain.dto.BasicApiResponse;
 import dev.chipichapa.memestore.domain.enumerated.AssetType;
 import dev.chipichapa.memestore.dto.asset.AssetUploadRequest;
 import dev.chipichapa.memestore.dto.asset.AssetUploadResponse;
@@ -20,19 +21,23 @@ public class AssetsController {
     private final AssetsUseCase assetsUseCase;
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<AssetUploadResponse> upload(@RequestParam(name = "type") AssetType type, @RequestBody MultipartFile file) {
+    public ResponseEntity<BasicApiResponse<AssetUploadResponse>> upload(@RequestParam(name = "type") AssetType type,
+                                                                        @RequestBody MultipartFile file)
+    {
         AssetUploadResponse response = assetsUseCase.upload(
                 new AssetUploadRequest(type, file)
         );
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
     }
 
     @GetMapping(value = "/suggest_tags")
-    public ResponseEntity<?> getSuggestTags(@RequestParam(name = "asset") String temporaryTicket){
+    public ResponseEntity<BasicApiResponse<SuggestionsTagsResponse>> getSuggestTags(
+            @RequestParam(name = "asset") String temporaryTicket)
+    {
         SuggestionsTagsResponse response = assetsUseCase.getSuggestTags(temporaryTicket);
 
-        return new ResponseEntity<>(response ,HttpStatus.OK);
+        return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
     }
 
 }

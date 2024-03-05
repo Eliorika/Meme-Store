@@ -39,16 +39,13 @@ public class ControllerAdvice {
     }
 
     private BasicApiResponse<ExceptionBodyResponse> constructResponse(Exception e, HttpStatus httpStatus) {
-        return new BasicApiResponse<ExceptionBodyResponse>(
-                true,
-                List.of(new ExceptionBodyResponse(httpStatus.value(), e.getMessage()))
-        );
+        return constructResponse(e.getMessage(), httpStatus);
     }
 
     private BasicApiResponse<ExceptionBodyResponse> constructResponse(String message, HttpStatus httpStatus) {
-        return new BasicApiResponse<ExceptionBodyResponse>(
+        return new BasicApiResponse<>(
                 true,
-                List.of(new ExceptionBodyResponse(httpStatus.value(), message))
+                new ExceptionBodyResponse(httpStatus.value(), message)
         );
     }
 
