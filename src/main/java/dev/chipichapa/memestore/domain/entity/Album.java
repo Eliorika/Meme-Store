@@ -32,7 +32,7 @@ public class Album {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
-    private String status;
+    private Boolean status;
 
     private String description;
 
@@ -44,22 +44,17 @@ public class Album {
 
     @ManyToMany
     @JoinTable(
-            name = "user_tenant_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "tenant_role_id"))
+            name = "album_images",
+            joinColumns = @JoinColumn(name = "album_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Set<Image> images;
 
-    //TODO Переделать ЭТО на Boolean нормальный, обсудить с Ариной
 
-    public boolean getStatus() {
-        return "true".equals(status);
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "album_contributors",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "album_id"))
+    private Set<User> contributors;
 
-    public void setStatus(boolean status) {
-        if (status) {
-            this.status = "true";
-        } else {
-            this.status = "false";
-        }
-    }
 }

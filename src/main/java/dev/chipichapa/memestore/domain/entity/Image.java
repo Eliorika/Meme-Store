@@ -34,6 +34,7 @@ public class Image {
     //TODO Пересмотреть
     private String status;
 
+
     @OneToMany(mappedBy = "image")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ImageTag> imageTags;
