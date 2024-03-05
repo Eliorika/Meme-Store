@@ -44,7 +44,6 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
         String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 
         Image savingAsset = new Image()
-                .setStatus("public")
                 .setAuthor(user)
                 .setExtension(fileExtension)
                 .setUuid(UUID.randomUUID());
