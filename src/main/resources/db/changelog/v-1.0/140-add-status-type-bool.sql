@@ -1,7 +1,7 @@
 alter table albums
     drop column status;
 
-alter table images drop column status;
+alter table images drop column if exists status;
 
 alter table images add column extension varchar not null;
 
