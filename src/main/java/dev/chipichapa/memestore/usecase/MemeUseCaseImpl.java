@@ -7,8 +7,8 @@ import dev.chipichapa.memestore.dto.meme.CreateMemeResponse;
 import dev.chipichapa.memestore.repository.AlbumRepository;
 import dev.chipichapa.memestore.repository.DraftRepository;
 import dev.chipichapa.memestore.repository.ImageRepository;
-import dev.chipichapa.memestore.repository.ImageTagRepository;
 import dev.chipichapa.memestore.service.ifc.ImageService;
+import dev.chipichapa.memestore.service.ifc.TagService;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import dev.chipichapa.memestore.utils.mapper.ImageToCreateMemeResponseMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +23,10 @@ import java.util.UUID;
 public class MemeUseCaseImpl implements MemeUseCase {
 
     private final ImageService imageService;
+    private final TagService tagService;
 
     private final ImageRepository imageRepository;
     private final DraftRepository draftRepository;
-    private final ImageTagRepository imageTagRepository;
     private final AlbumRepository albumRepository;
 
     @Override
@@ -41,11 +41,14 @@ public class MemeUseCaseImpl implements MemeUseCase {
 
         Image meme = imageService.getByTicket(assetTicket);
         Image image = setImageFieldsFromRequest(createRequest, meme);
-        Image saved = imageRepository.save(image);
 
-        saveImageToAlbumOrThrow(createRequest.getGalleryId(), saved);
+        Image savedImage = imageRepository.save(image);
 
-        List<Integer> tagsIds = imageTagRepository.findByImageId(saved.getId());
+        saveImageToAlbumOrThrow(createRequest.getGalleryId(), savedImage);
+
+        List<Integer> tagsIds = tagService
+                .addTagsToImageAndReturnTagsIds(savedImage, createRequest.getTags());
+
         draftRepository.deleteById(UUID.fromString(assetTicket));
 
         return ImageToCreateMemeResponseMapper.toResponse(image, tagsIds);
