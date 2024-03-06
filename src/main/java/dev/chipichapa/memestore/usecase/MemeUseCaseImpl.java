@@ -4,9 +4,12 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.dto.meme.CreateMemeRequest;
 import dev.chipichapa.memestore.dto.meme.CreateMemeResponse;
+import dev.chipichapa.memestore.dto.meme.GetMemeRequest;
+import dev.chipichapa.memestore.dto.meme.GetMemeResponse;
 import dev.chipichapa.memestore.repository.AlbumRepository;
 import dev.chipichapa.memestore.repository.DraftRepository;
 import dev.chipichapa.memestore.repository.ImageRepository;
+import dev.chipichapa.memestore.repository.TagRepository;
 import dev.chipichapa.memestore.service.ifc.ImageService;
 import dev.chipichapa.memestore.service.ifc.TagService;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
@@ -26,6 +29,7 @@ public class MemeUseCaseImpl implements MemeUseCase {
     private final TagService tagService;
 
     private final ImageRepository imageRepository;
+    private final TagRepository tagRepository;
     private final DraftRepository draftRepository;
     private final AlbumRepository albumRepository;
 
@@ -52,6 +56,19 @@ public class MemeUseCaseImpl implements MemeUseCase {
         draftRepository.deleteById(UUID.fromString(assetTicket));
 
         return ImageToCreateMemeResponseMapper.toResponse(image, tagsIds);
+    }
+
+    @Override
+    public GetMemeResponse get(GetMemeRequest getRequest) {
+        Image image = imageService.getById((long) getRequest.memeId());
+        List<Integer> tagIds = tagRepository.findByImageId(image.getId());
+
+        return new GetMemeResponse(image.getId(),
+                image.getAuthor().getId(),
+                image.getId(),
+                tagIds,
+                image.getTitle(),
+                image.getDescription());
     }
 
     private void saveImageToAlbumOrThrow(Integer albumId, Image image) {

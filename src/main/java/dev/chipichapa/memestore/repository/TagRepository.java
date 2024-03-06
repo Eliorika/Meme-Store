@@ -25,7 +25,7 @@ public interface TagRepository extends CrudRepository<Tag, Integer> {
 
     @Modifying
     @Query(value = """
-            INSERT INTO image_tags AS ai (image_id, tag_id) 
+            INSERT INTO image_tags AS ai (image_id, tag_id)
             VALUES (:imageId, :tagId)
             """, nativeQuery = true)
     void saveTagForImage(@Param("imageId") Integer imageId, @Param("tagId") Integer tagId);
