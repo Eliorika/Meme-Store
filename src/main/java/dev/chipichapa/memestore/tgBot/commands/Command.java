@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public interface Command {
     String getCommand();
     String getAbout();
-    SendMessage handleCommand(Update update);
+    SendMessage handleCommand(Update update, SendMessage sm);
     default boolean supports(Update update){
         return getCommand().equals(update.getMessage().getText());
     }

@@ -25,9 +25,7 @@ public class StartCommand implements Command{
     }
 
     @Override
-    public SendMessage handleCommand(Update update) {
-        SendMessage sm = new SendMessage();
-        sm.setChatId(update.getMessage().getChatId());
+    public SendMessage handleCommand(Update update, SendMessage sm) {
         User user = update.getMessage().getFrom();
         TgRegisterRequest tgRegisterRequest = new TgRegisterRequest(user.getUserName(),
                 user.getFirstName()+" "+user.getLastName(),

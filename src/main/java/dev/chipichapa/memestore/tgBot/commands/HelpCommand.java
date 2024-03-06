@@ -25,9 +25,7 @@ public class HelpCommand implements Command{
     }
 
     @Override
-    public SendMessage handleCommand(Update update) {
-        SendMessage sm = new SendMessage();
-        sm.setChatId(update.getMessage().getChatId());
+    public SendMessage handleCommand(Update update, SendMessage sm) {
         StringBuilder answer = new StringBuilder();
         answer.append("Что я умею:\n");
         for (Command c : commands) {
