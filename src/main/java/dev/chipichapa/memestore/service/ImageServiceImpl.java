@@ -1,8 +1,9 @@
-package dev.chipichapa.memestore.service.ifc;
+package dev.chipichapa.memestore.service;
 
 import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.ImageRepository;
+import dev.chipichapa.memestore.service.ifc.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
