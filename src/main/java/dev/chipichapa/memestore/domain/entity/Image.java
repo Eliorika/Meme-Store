@@ -29,16 +29,16 @@ public class Image {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    private String extension;
-
-    //TODO Пересмотреть
-    private String status;
-
-
     @OneToMany(mappedBy = "image")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ImageTag> imageTags;
 
+    private String extension;
+    private String title;
     private String description;
+
+    public String getFilenameWithExtension(){
+        return this.uuid + "." + this.getExtension();
+    }
 
 }

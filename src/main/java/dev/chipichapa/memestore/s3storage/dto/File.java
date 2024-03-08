@@ -1,6 +1,5 @@
 package dev.chipichapa.memestore.s3storage.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter

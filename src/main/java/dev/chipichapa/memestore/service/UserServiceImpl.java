@@ -29,4 +29,12 @@ public class UserServiceImpl implements UserService {
             return new ResourceNotFoundException(errorMessage);
         });
     }
+
+    public User getByTgId(Long tgId){
+        return userRepository.findByTgId(tgId)
+                .orElseThrow(() -> {
+                    String errorMessage = String.format("User with tg id == (%d) is not found", tgId);
+                    return new ResourceNotFoundException(errorMessage);
+                });
+    }
 }

@@ -15,6 +15,9 @@ spring:
 
 #todo CHANGE SECRET AND REMOVE TO ENV. THAT'S ONLY FOR TEST!
 
+file-storage:
+  url: http://localhost:8080/api/v1/asset/get/
+
 #access and refresh in hours.
 security:
   jwt:
