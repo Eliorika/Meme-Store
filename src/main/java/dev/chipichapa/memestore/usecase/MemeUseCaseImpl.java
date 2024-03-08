@@ -2,10 +2,8 @@ package dev.chipichapa.memestore.usecase;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import dev.chipichapa.memestore.domain.entity.Image;
-import dev.chipichapa.memestore.dto.meme.CreateMemeRequest;
-import dev.chipichapa.memestore.dto.meme.CreateMemeResponse;
-import dev.chipichapa.memestore.dto.meme.GetMemeRequest;
-import dev.chipichapa.memestore.dto.meme.GetMemeResponse;
+import dev.chipichapa.memestore.dto.meme.*;
+import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.AlbumRepository;
 import dev.chipichapa.memestore.repository.DraftRepository;
 import dev.chipichapa.memestore.repository.ImageRepository;
@@ -14,7 +12,9 @@ import dev.chipichapa.memestore.service.ifc.ImageService;
 import dev.chipichapa.memestore.service.ifc.TagService;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import dev.chipichapa.memestore.utils.mapper.ImageToCreateMemeResponseMapper;
+import dev.chipichapa.memestore.utils.mapper.ImageToMemeMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +23,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class MemeUseCaseImpl implements MemeUseCase {
 
     private final ImageService imageService;
@@ -32,6 +33,8 @@ public class MemeUseCaseImpl implements MemeUseCase {
     private final TagRepository tagRepository;
     private final DraftRepository draftRepository;
     private final AlbumRepository albumRepository;
+
+    private final ImageToMemeMapper imageToMemeMapper;
 
     @Override
     @Transactional
@@ -44,7 +47,7 @@ public class MemeUseCaseImpl implements MemeUseCase {
         }
 
         Image meme = imageService.getByTicket(assetTicket);
-        Image image = setImageFieldsFromRequest(createRequest, meme);
+        Image image = setImageFieldsFromRequest(meme, createRequest);
 
         Image savedImage = imageRepository.save(image);
 
@@ -60,15 +63,45 @@ public class MemeUseCaseImpl implements MemeUseCase {
 
     @Override
     public GetMemeResponse get(GetMemeRequest getRequest) {
-        Image image = imageService.getById((long) getRequest.memeId());
-        List<Integer> tagIds = tagRepository.findByImageId(image.getId());
+        long memeId = getRequest.memeId();
+        long albumId = getRequest.galleryId();
 
-        return new GetMemeResponse(image.getId(),
-                image.getAuthor().getId(),
-                image.getId(),
-                tagIds,
-                image.getTitle(),
-                image.getDescription());
+        Image image = getMemeById(memeId);
+        checkImageContainsInAlbumOrThrow(albumId, memeId);
+        List<Integer> tagIds = getImageTagIds(image);
+
+        return new GetMemeResponse(imageToMemeMapper.toMeme(image, tagIds));
+    }
+
+
+    @Override
+    public UpdateMemeResponse update(UpdateMemeRequest request, Long memeId) {
+        Image image = getMemeById(memeId);
+        image.setDescription(request.description())
+                .setTitle(request.title());
+
+        Image saved = imageRepository.save(image);
+        List<Integer> tagsIds = getImageTagIds(saved);
+
+        return new UpdateMemeResponse(imageToMemeMapper.toMeme(image, tagsIds));
+    }
+
+    private Image getMemeById(Long memeId) {
+        return imageService.getById(memeId);
+    }
+
+    private List<Integer> getImageTagIds(Image image) {
+        return tagRepository.findByImageId(image.getId());
+    }
+
+    private void checkImageContainsInAlbumOrThrow(Long albumId, Long imageId) {
+        if (!albumIsContainsImage(albumId, imageId)) {
+            throw new ResourceNotFoundException("Album is not contains this image");
+        }
+    }
+
+    private boolean albumIsContainsImage(Long albumId, Long imageId) {
+        return albumRepository.existsImageById(albumId, imageId);
     }
 
     private void saveImageToAlbumOrThrow(Integer albumId, Image image) {
@@ -76,10 +109,10 @@ public class MemeUseCaseImpl implements MemeUseCase {
         if (!albumIsExist) {
             throw new NotFoundException(String.format("Album with id = (%d) is not found", albumId));
         }
-        albumRepository.saveImage(albumId, image.getId());
+        imageRepository.saveImage(albumId, image.getId());
     }
 
-    private Image setImageFieldsFromRequest(CreateMemeRequest request, Image image) {
+    private Image setImageFieldsFromRequest(Image image, CreateMemeRequest request) {
         return image
                 .setTitle(request.getTitle())
                 .setDescription(request.getDescription());

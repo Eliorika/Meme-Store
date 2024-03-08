@@ -1,10 +1,7 @@
 package dev.chipichapa.memestore.controller;
 
 import dev.chipichapa.memestore.domain.dto.BasicApiResponse;
-import dev.chipichapa.memestore.dto.meme.CreateMemeRequest;
-import dev.chipichapa.memestore.dto.meme.CreateMemeResponse;
-import dev.chipichapa.memestore.dto.meme.GetMemeRequest;
-import dev.chipichapa.memestore.dto.meme.GetMemeResponse;
+import dev.chipichapa.memestore.dto.meme.*;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,10 +28,18 @@ public class MemeController {
     }
 
     @GetMapping("{gallery_id}_{id}")
-    ResponseEntity<BasicApiResponse<?>> get(@PathVariable("gallery_id") int galleryId,
-                                            @PathVariable("id") int memeId) {
+    ResponseEntity<BasicApiResponse<?>> get(@PathVariable("gallery_id") long galleryId,
+                                            @PathVariable("id") long memeId) {
         GetMemeResponse response = memeUseCase.get(new GetMemeRequest(galleryId, memeId));
 
+        return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<BasicApiResponse<?>> update(@PathVariable("id") long memeId,
+                                               @RequestBody UpdateMemeRequest updateRequest) {
+
+        UpdateMemeResponse response = memeUseCase.update(updateRequest, memeId);
         return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
     }
 }
