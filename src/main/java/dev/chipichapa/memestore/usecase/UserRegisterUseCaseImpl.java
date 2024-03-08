@@ -37,7 +37,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
     }
 
     @Override
-    public void registerTg(TgRegisterRequest request) {
+    public User registerTg(TgRegisterRequest request) {
         User user = registerToUserMapper.toUser(request);
 
         int i = 1;
@@ -46,7 +46,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
         while (userRepository.existsByUsername(user.getUsername())) {
             User ex = userRepository.findByUsername(user.getUsername()).orElse(null);
             if(ex != null && ex.getTgId()!= null && ex.getTgId().equals(user.getTgId())){
-                return;
+                return ex;
             }
             String name = newName + i;
             i++;
@@ -54,8 +54,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
         }
 
         user.setPassword(passwordEncoder.encode("tgbot"));
-        //user.setEmail("tg");
         user.setRoles(Set.of(Role.USER_ROLE));
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 }

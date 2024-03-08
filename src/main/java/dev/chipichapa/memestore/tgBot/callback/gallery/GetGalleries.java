@@ -32,6 +32,11 @@ public class GetGalleries implements CallBack {
         return sm;
     }
 
+    @Override
+    public String getCallBack() {
+        return "!gallery-get-all";
+    }
+
     private String galleryMessage(Gallery gallery){
         return "Альбом \"" + gallery.getName() +"\"\n"
                 +gallery.getDescription() + "\n"
