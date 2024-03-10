@@ -1,6 +1,7 @@
 package dev.chipichapa.memestore.controller;
 
 import dev.chipichapa.memestore.domain.model.Gallery;
+import dev.chipichapa.memestore.dto.gallery.ContributorsGallery;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 import dev.chipichapa.memestore.usecase.ifc.GalleryUseCase;
 import lombok.RequiredArgsConstructor;
@@ -31,10 +32,22 @@ public class GalleryController {
         Gallery gallery = galleryUseCase.saveGalleryChanges(galleryCreateRequest, id);
         return ResponseEntity.ok(gallery);
     }
+    @PostMapping("/{id}/contributors/add")
+    public ResponseEntity<Gallery> add(@PathVariable int id, @RequestBody ContributorsGallery contributorsGallery){
+        Gallery gallery = galleryUseCase.addContributors(id, contributorsGallery);
+        return ResponseEntity.ok(gallery);
+    }
+    @PostMapping("/{id}/contributors/remove")
+    public ResponseEntity<Gallery> delete(@PathVariable int id,@RequestBody ContributorsGallery contributorsGallery){
+        Gallery gallery = galleryUseCase.deleteContributors(id, contributorsGallery);
+        return ResponseEntity.ok(gallery);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteGallery(@PathVariable int id){
         return ResponseEntity.ok(galleryUseCase.deleteGallery(id));
     }
+
 
 }
