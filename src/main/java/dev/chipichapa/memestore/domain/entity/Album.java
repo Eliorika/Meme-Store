@@ -49,11 +49,19 @@ public class Album {
             inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Set<Image> images;
 
+
     @ManyToMany
     @JoinTable(
             name = "album_contributors",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "album_id"))
     private Set<User> contributors;
+    public Set<User> getContributors() {
+        return contributors;
+    }
+
+    public void setContributors(Set<User> contributors) {
+        this.contributors = contributors;
+    }
 
 }

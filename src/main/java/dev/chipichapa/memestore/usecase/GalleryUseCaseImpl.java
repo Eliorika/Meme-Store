@@ -3,6 +3,7 @@ package dev.chipichapa.memestore.usecase;
 import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.model.Gallery;
+import dev.chipichapa.memestore.dto.gallery.ContributorsGallery;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 import dev.chipichapa.memestore.service.ifc.AlbumService;
 import dev.chipichapa.memestore.service.ifc.UserService;
@@ -10,8 +11,14 @@ import dev.chipichapa.memestore.usecase.ifc.GalleryUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
 import dev.chipichapa.memestore.utils.mapper.AlbumMapper;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.control.MappingControl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,5 +67,28 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
         return res;
     }
 
+
+    @Override
+    @Transactional
+    public Gallery addContributors(int id, ContributorsGallery contributorsGallery) {
+        Album album = albumService.getGalleryById(id);
+        Set<User> contributors = album.getContributors();
+        for (long userId : contributorsGallery.contributorsIds()) {
+            User user = userService.getById(userId);
+            contributors.add(user);
+        }
+        return AlbumMapper.map(album);
+    }
+    @Override
+    @Transactional
+    public Gallery deleteContributors(int id, ContributorsGallery contributorsGallery) {
+        Album album = albumService.getGalleryById(id);
+        Set<User> contributors = album.getContributors();
+        contributors = contributors.stream()
+                .filter(user -> !contributorsGallery.contributorsIds().contains(user.getId()))
+                .collect(Collectors.toSet());
+        album.setContributors(contributors);
+        return AlbumMapper.map(album);
+    }
 
 }

@@ -51,6 +51,10 @@ public class User {
 
     private Long tgId;
 
+    public long getId() {
+        return id;
+    }
+
 
 
     public void addRole(Role role) {
