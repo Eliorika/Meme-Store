@@ -33,12 +33,6 @@ public class StartCommand implements Command{
         TgRegisterRequest tgRegisterRequest = new TgRegisterRequest(user.getUserName(),
                 user.getFirstName()+" "+user.getLastName(),
                 user.getId());
-        var userInternal = userRegisterUseCase.registerTg(tgRegisterRequest);
-        JwtRequest jwtRequest = new JwtRequest();
-        jwtRequest.setUsername(userInternal.getUsername());
-        jwtRequest.setPassword(userInternal.getPassword());
-        authService.login(jwtRequest);
-
         String answer = "Привет, " + update.getMessage().getChat().getFirstName() +
             "! Как дела? \nВведи /help, чтобы узнать, что я умею!";
         sm.setText(answer);
