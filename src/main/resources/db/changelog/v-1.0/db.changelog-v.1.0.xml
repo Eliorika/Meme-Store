@@ -20,5 +20,6 @@
     <include file="130-changeset-create-contributor-table.xml" relativeToChangelogFile="true"/>
     <include file="140-changeset-status-bool.xml" relativeToChangelogFile="true"/>
     <include file="150-changeset-table-draft.xml" relativeToChangelogFile="true"/>
+    <include file="160-changeset-images-add-column-blurhash.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
