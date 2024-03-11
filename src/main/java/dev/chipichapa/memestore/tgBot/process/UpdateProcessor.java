@@ -1,5 +1,7 @@
 package dev.chipichapa.memestore.tgBot.process;
 
+import dev.chipichapa.memestore.exception.ResourceNotFoundException;
+import dev.chipichapa.memestore.security.tg.TgAuthProvider;
 import dev.chipichapa.memestore.tgBot.commands.Command;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
@@ -19,24 +21,41 @@ public class UpdateProcessor {
     private CommandProcessor commandProcessor;
     private CallBackProcessor callBackProcessor;
     private NoCommandProcessor noCommandProcessor;
+    private TgAuthProvider tgAuthProvider;
 
     public SendMessage process(Update update){
+        long tgId = update.getCallbackQuery()==null?update.getMessage().getFrom().getId()
+                :update.getCallbackQuery().getFrom().getId();
         if (commandProcessor.isCommand(update)){
             return commandProcessor.process(update);
         }
-        long tgId = update.getCallbackQuery()==null?update.getMessage().getFrom().getId()
-                :update.getCallbackQuery().getFrom().getId();
-        UserState status = userChatStates.getUserState(tgId);
+        try {
 
-        if(UserState.NO_ACTION.equals(status) && update.getCallbackQuery()!=null){
-            return callBackProcessor.process(update);
+
+            if (tgAuthProvider.authenticate(tgId)) {
+                UserState status = userChatStates.getUserState(tgId);
+
+                if (UserState.NO_ACTION.equals(status) && update.getCallbackQuery() != null) {
+                    return callBackProcessor.process(update);
+                }
+
+                return noCommandProcessor.process(update);
+
+            }
+        } catch (ResourceNotFoundException ex){
+            SendMessage sm = new SendMessage();
+            long chatId = update.getCallbackQuery()==null?update.getMessage().getChatId()
+                    :update.getCallbackQuery().getMessage().getChatId();
+            sm.setChatId(chatId);
+
+            sm.setText("Похоже я вас не знаю... Введите /start и мы с вами познакомимся!");
+
+            return sm;
         }
 
-        return noCommandProcessor.process(update);
 
 
-
-        //return null;
+        return null;
 
     }
 

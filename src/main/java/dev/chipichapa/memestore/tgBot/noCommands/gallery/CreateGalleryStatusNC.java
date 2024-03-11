@@ -23,7 +23,7 @@ public class CreateGalleryStatusNC implements NoCommand {
     private GalleryUseCase galleryUseCase;
     @Override
     public UserState getNextState() {
-        return UserState.NO_ACTION;
+        return UserState.SUCCESS;
     }
 
     @Override
