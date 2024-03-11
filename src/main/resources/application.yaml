@@ -33,3 +33,8 @@ s3-aws:
 
 springdoc:
   override-with-generic-response: false
+
+telegram:
+  bot-name: meme_st0re_bot
+  bot-token: 6728196094:AAGh5uSU04zF3RkM-BCzEEbapDsnbsTTmNs
+  api-url: "https://api.telegram.org/"

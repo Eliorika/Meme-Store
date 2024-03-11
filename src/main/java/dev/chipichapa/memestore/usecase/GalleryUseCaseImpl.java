@@ -20,6 +20,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class GalleryUseCaseImpl implements GalleryUseCase {
@@ -56,6 +59,12 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Gallery> getAllForUser(User user) {
+        var res = albumService.getAllByUser(user).stream().map(al-> AlbumMapper.map(al)).collect(Collectors.toList());
+        return res;
     }
 
 

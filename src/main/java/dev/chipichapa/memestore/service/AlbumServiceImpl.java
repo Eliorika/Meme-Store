@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AlbumServiceImpl implements AlbumService {
@@ -49,6 +51,11 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public void deleteGallery(int id) {
         albumRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Album> getAllByUser(User user) {
+        return albumRepository.findAllByAuthorId(user.getId());
     }
 
 
