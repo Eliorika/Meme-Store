@@ -91,7 +91,7 @@ public class MemeUseCaseImpl implements MemeUseCase {
     }
 
     private List<Integer> getImageTagIds(Image image) {
-        return tagRepository.findByImageId(image.getId());
+        return tagRepository.findTagsIdsByImageId(image.getId());
     }
 
     private void checkImageContainsInAlbumOrThrow(Long albumId, Long imageId) {

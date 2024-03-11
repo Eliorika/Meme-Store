@@ -2,6 +2,8 @@ package dev.chipichapa.memestore.controller;
 
 import dev.chipichapa.memestore.domain.dto.BasicApiResponse;
 import dev.chipichapa.memestore.dto.meme.*;
+import dev.chipichapa.memestore.dto.tags.GetMemeTagsResponse;
+import dev.chipichapa.memestore.usecase.ifc.MemeTagsUseCase;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemeController {
 
     private final MemeUseCase memeUseCase;
+    private final MemeTagsUseCase memeTagsUseCase;
 
     @PostMapping("/create")
     ResponseEntity<BasicApiResponse<?>> create(@RequestParam("asset") String assetTicket,
@@ -42,4 +45,16 @@ public class MemeController {
         UpdateMemeResponse response = memeUseCase.update(updateRequest, memeId);
         return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
     }
+
+
+    @GetMapping("{gallery_id}_{id}/tags")
+    ResponseEntity<BasicApiResponse<?>> getMemeTags(@PathVariable("gallery_id") Long galleryId,
+                                                    @PathVariable("id") Long memeId){
+
+        GetMemeTagsResponse response = memeTagsUseCase.getMemeTags(memeId, galleryId);
+
+        return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
+    }
+
+
 }

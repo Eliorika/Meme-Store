@@ -2,6 +2,7 @@ package dev.chipichapa.memestore.exception;
 
 import dev.chipichapa.memestore.domain.dto.BasicApiResponse;
 import dev.chipichapa.memestore.security.exception.AccessDeniedException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,12 +10,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@Log4j2
 public class ControllerAdvice {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     BasicApiResponse<ExceptionBodyResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
         return constructResponse(e, HttpStatus.NOT_FOUND);
+    }
+
+    private static void logException(Exception e) {
+        log.error("Error: ", e);
     }
 
     @ExceptionHandler({AccessDeniedException.class,
@@ -37,6 +43,7 @@ public class ControllerAdvice {
     }
 
     private BasicApiResponse<ExceptionBodyResponse> constructResponse(Exception e, HttpStatus httpStatus) {
+        logException(e);
         return constructResponse(e.getMessage(), httpStatus);
     }
 
