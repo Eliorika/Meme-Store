@@ -4,6 +4,8 @@ import dev.chipichapa.memestore.domain.model.Gallery;
 import dev.chipichapa.memestore.dto.gallery.ContributorsGallery;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 
+import java.util.List;
+
 public interface GalleryUseCase {
     Gallery create(GalleryCreateRequest request);
     Gallery getById(int id);
@@ -11,4 +13,5 @@ public interface GalleryUseCase {
     boolean deleteGallery(int id);
     Gallery addContributors(int id, ContributorsGallery contributorsGallery);
     Gallery deleteContributors(int id, ContributorsGallery contributorsGallery);
+    List<Gallery> getAll();
 }

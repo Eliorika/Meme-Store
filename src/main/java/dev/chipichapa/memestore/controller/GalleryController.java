@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/gallery")
 @RequiredArgsConstructor
@@ -48,6 +50,9 @@ public class GalleryController {
     public ResponseEntity<Boolean> deleteGallery(@PathVariable int id){
         return ResponseEntity.ok(galleryUseCase.deleteGallery(id));
     }
-
+    @GetMapping("/")
+    public ResponseEntity<List<Gallery>> getAll(){
+        return ResponseEntity.ok(galleryUseCase.getAll());
+    }
 
 }

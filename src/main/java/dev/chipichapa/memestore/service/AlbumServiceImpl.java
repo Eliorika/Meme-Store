@@ -2,6 +2,7 @@ package dev.chipichapa.memestore.service;
 
 import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.domain.entity.user.User;
+import dev.chipichapa.memestore.domain.model.Gallery;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.AlbumRepository;
@@ -9,6 +10,8 @@ import dev.chipichapa.memestore.service.ifc.AlbumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +52,11 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public void deleteGallery(int id) {
         albumRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Album> getAllByAuthor(long authorId){
+        return albumRepository.findAllByAuthorId(authorId);
     }
 
 

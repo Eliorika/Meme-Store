@@ -5,8 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface AlbumRepository extends CrudRepository<Album, Integer> {
 
+    List<Album> findAllByAuthorId(long authorId);
 
     @Query(value = """
             select count(*) > 0 from album_images where (image_id = :imageId and album_id = :albumId)

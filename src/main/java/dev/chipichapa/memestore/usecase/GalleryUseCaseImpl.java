@@ -11,7 +11,6 @@ import dev.chipichapa.memestore.usecase.ifc.GalleryUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
 import dev.chipichapa.memestore.utils.mapper.AlbumMapper;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.control.MappingControl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +79,12 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
                 .collect(Collectors.toSet());
         album.setContributors(contributors);
         return AlbumMapper.map(album);
+    }
+
+    public List<Gallery> getAll() {
+        User user = (User) authUtils.getUserDetailsOrThrow();
+        List<Album> galleryList = albumService.getAllByAuthor(user.getId());
+        return AlbumMapper.map(galleryList);
     }
 
 }
