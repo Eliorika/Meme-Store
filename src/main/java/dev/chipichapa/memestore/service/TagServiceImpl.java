@@ -2,6 +2,7 @@ package dev.chipichapa.memestore.service;
 
 import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.domain.entity.Tag;
+import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.TagRepository;
 import dev.chipichapa.memestore.service.ifc.TagService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,13 @@ public class TagServiceImpl implements TagService {
         saveTagsForImage(image, tagsIds);
 
         return tagsIds;
+    }
+
+    @Override
+    public Tag getById(Long id) {
+        return tagRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Tag with this id is not found"));
     }
 
     private void saveTagsForImage(Image image, List<Integer> tagsIds) {

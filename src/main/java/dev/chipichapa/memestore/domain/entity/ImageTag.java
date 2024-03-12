@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "image_tags")
+@IdClass(ImageTagPK.class)
 public class ImageTag {
 
     @Id
@@ -21,6 +22,4 @@ public class ImageTag {
     private Tag tag;
 
     private Integer score;
-
-    // Constructors, getters, and setters
 }

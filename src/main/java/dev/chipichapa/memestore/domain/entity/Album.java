@@ -44,9 +44,9 @@ public class Album {
 
     @ManyToMany
     @JoinTable(
-            name = "user_tenant_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "tenant_role_id"))
+            name = "album_images",
+            joinColumns = @JoinColumn(name = "album_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Set<Image> images;
 
 

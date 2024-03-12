@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface TagRepository extends CrudRepository<Tag, Integer> {
+public interface TagRepository extends CrudRepository<Tag, Long> {
 
     @Query(value = """
               SELECT tag.id
@@ -21,7 +21,7 @@ public interface TagRepository extends CrudRepository<Tag, Integer> {
               JOIN it.tag tag
               WHERE img.id = (:id)
             """)
-    List<Integer> findByImageId(@Param("id") Integer id);
+    List<Integer> findTagsIdsByImageId(@Param("id") Integer id);
 
     @Modifying
     @Query(value = """

@@ -5,6 +5,7 @@ import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.enumerated.AssetType;
 import dev.chipichapa.memestore.dto.asset.*;
+import dev.chipichapa.memestore.exception.AppException;
 import dev.chipichapa.memestore.repository.DraftRepository;
 import dev.chipichapa.memestore.repository.ImageRepository;
 import dev.chipichapa.memestore.s3storage.dto.File;
@@ -20,11 +21,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,6 +44,8 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
 
     private final ImageRepository imageRepository;
     private final DraftRepository draftRepository;
+
+    private final ThreadPoolTaskExecutor executor;
 
     @Value("${file-storage.url}")
     private String imageStorageUrl;
@@ -63,8 +68,12 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
 
         draftRepository.save(new Draft().setId(uuid));
         imageRepository.save(savingAsset);
-        fileService.save(new File(savingAsset.getFilenameWithExtension(), file.getBytes()));
 
+        executor.execute(() -> {
+            calculateBlurHashForImageAndSave(file, savingAsset);
+        });
+
+        fileService.save(new File(savingAsset.getFilenameWithExtension(), file.getBytes()));
 
         return new AssetUploadResponse(String.valueOf(uuid));
     }
@@ -85,7 +94,7 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
         return new SuggestionsTagsResponse(tags);
     }
 
-    private File getFileByAssetTicket(String ticket){
+    private File getFileByAssetTicket(String ticket) {
         Image asset = imageService.getByTicket(ticket);
         return fileService.get(asset.getFilenameWithExtension());
     }
@@ -97,25 +106,28 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
     }
 
     @Override
-    public AssetGetInfoResponse getAssetInfoByTicket(String assetTicket){
+    public AssetGetInfoResponse getAssetInfoByTicket(String assetTicket) {
         Image image = imageService.getByTicket(assetTicket);
         return buildAssetGetInfoResponse(image);
     }
-    private AssetGetInfoResponse buildAssetGetInfoResponse(Image image){
-        File file = fileService.get(image.getFilenameWithExtension());
-        String blurhash = getHashForFile(file);
+
+    private AssetGetInfoResponse buildAssetGetInfoResponse(Image image) {
         String url = imageStorageUrl + image.getUuid();
-
-        return new AssetGetInfoResponse(image.getId(), blurhash, AssetType.IMAGE, url);
+        return new AssetGetInfoResponse(image.getId(), image.getBlurhash(), AssetType.IMAGE, url);
     }
 
-    private String getHashForFile(File file) {
-        BufferedImage bfImage = ImageUtils.byteArrayToBufferedImage(file.getContent());
+    private void calculateBlurHashForImageAndSave(MultipartFile file, Image image) {
+        try {
+            String hash = getHashForFile(file.getBytes());
+            image.setBlurhash(hash);
+            imageRepository.save(image);
+        } catch (IOException e) {
+            throw new AppException(e);
+        }
+    }
+
+    private String getHashForFile(byte[] file) {
+        BufferedImage bfImage = ImageUtils.byteArrayToBufferedImage(file);
         return BlurHash.encode(bfImage);
-    }
-
-
-    private String getFilenameWithExtension(Image asset) {
-        return asset.getUuid() + "." + asset.getExtension();
     }
 }

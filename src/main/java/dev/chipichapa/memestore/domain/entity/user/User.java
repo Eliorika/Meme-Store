@@ -35,9 +35,9 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "album_images",
-            joinColumns = @JoinColumn(name = "album_id"),
-            inverseJoinColumns = @JoinColumn(name = "image_id"))
+            name = "user_tenant_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "tenant_role_id"))
     private Set<TenantRole> tenantRoles;
 
     private String email;

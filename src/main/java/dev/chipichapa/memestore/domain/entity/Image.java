@@ -36,6 +36,7 @@ public class Image {
     private String extension;
     private String title;
     private String description;
+    private String blurhash;
 
     public String getFilenameWithExtension(){
         return this.uuid + "." + this.getExtension();
