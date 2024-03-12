@@ -23,5 +23,7 @@
     <include file="160-changeset-images-add-column-blurhash.xml" relativeToChangelogFile="true"/>
     <include file="170-changeset-change-type-user-tag-vote.xml" relativeToChangelogFile="true"/>
     <include file="180-changeset-change-type-user-tag-vote-boolean.xml" relativeToChangelogFile="true"/>
+    <include file="190-changeset-refactor-trigger.xml" relativeToChangelogFile="true"/>
+    <include file="200-changeset-add-title-image.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
