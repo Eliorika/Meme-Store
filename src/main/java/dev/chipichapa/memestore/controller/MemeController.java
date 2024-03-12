@@ -3,6 +3,8 @@ package dev.chipichapa.memestore.controller;
 import dev.chipichapa.memestore.domain.dto.BasicApiResponse;
 import dev.chipichapa.memestore.dto.meme.*;
 import dev.chipichapa.memestore.dto.tags.GetMemeTagsResponse;
+import dev.chipichapa.memestore.dto.tags.VoteMemeTagRequest;
+import dev.chipichapa.memestore.dto.tags.VoteMemeTagResponse;
 import dev.chipichapa.memestore.usecase.ifc.MemeTagsUseCase;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +35,8 @@ public class MemeController {
     @GetMapping("{gallery_id}_{id}")
     ResponseEntity<BasicApiResponse<?>> get(@PathVariable("gallery_id") long galleryId,
                                             @PathVariable("id") long memeId) {
-        GetMemeResponse response = memeUseCase.get(new GetMemeRequest(galleryId, memeId));
 
+        GetMemeResponse response = memeUseCase.get(new GetMemeRequest(galleryId, memeId));
         return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
     }
 
@@ -48,11 +50,19 @@ public class MemeController {
 
 
     @GetMapping("{gallery_id}_{id}/tags")
-    ResponseEntity<BasicApiResponse<?>> getMemeTags(@PathVariable("gallery_id") Long galleryId,
+    ResponseEntity<BasicApiResponse<?>> voteMemeTag(@PathVariable("gallery_id") Long galleryId,
                                                     @PathVariable("id") Long memeId){
 
         GetMemeTagsResponse response = memeTagsUseCase.getMemeTags(memeId, galleryId);
+        return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
+    }
 
+    @PostMapping("{id}/vote/{tag_id}")
+    ResponseEntity<BasicApiResponse<?>> voteMemeTag(@PathVariable("id") Long memeId,
+                                                    @PathVariable("tag_id") Long tagId,
+                                                    @RequestBody VoteMemeTagRequest request){
+
+        VoteMemeTagResponse response = memeTagsUseCase.voteMemeTag(memeId, tagId, request.type());
         return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
     }
 

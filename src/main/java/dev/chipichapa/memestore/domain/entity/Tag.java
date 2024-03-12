@@ -1,6 +1,7 @@
 package dev.chipichapa.memestore.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "tags")
+@EqualsAndHashCode(exclude = {"id"})
 public class Tag {
 
     @Id
