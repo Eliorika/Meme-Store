@@ -21,5 +21,6 @@
     <include file="140-changeset-status-bool.xml" relativeToChangelogFile="true"/>
     <include file="150-changeset-table-draft.xml" relativeToChangelogFile="true"/>
     <include file="160-changeset-images-add-column-blurhash.xml" relativeToChangelogFile="true"/>
+    <include file="170-changeset-change-type-user-tag-vote.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
