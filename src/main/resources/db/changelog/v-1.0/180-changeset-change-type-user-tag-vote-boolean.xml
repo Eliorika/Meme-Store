@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="170" author="Grishuchkov">
+    <changeSet id="180" author="Grishuchkov">
         <validCheckSum>ANY</validCheckSum>
         <sqlFile dbms="postgresql"
                  encoding="utf8"
@@ -12,7 +12,7 @@
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"
-                 path="170-change-type-user-tag-vote.sql"
+                 path="180-change-type-user-tag-vote-boolean.sql"
         />
 
     </changeSet>
