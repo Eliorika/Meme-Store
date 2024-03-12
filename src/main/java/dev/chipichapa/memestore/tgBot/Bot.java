@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-@Component
+
 public class Bot extends TelegramLongPollingBot {
 
     @Value("${telegram.bot-name}")
