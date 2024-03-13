@@ -7,13 +7,13 @@ import java.util.Date;
 @Data
 public class ExceptionBodyResponse {
 
+    private boolean error;
     private int code;
     private String message;
-    private long creationTime;
 
     public ExceptionBodyResponse(int code, String message) {
+        this.error = true;
         this.code = code;
         this.message = message;
-        this.creationTime = new Date().getTime();
     }
 }

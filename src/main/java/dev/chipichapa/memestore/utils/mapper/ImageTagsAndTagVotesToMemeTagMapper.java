@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class ImageTagsToGetMemeTagsResponseMapper {
+public class ImageTagsAndTagVotesToMemeTagMapper {
     private Map<Tag, UserTagVote> dictionary;
 
-    public List<MemeTag> toResponse(List<ImageTag> tags, List<UserTagVote> votes) {
+    public List<MemeTag> toList(List<ImageTag> tags, List<UserTagVote> votes) {
         initDictionary(votes);
 
         List<MemeTag> result = new ArrayList<>(tags.size());
@@ -25,7 +25,7 @@ public class ImageTagsToGetMemeTagsResponseMapper {
             MemeTag tag = new MemeTag(
                     tempTag.getId(),
                     tempTag.getTag(),
-                    tempTag.getId(),
+                    imageTag.getImage().getId(),
                     imageTag.getScore(),
                     getUserVote(tempTag));
             result.add(tag);

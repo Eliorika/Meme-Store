@@ -3,6 +3,7 @@ package dev.chipichapa.memestore.usecase;
 import dev.chipichapa.memestore.domain.entity.*;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.enumerated.VoteType;
+import dev.chipichapa.memestore.domain.model.tag.MemeTag;
 import dev.chipichapa.memestore.dto.tags.GetMemeTagsResponse;
 import dev.chipichapa.memestore.dto.tags.VoteMemeTagResponse;
 import dev.chipichapa.memestore.exception.AppException;
@@ -15,14 +16,12 @@ import dev.chipichapa.memestore.service.ifc.TagService;
 import dev.chipichapa.memestore.service.ifc.UserService;
 import dev.chipichapa.memestore.usecase.ifc.MemeTagsUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
-import dev.chipichapa.memestore.utils.mapper.ImageTagsToGetMemeTagsResponseMapper;
+import dev.chipichapa.memestore.utils.mapper.ImageTagsAndTagVotesToMemeTagMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
     private final UserTagVoteRepository userTagVoteRepository;
 
     private final AuthUtils authUtils;
-    private final ImageTagsToGetMemeTagsResponseMapper imageTagsToGetMemeTagsResponseMapper;
+    private final ImageTagsAndTagVotesToMemeTagMapper imageTagsAndTagVotesToMemeTagMapper;
 
     @Override
     public GetMemeTagsResponse getMemeTags(Long memeId, Long galleryId) {
@@ -53,8 +52,8 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
         List<UserTagVote> userTagVotes = userTagVoteRepository
                 .findUserTagVotesByUserAndImageAndTagIn(user, image, getTagList(imageTags));
 
-        return new GetMemeTagsResponse(imageTagsToGetMemeTagsResponseMapper
-                .toResponse(imageTags, userTagVotes));
+        List<MemeTag> result = imageTagsAndTagVotesToMemeTagMapper.toList(imageTags, userTagVotes);
+        return new GetMemeTagsResponse(result);
     }
 
     @Override
@@ -69,8 +68,8 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
         List<UserTagVote> userTagVotes = userTagVoteRepository
                 .findUserTagVotesByUserAndImageAndTagIn(user, image, getTagList(imageTags));
 
-        return new VoteMemeTagResponse(imageTagsToGetMemeTagsResponseMapper
-                .toResponse(imageTags, userTagVotes));
+        List<MemeTag> result = imageTagsAndTagVotesToMemeTagMapper.toList(imageTags, userTagVotes);
+        return new VoteMemeTagResponse(result);
     }
 
     private void userVoteProcess(@Nullable VoteType type, User user, Image image, Tag tag) {

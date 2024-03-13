@@ -1,6 +1,5 @@
 package dev.chipichapa.memestore.exception;
 
-import dev.chipichapa.memestore.domain.dto.BasicApiResponse;
 import dev.chipichapa.memestore.security.exception.AccessDeniedException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -15,44 +14,39 @@ public class ControllerAdvice {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    BasicApiResponse<ExceptionBodyResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+    ExceptionBodyResponse handleResourceNotFoundException(ResourceNotFoundException e) {
         return constructResponse(e, HttpStatus.NOT_FOUND);
-    }
-
-    private static void logException(Exception e) {
-        log.error("Error: ", e);
     }
 
     @ExceptionHandler({AccessDeniedException.class,
             org.springframework.security.access.AccessDeniedException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    BasicApiResponse<ExceptionBodyResponse> handleAccessDeniedException() {
+    ExceptionBodyResponse handleAccessDeniedException() {
         return constructResponse("Access denied", HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    BasicApiResponse<ExceptionBodyResponse> handleAuthentication(AuthenticationException e) {
+    ExceptionBodyResponse handleAuthentication(AuthenticationException e) {
         return constructResponse(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    BasicApiResponse<ExceptionBodyResponse> handleExceptions(Exception e) {
+    ExceptionBodyResponse handleExceptions(Exception e) {
         return constructResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private BasicApiResponse<ExceptionBodyResponse> constructResponse(Exception e, HttpStatus httpStatus) {
+    private ExceptionBodyResponse constructResponse(Exception e, HttpStatus httpStatus) {
         logException(e);
         return constructResponse(e.getMessage(), httpStatus);
     }
 
-    private BasicApiResponse<ExceptionBodyResponse> constructResponse(String message, HttpStatus httpStatus) {
-        return new BasicApiResponse<>(
-                true,
-                new ExceptionBodyResponse(httpStatus.value(), message)
-        );
+    private ExceptionBodyResponse constructResponse(String message, HttpStatus httpStatus) {
+        return new ExceptionBodyResponse(httpStatus.value(), message);
     }
 
-
+    private static void logException(Exception e) {
+        log.error("Error: ", e);
+    }
 }
