@@ -1,34 +1,29 @@
 package dev.chipichapa.memestore.tgBot.noCommands.gallery;
 
-import dev.chipichapa.memestore.domain.entity.Album;
-import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
-import dev.chipichapa.memestore.usecase.ifc.GalleryUseCase;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
-@AllArgsConstructor
-public class SuccesfulStatusStatusNC implements NoCommand {
-    private UserChatStates userChatStates;
+@RequiredArgsConstructor
+public class SuccessfulStatusNC implements NoCommand {
+    private final UserChatStates userChatStates;
     @Override
-    public UserState getNextState() {
+    public final UserState getNextState() {
         return UserState.NO_ACTION;
     }
 
     @Override
-    public UserState getState() {
+    public final UserState getState() {
         return UserState.SUCCESS;
     }
+
+    public String message;
 
     @Override
     public SendMessage handleMessage(Update update, SendMessage sm) {

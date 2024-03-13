@@ -21,6 +21,7 @@ import java.util.List;
 public class CreateGalleryStatusNC implements NoCommand {
     private UserChatStates userChatStates;
     private GalleryUseCase galleryUseCase;
+    private SuccessfulStatusNC successfulStatusNC;
     @Override
     public UserState getNextState() {
         return UserState.SUCCESS;
@@ -62,6 +63,7 @@ public class CreateGalleryStatusNC implements NoCommand {
 
         userChatStates.addUser(tgId, getNextState());
         galleryUseCase.create(new GalleryCreateRequest(album.getName(), album.getDescription(), album.getStatus()));
+        successfulStatusNC.message = "Альбом " + album.getName() + " создан успешно!";
         //userChatStates.addUserAlbum();
     }
 }
