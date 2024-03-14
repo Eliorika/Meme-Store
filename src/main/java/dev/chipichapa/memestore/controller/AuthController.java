@@ -8,22 +8,20 @@ import dev.chipichapa.memestore.service.ifc.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/service/tg/external_user/")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/login")
-    public ResponseEntity<BasicApiResponse<?>> login(@RequestBody JwtRequest loginRequest) {
+    @PostMapping("/{id}/auth")
+    public ResponseEntity<BasicApiResponse<?>> login(@RequestBody JwtRequest authRequest,
+                                                     @PathVariable("id") Long telegramId) {
         return new ResponseEntity<>(
-                new BasicApiResponse<>(false, authService.login(loginRequest)),
+                new BasicApiResponse<>(false, authService.auth(authRequest, telegramId)),
                 HttpStatus.OK
         );
     }

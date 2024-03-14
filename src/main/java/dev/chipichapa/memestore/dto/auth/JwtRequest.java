@@ -6,10 +6,8 @@ import org.springframework.lang.Nullable;
 
 
 public record JwtRequest(
-        @NonNull Long tgId,
-        @Nullable String username,
-        @Nullable String firstName,
-        @Nullable String lastName
+        @NonNull String fullName,
+        @NonNull String username
 ) {
 
 }

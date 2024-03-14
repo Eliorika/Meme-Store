@@ -1,7 +1,6 @@
 package dev.chipichapa.memestore.domain.model.tenant;
 
 import dev.chipichapa.memestore.domain.enumerated.TenantOrigin;
-import dev.chipichapa.memestore.domain.enumerated.TenantRole;
 import dev.chipichapa.memestore.domain.enumerated.TenantType;
 import dev.chipichapa.memestore.domain.model.BaseModel;
 import lombok.Data;
@@ -14,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Tenant extends BaseModel {
-    private List<TenantRole> roles;
+    private List<Integer> roles;
     private TenantType type;
     private TenantOrigin origin;
     private String displayName;
@@ -23,7 +22,7 @@ public class Tenant extends BaseModel {
     private long extremistDate;
     private long foreignAgentDate;
 
-    public Tenant(long id, List<TenantRole> roles, TenantType type, TenantOrigin origin, String displayName, String uniqueName, boolean isRestricted) {
+    public Tenant(long id, List<Integer> roles, TenantType type, TenantOrigin origin, String displayName, String uniqueName, boolean isRestricted) {
         super(id);
         this.roles = roles;
         this.type = type;
@@ -33,7 +32,7 @@ public class Tenant extends BaseModel {
         this.isRestricted = isRestricted;
     }
 
-    public Tenant(long id, List<TenantRole> roles, TenantType type, TenantOrigin origin, String displayName, String uniqueName, boolean isRestricted, long extremistDate, long foreignAgentDate) {
+    public Tenant(long id, List<Integer> roles, TenantType type, TenantOrigin origin, String displayName, String uniqueName, boolean isRestricted, long extremistDate, long foreignAgentDate) {
         super(id);
         this.roles = roles;
         this.type = type;

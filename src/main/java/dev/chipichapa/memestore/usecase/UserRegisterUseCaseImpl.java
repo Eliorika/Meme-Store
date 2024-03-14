@@ -32,7 +32,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
         User user = new User()
                 .setTgId(request.tgId())
                 .setUsername(request.username())
-                .setDisplayName(request.firstName() + " " + request.lastName());
+                .setDisplayName(request.fullName());
 
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new IllegalArgumentException("User with username = (%s) already exists"
