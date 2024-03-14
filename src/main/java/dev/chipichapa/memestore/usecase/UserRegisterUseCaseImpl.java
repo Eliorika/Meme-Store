@@ -6,6 +6,7 @@ import dev.chipichapa.memestore.dto.auth.RegisterRequest;
 import dev.chipichapa.memestore.dto.auth.TgRegisterRequest;
 import dev.chipichapa.memestore.exception.IllegalArgumentException;
 import dev.chipichapa.memestore.repository.UserRepository;
+import dev.chipichapa.memestore.service.ifc.AlbumService;
 import dev.chipichapa.memestore.usecase.ifc.UserRegisterUseCase;
 import dev.chipichapa.memestore.utils.mapper.RegisterRequestToUserMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,10 @@ import java.util.Set;
 public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
 
     private final RegisterRequestToUserMapper registerToUserMapper;
+
     private final UserRepository userRepository;
+    private final AlbumService albumService;
+
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -38,6 +42,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
         user.setPassword(passwordEncoder.encode("tgbot"));
         user.setRoles(Set.of(Role.USER_ROLE));
         userRepository.save(user);
+        albumService.addDefaultsGalleriesForUser(user);
     }
 
     @Override
@@ -59,6 +64,9 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
 
         user.setPassword(passwordEncoder.encode("tgbot"));
         user.setRoles(Set.of(Role.USER_ROLE));
-        return userRepository.save(user);
+
+        User savedUser = userRepository.save(user);
+        albumService.addDefaultsGalleriesForUser(savedUser);
+        return savedUser;
     }
 }

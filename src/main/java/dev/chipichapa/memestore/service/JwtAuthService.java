@@ -34,12 +34,7 @@ public class JwtAuthService implements AuthService {
 
         if (!userService.existsByTelegramId(tgId)) {
             checkRegisterFieldsOrThrow(loginRequest);
-
-            userRegister.register(new RegisterRequest(
-                    loginRequest.tgId(),
-                    loginRequest.username(),
-                    loginRequest.firstName(),
-                    loginRequest.lastName()));
+            userRegistration(loginRequest);
         }
 
         User user = userService.getByTgId(tgId);
@@ -60,6 +55,14 @@ public class JwtAuthService implements AuthService {
                 user.getId(), user.getTgId())
         );
         return jwtResponse;
+    }
+
+    private void userRegistration(JwtRequest loginRequest) {
+        userRegister.register(new RegisterRequest(
+                loginRequest.tgId(),
+                loginRequest.username(),
+                loginRequest.firstName(),
+                loginRequest.lastName()));
     }
 
     private void checkRegisterFieldsOrThrow(JwtRequest loginRequest) {

@@ -11,6 +11,9 @@ public interface AlbumService {
 
     Album saveGallery(GalleryCreateRequest galleryCreateRequest, User user);
     Album saveChangesGallery(GalleryCreateRequest request, int id);
+
+    void addDefaultsGalleriesForUser(User user);
+
     void deleteGallery(int id);
     List<Album> getAllByAuthor(long authorId);
 }

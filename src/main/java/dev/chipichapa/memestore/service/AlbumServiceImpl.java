@@ -2,7 +2,7 @@ package dev.chipichapa.memestore.service;
 
 import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.domain.entity.user.User;
-import dev.chipichapa.memestore.domain.model.Gallery;
+import dev.chipichapa.memestore.domain.enumerated.AlbumType;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.AlbumRepository;
@@ -34,7 +34,7 @@ public class AlbumServiceImpl implements AlbumService {
                 .setName(galleryCreateRequest.name())
                 .setDescription(galleryCreateRequest.description())
                 .setAuthor(user)
-                .setStatus(galleryCreateRequest.isPublic());
+                .setVisible(galleryCreateRequest.isPublic());
         return albumRepository.save(album);
     }
 
@@ -45,8 +45,31 @@ public class AlbumServiceImpl implements AlbumService {
         album
                 .setName(galleryChanges.name())
                 .setDescription(galleryChanges.description())
-                .setStatus(galleryChanges.isPublic());
+                .setVisible(galleryChanges.isPublic());
         return albumRepository.save(album);
+    }
+
+    @Override
+    public void addDefaultsGalleriesForUser(User user) {
+        Album defaultPublicAlbum = new Album()
+                .setAlbumType(AlbumType.DEFAULT)
+                .setVisible(true)
+                .setName("Мой открытый альбом")
+                .setAuthor(user);
+
+        Album defaultPrivateAlbum = new Album()
+                .setAlbumType(AlbumType.DEFAULT)
+                .setVisible(false)
+                .setName("Мой закрытый альбом")
+                .setAuthor(user);
+
+        Album defaultBinAlbum = new Album()
+                .setAlbumType(AlbumType.BIN)
+                .setVisible(false)
+                .setName("Корзина пользователя")
+                .setAuthor(user);
+
+        albumRepository.saveAll(List.of(defaultPublicAlbum, defaultPrivateAlbum, defaultBinAlbum));
     }
 
     @Override
