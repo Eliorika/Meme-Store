@@ -13,6 +13,12 @@ spring:
     url: ${POSTGRES_DB_URL}
     driver-class-name: org.postgresql.Driver
 
+  rabbitmq:
+    host: ${RABBIT_HOST}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
+    port: ${RABBIT_PORT}
+
 #todo CHANGE SECRET AND REMOVE TO ENV. THAT'S ONLY FOR TEST!
 
 file-storage:
@@ -26,7 +32,7 @@ security:
     refresh: 30
 
 s3-aws:
-  url: http://localhost:9000
+  url: ${S3_URL}
   accessKey: minioroot
   secretKey: minioroot
   bucket: meme-store-bucket
@@ -38,3 +44,7 @@ telegram:
   bot-name: meme_st0re_bot
   bot-token: 6728196094:AAGh5uSU04zF3RkM-BCzEEbapDsnbsTTmNs
   api-url: "https://api.telegram.org/"
+
+rabbit:
+  queue: ${FILTER_QUEUE}
+  exchange: ${FILTER_EXCHANGE}

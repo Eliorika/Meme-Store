@@ -1,6 +1,73 @@
-version: "3"
+version: "3.8"
+
+networks:
+  backend:
 
 services:
+  core:
+    container_name: application_container
+    image: application_image
+    depends_on:
+      - rabbitmq
+      - postgres
+      - minio
+      - filter
+    build:
+      context: .
+    environment:
+      POSTGRES_DB_URL: ${POSTGRES_DB_URL}
+      POSTGRES_DB_USER: ${POSTGRES_DB_USER}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      RABBIT_HOST: ${RABBIT_HOST}
+      RABBIT_USERNAME: ${RABBIT_USERNAME}
+      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
+      RABBIT_PORT: ${RABBIT_PORT}
+      FILTER_QUEUE: ${FILTER_QUEUE}
+      FILTER_EXCHANGE: ${FILTER_EXCHANGE}
+      S3_URL: ${S3_URL}
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+  filter:
+    container_name: filter_container
+    image: filter_image
+    depends_on:
+      - rabbitmq
+      - postgres
+    build:
+      context: ./item-item-collaborative-filtering
+      dockerfile: ./item-item-collaborative-filtering/Dockerfile
+    environment:
+      DB_URL: ${POSTGRES_DB_URL}
+      DB_USERNAME: ${POSTGRES_DB_USER}
+      DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      RABBIT_HOST: ${RABBIT_HOST}
+      RABBIT_USERNAME: ${RABBIT_USERNAME}
+      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
+      RABBIT_PORT: ${RABBIT_PORT}
+      FILTER_QUEUE: ${FILTER_QUEUE}
+      FILTER_EXCHANGE: ${FILTER_EXCHANGE}
+      TIME_UPDATE_SIMILARITY: ${TIME_UPDATE_SIMILARITY}
+      TIME_UPDATE_FILTER: ${TIME_UPDATE_FILTER}
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=qwerty
+    volumes:
+      - ./volumes/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - backend
+
   postgres:
     container_name: meme-store-postgres
     image: postgres:13-alpine
@@ -13,6 +80,8 @@ services:
       - "5500:5432"
     volumes:
       - ./volumes/dbdata:/var/lib/postgresql/data
+    networks:
+      - backend
 
   minio:
     image: minio/minio:latest
@@ -26,6 +95,8 @@ services:
       - '9000:9000'
     volumes:
       - ./volumes/minio-data:/minio
+    networks:
+      - backend
 
 volumes:
   dbdata:
