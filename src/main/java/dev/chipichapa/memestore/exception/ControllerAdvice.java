@@ -21,8 +21,16 @@ public class ControllerAdvice {
     @ExceptionHandler({AccessDeniedException.class,
             org.springframework.security.access.AccessDeniedException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    ExceptionBodyResponse handleAccessDeniedException() {
-        return constructResponse("Access denied", HttpStatus.FORBIDDEN);
+    ExceptionBodyResponse handleAccessDeniedException(Exception e) {
+        String message = "Access denied";
+        if (!isEmptyMessage(e.getMessage())) {
+            message = e.getMessage();
+        }
+        return constructResponse(message, HttpStatus.FORBIDDEN);
+    }
+
+    private boolean isEmptyMessage(String message) {
+        return message == null || message.isEmpty();
     }
 
     @ExceptionHandler({AuthenticationException.class, BadRequestException.class})

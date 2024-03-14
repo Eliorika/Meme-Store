@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +84,27 @@ public class AlbumServiceImpl implements AlbumService {
         return albumRepository.findAllByAuthorId(authorId);
     }
 
+    @Override
+    public boolean isVisibleAlbum(long albumId) {
+        return albumRepository.findByIdAndVisibleTrue((int) albumId);
+    }
+
+    @Override
+    public Set<Long> getAllContributorIdsIncludeOwner(long albumId) {
+
+        Album album = albumRepository.findById((int) albumId).orElseThrow(
+                () -> new ResourceNotFoundException("Album with id = %d is not found"
+                        .formatted(albumId))
+        );
+
+        Set<Long> contributors = album.getContributors()
+                .stream()
+                .map(User::getId)
+                .collect(Collectors.toSet());
+        contributors.add(album.getAuthor().getId());
+
+        return contributors;
+    }
 
 
 }
