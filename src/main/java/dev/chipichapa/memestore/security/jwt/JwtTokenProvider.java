@@ -5,6 +5,8 @@ import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.dto.auth.JwtResponse;
 import dev.chipichapa.memestore.security.exception.AccessDeniedException;
 import dev.chipichapa.memestore.security.jwt.properties.JwtProperties;
+import dev.chipichapa.memestore.security.tg.TgAuthProvider;
+import dev.chipichapa.memestore.security.tg.TgEntityFactory;
 import dev.chipichapa.memestore.service.ifc.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -32,7 +34,6 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
 
-    private final UserDetailsService userDetailsService;
     private final UserService userService;
     private SecretKey secretKey;
 
@@ -41,9 +42,9 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
     }
 
-    public String createAccessToken(Long userId, String username, Set<Role> roles) {
+    public String createAccessToken(Long userId, Long tgId, Set<Role> roles) {
         Claims claims = Jwts.claims()
-                .subject(username)
+                .subject(String.valueOf(tgId))
                 .add("id", userId)
                 .add("roles", resolveRoles(roles))
                 .build();
@@ -63,9 +64,9 @@ public class JwtTokenProvider {
                 .collect(Collectors.toList());
     }
 
-    public String createRefreshToken(Long userId, String username) {
+    public String createRefreshToken(Long userId, Long tgId) {
         Claims claims = Jwts.claims()
-                .subject(username)
+                .subject(String.valueOf(tgId))
                 .add("id", userId)
                 .build();
         Instant validity = Instant.now().plus(jwtProperties.getRefresh(), ChronoUnit.DAYS);
@@ -86,9 +87,9 @@ public class JwtTokenProvider {
         User user = userService.getById(userId);
 
         jwtResponse.setId(userId);
-        jwtResponse.setUsername(user.getUsername());
-        jwtResponse.setAccessToken(createAccessToken(userId, user.getUsername(), user.getRoles()));
-        jwtResponse.setRefreshToken(createRefreshToken(userId, user.getUsername()));
+        jwtResponse.setTgId(user.getTgId());
+        jwtResponse.setAccessToken(createAccessToken(userId, user.getTgId(), user.getRoles()));
+        jwtResponse.setRefreshToken(createRefreshToken(userId, user.getTgId()));
         return jwtResponse;
     }
 
@@ -113,7 +114,7 @@ public class JwtTokenProvider {
                 .get("id", Long.class);
     }
 
-    private String getUsername(String token) {
+    private String getTgId(String token) {
         return Jwts
                 .parser()
                 .verifyWith(secretKey)
@@ -124,10 +125,11 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        String username = getUsername(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        String tgId = getTgId(token);
+        User user = userService.getByTgId(Long.valueOf(tgId));
+        UserDetails userDetails =  TgEntityFactory.create(user);
 
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
 }

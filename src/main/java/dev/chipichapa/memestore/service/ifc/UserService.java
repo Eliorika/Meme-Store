@@ -9,4 +9,6 @@ public interface UserService {
     User getById(Long id);
 
     User getByTgId(Long id);
+
+    boolean existsByTelegramId(Long tgId);
 }

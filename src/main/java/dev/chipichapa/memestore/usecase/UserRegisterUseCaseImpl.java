@@ -25,13 +25,17 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
 
     @Override
     public void register(RegisterRequest request) {
-        User user = registerToUserMapper.toUser(request);
+        User user = new User()
+                .setTgId(request.tgId())
+                .setUsername(request.username())
+                .setDisplayName(request.firstName() + " " + request.lastName());
 
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new IllegalArgumentException("User already exists");
+            throw new IllegalArgumentException("User with username = (%s) already exists"
+                    .formatted(user.getUsername()));
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode("tgbot"));
         user.setRoles(Set.of(Role.USER_ROLE));
         userRepository.save(user);
     }
@@ -45,7 +49,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
 
         while (userRepository.existsByUsername(user.getUsername())) {
             User ex = userRepository.findByUsername(user.getUsername()).orElse(null);
-            if(ex != null && ex.getTgId()!= null && ex.getTgId().equals(user.getTgId())){
+            if (ex != null && ex.getTgId() != null && ex.getTgId().equals(user.getTgId())) {
                 return ex;
             }
             String name = newName + i;

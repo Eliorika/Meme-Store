@@ -1,12 +1,13 @@
 package dev.chipichapa.memestore.controller;
 
+import dev.chipichapa.memestore.domain.dto.BasicApiResponse;
 import dev.chipichapa.memestore.dto.auth.JwtRefreshRequest;
 import dev.chipichapa.memestore.dto.auth.JwtRequest;
 import dev.chipichapa.memestore.dto.auth.JwtResponse;
-import dev.chipichapa.memestore.dto.auth.RegisterRequest;
 import dev.chipichapa.memestore.service.ifc.AuthService;
-import dev.chipichapa.memestore.usecase.ifc.UserRegisterUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,20 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserRegisterUseCase userRegisterUseCase;
 
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody JwtRequest loginRequest) {
-        return authService.login(loginRequest);
+    public ResponseEntity<BasicApiResponse<?>> login(@RequestBody JwtRequest loginRequest) {
+        return new ResponseEntity<>(
+                new BasicApiResponse<>(false, authService.login(loginRequest)),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("/refresh")
-    public JwtResponse refresh(@RequestBody JwtRefreshRequest refreshRequest) {
-        return authService.refresh(refreshRequest.getRefreshToken());
-    }
-
-    @PostMapping("/register")
-    public void register(@RequestBody RegisterRequest registrationRequest){
-        userRegisterUseCase.register(registrationRequest);
+    public ResponseEntity<BasicApiResponse<JwtResponse>> refresh(@RequestBody JwtRefreshRequest refreshRequest) {
+        return new ResponseEntity<>(
+                new BasicApiResponse<>(false, authService.refresh(refreshRequest.getRefreshToken())),
+                HttpStatus.OK
+        );
     }
 }

@@ -3,6 +3,7 @@ package dev.chipichapa.memestore.domain.entity.user;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users")
+@Accessors(chain = true)
 public class User {
 
     @Id

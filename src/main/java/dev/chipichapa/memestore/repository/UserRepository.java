@@ -15,4 +15,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     Optional<User> findByTgId(Long id);
 
+    boolean existsByTgId(Long tgId);
+
 }

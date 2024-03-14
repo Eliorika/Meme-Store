@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class JwtResponse {
     private Long id;
-    private String username;
+    private Long tgId;
     private String accessToken;
     private String refreshToken;
 }

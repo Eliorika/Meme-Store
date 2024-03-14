@@ -25,7 +25,7 @@ public class ControllerAdvice {
         return constructResponse("Access denied", HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(AuthenticationException.class)
+    @ExceptionHandler({AuthenticationException.class, BadRequestException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ExceptionBodyResponse handleAuthentication(AuthenticationException e) {
         return constructResponse(e, HttpStatus.BAD_REQUEST);
