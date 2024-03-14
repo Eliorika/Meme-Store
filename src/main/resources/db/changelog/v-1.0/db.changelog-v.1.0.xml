@@ -25,5 +25,6 @@
     <include file="180-changeset-change-type-user-tag-vote-boolean.xml" relativeToChangelogFile="true"/>
     <include file="190-changeset-refactor-trigger.xml" relativeToChangelogFile="true"/>
     <include file="200-changeset-add-title-image.xml" relativeToChangelogFile="true"/>
+    <include file="210-changeset-add-type-column-into-album.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
