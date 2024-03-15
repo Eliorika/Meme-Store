@@ -4,9 +4,11 @@ import dev.chipichapa.memestore.domain.entity.user.Role;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.dto.auth.RegisterRequest;
 import dev.chipichapa.memestore.dto.auth.TgRegisterRequest;
+import dev.chipichapa.memestore.dto.recommedation.UserRabbitDTO;
 import dev.chipichapa.memestore.exception.IllegalArgumentException;
 import dev.chipichapa.memestore.repository.UserRepository;
 import dev.chipichapa.memestore.service.ifc.AlbumService;
+import dev.chipichapa.memestore.service.ifc.RecommendationRabbitProducer;
 import dev.chipichapa.memestore.usecase.ifc.UserRegisterUseCase;
 import dev.chipichapa.memestore.utils.mapper.RegisterRequestToUserMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,8 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final RecommendationRabbitProducer recommendationRabbitProducer;
+
     @Override
     public void register(RegisterRequest request) {
         User user = new User()
@@ -42,6 +46,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
         user.setPassword(passwordEncoder.encode("tgbot"));
         user.setRoles(Set.of(Role.USER_ROLE));
         userRepository.save(user);
+        recommendationRabbitProducer.sendUser(new UserRabbitDTO(user.getId()));
         albumService.addDefaultsGalleriesForUser(user);
     }
 
@@ -67,6 +72,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
 
         User savedUser = userRepository.save(user);
         albumService.addDefaultsGalleriesForUser(savedUser);
+        recommendationRabbitProducer.sendUser(new UserRabbitDTO(user.getId()));
         return savedUser;
     }
 }

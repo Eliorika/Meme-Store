@@ -14,6 +14,7 @@ services:
       - filter
     build:
       context: .
+    restart: on-failure
     environment:
       POSTGRES_DB_URL: ${POSTGRES_DB_URL}
       POSTGRES_DB_USER: ${POSTGRES_DB_USER}
@@ -39,6 +40,7 @@ services:
     build:
       context: ./item-item-collaborative-filtering
       dockerfile: ./item-item-collaborative-filtering/Dockerfile
+    restart: on-failure
     environment:
       DB_URL: ${POSTGRES_DB_URL}
       DB_USERNAME: ${POSTGRES_DB_USER}
@@ -56,7 +58,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    restart: always
+    restart: on-failure
     environment:
       - RABBITMQ_DEFAULT_USER=user
       - RABBITMQ_DEFAULT_PASS=qwerty
@@ -72,6 +74,7 @@ services:
     container_name: meme-store-postgres
     image: postgres:13-alpine
     env_file: .env
+    restart: on-failure
     environment:
       - POSTGRES_DB=${POSTGRES_DB_NAME}
       - POSTGRES_USER=${POSTGRES_DB_USER}
@@ -84,6 +87,7 @@ services:
       - backend
 
   minio:
+    restart: on-failure
     image: minio/minio:latest
     container_name: meme-store-minio
     environment:

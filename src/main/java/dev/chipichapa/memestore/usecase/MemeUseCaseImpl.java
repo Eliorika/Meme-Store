@@ -3,16 +3,19 @@ package dev.chipichapa.memestore.usecase;
 import com.amazonaws.services.kms.model.NotFoundException;
 import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.domain.entity.user.User;
+import dev.chipichapa.memestore.domain.enumerated.RecommendationMarks;
 import dev.chipichapa.memestore.dto.meme.*;
+import dev.chipichapa.memestore.dto.recommedation.ItemRabbitDTO;
+import dev.chipichapa.memestore.dto.recommedation.MarkRabbitDTO;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.AlbumRepository;
 import dev.chipichapa.memestore.repository.DraftRepository;
 import dev.chipichapa.memestore.repository.ImageRepository;
 import dev.chipichapa.memestore.repository.TagRepository;
 import dev.chipichapa.memestore.security.exception.AccessDeniedException;
-import dev.chipichapa.memestore.security.jwt.JwtEntity;
 import dev.chipichapa.memestore.service.ifc.AlbumService;
 import dev.chipichapa.memestore.service.ifc.ImageService;
+import dev.chipichapa.memestore.service.ifc.RecommendationRabbitProducer;
 import dev.chipichapa.memestore.service.ifc.TagService;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
@@ -46,6 +49,8 @@ public class MemeUseCaseImpl implements MemeUseCase {
     private final ImageToMemeMapper imageToMemeMapper;
     private final AuthUtils authUtils;
 
+    private final RecommendationRabbitProducer recommendationRabbitProducer;
+
     @Override
     @Transactional
     public CreateMemeResponse create(CreateMemeRequest createRequest) {
@@ -67,6 +72,13 @@ public class MemeUseCaseImpl implements MemeUseCase {
                 .addTagsToImageAndReturnTagsIds(savedImage, createRequest.getTags());
 
         draftRepository.deleteById(UUID.fromString(assetTicket));
+
+        recommendationRabbitProducer.sendItem(new ItemRabbitDTO(savedImage.getId()));
+        recommendationRabbitProducer.sendMark(new MarkRabbitDTO(
+                savedImage.getAuthor().getId(),
+                savedImage.getId(),
+                RecommendationMarks.ADD_MEME.getMark()
+        ));
 
         return ImageToCreateMemeResponseMapper.toResponse(image, tagsIds);
     }
@@ -94,6 +106,12 @@ public class MemeUseCaseImpl implements MemeUseCase {
         Image image = getMemeById(memeId);
         checkImageContainsInAlbumOrThrow(albumId, memeId);
         List<Integer> tagIds = getImageTagIds(image);
+
+        recommendationRabbitProducer.sendMark(new MarkRabbitDTO(
+                image.getAuthor().getId(),
+                image.getId(),
+                RecommendationMarks.OPEN_MEME.getMark()
+        ));
 
         return new GetMemeResponse(imageToMemeMapper.toMeme(image, tagIds));
     }
