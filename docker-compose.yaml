@@ -15,6 +15,8 @@ services:
     build:
       context: .
     restart: on-failure
+    env_file:
+      - .env.docker
     environment:
       POSTGRES_DB_URL: ${POSTGRES_DB_URL}
       POSTGRES_DB_USER: ${POSTGRES_DB_USER}
@@ -41,6 +43,8 @@ services:
       context: ./item-item-collaborative-filtering
       dockerfile: ./item-item-collaborative-filtering/Dockerfile
     restart: on-failure
+    env_file:
+      - .env.docker
     environment:
       DB_URL: ${POSTGRES_DB_URL}
       DB_USERNAME: ${POSTGRES_DB_USER}
@@ -64,6 +68,8 @@ services:
       - RABBITMQ_DEFAULT_PASS=qwerty
     volumes:
       - ./volumes/rabbitmq:/var/lib/rabbitmq
+    env_file:
+      - .env.docker
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -73,8 +79,9 @@ services:
   postgres:
     container_name: meme-store-postgres
     image: postgres:13-alpine
-    env_file: .env
     restart: on-failure
+    env_file:
+      - .env.docker
     environment:
       - POSTGRES_DB=${POSTGRES_DB_NAME}
       - POSTGRES_USER=${POSTGRES_DB_USER}
@@ -87,9 +94,11 @@ services:
       - backend
 
   minio:
-    restart: on-failure
     image: minio/minio:latest
     container_name: meme-store-minio
+    restart: on-failure
+    env_file:
+      - .env.docker
     environment:
       - MINIO_ROOT_USER=${MINIO_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD}
