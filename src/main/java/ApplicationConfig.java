@@ -1,5 +1,3 @@
-package dev.chipichapa.memestore.config;
-
 import dev.chipichapa.memestore.config.RabbitMQConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.*;
