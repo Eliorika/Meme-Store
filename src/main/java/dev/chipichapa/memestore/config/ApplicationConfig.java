@@ -1,4 +1,4 @@
-package dev.chipichapa;
+package dev.chipichapa.memestore.config;
 
 import dev.chipichapa.memestore.config.RabbitMQConfig;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +9,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableJpaRepositories
 @RequiredArgsConstructor
-public class ApplicationConfig {
+@EnableWebMvc
+public class ApplicationConfig implements WebMvcConfigurer {
 
 
     private final RabbitMQConfig rabbitMQConfig;
@@ -26,6 +30,11 @@ public class ApplicationConfig {
         executor.setQueueCapacity(50);
         executor.initialize();
         return executor;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
 
 
