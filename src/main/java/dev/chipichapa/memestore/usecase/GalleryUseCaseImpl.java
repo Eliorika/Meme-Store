@@ -30,6 +30,7 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
     private final AuthUtils authUtils;
 
     @Override
+    @Transactional
     public Gallery create(GalleryCreateRequest request) {
         UserDetails userDetails = authUtils.getUserDetailsOrThrow();
 
@@ -39,16 +40,19 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
     }
 
     @Override
+    @Transactional
     public Gallery getById(int id) {
         return AlbumMapper.map(albumService.getGalleryById(id));
     }
 
     @Override
+    @Transactional
     public Gallery saveGalleryChanges(GalleryCreateRequest galleryChanges, int id) {
         return AlbumMapper.map(albumService.saveChangesGallery(galleryChanges, id));
     }
 
     @Override
+    @Transactional
     public boolean deleteGallery(int id) {
         try {
             albumService.deleteGallery(id);
@@ -60,6 +64,7 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
     }
 
     @Override
+    @Transactional
     public List<Gallery> getAllForUser(User user) {
         var res = albumService.getAllByAuthor(user.getId()).stream().map(al-> AlbumMapper.map(al)).collect(Collectors.toList());
         return res;

@@ -84,6 +84,7 @@ public class MemeUseCaseImpl implements MemeUseCase {
     }
 
     @Override
+    @Transactional
     public GetMemeResponse get(GetMemeRequest getRequest) {
         long memeId = getRequest.memeId();
         long albumId = getRequest.galleryId();
@@ -118,6 +119,7 @@ public class MemeUseCaseImpl implements MemeUseCase {
 
 
     @Override
+    @Transactional
     public UpdateMemeResponse update(UpdateMemeRequest request, Long memeId) {
         User user = authUtils.getUserEntity();
         Image image = getMemeById(memeId);

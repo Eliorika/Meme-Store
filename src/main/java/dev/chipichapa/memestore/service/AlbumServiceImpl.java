@@ -41,7 +41,6 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    @Transactional
     public Album saveChangesGallery(GalleryCreateRequest galleryChanges, int id) {
         Album album = getGalleryById(id);
         album

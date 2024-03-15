@@ -14,6 +14,7 @@ import dev.chipichapa.memestore.utils.mapper.RegisterRequestToUserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -32,6 +33,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
     private final RecommendationRabbitProducer recommendationRabbitProducer;
 
     @Override
+    @Transactional
     public void register(RegisterRequest request) {
         User user = new User()
                 .setTgId(request.tgId())
@@ -51,6 +53,7 @@ public class UserRegisterUseCaseImpl implements UserRegisterUseCase {
     }
 
     @Override
+    @Transactional
     public User registerTg(TgRegisterRequest request) {
         User user = registerToUserMapper.toUser(request);
 

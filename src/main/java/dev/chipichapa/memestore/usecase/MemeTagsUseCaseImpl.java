@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +48,7 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
     private final RecommendationRabbitProducer recommendationRabbitProducer;
 
     @Override
+    @Transactional
     public GetMemeTagsResponse getMemeTags(Long memeId, Long galleryId) {
         User user = getUserFormAuth();
 
@@ -62,6 +64,7 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
     }
 
     @Override
+    @Transactional
     public VoteMemeTagResponse voteMemeTag(Long memeId, Long tagId, @Nullable VoteType type) {
         User user = getUserFormAuth();
         Tag tag = tagService.getById(tagId);

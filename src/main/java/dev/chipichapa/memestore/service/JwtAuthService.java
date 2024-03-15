@@ -29,7 +29,6 @@ public class JwtAuthService implements AuthService {
 
 
     @Override
-    @Transactional
     public JwtResponse auth(JwtRequest authRequest, Long telegramId) {
         JwtResponse jwtResponse = new JwtResponse();
 
