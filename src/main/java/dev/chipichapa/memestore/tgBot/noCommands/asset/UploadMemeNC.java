@@ -18,6 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class UploadMemeNC implements NoCommand {
 
     @Override
     public UserState getNextState() {
-        return UserState.UPLOAD_MEME_TAGS;
+        return UserState.UPLOAD_MEME_TITLE;
     }
 
     @Override
@@ -64,10 +65,9 @@ public class UploadMemeNC implements NoCommand {
             CreateMemeRequest req = userChatStates.getUserMeme(tgId);
             var resp = assetsUseCase.upload(new AssetUploadRequest(AssetType.IMAGE, multipartFile));
             req.setAssetTicket(resp.temporaryTicket());
-            //req.setTags(assetsUseCase.getSuggestTags(resp.temporaryTicket()).tags());
+            req.setTags((List<String>) assetsUseCase.getSuggestTags(resp.temporaryTicket()).tags());
         }
-
-
+        userChatStates.addUser(tgId, getNextState());
     }
 
     private MultipartFile convertToMultipartFile(PhotoSize photo) throws TelegramApiException, IOException {

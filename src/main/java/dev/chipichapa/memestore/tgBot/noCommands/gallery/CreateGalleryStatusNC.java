@@ -3,6 +3,7 @@ package dev.chipichapa.memestore.tgBot.noCommands.gallery;
 import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
+import dev.chipichapa.memestore.tgBot.noCommands.SuccessfulStatusNC;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import dev.chipichapa.memestore.usecase.ifc.GalleryUseCase;
@@ -62,7 +63,17 @@ public class CreateGalleryStatusNC implements NoCommand {
         album.setVisible(update.getCallbackQuery().getData().equals("!gallery-create-status-public"));
 
         userChatStates.addUser(tgId, getNextState());
-        galleryUseCase.create(new GalleryCreateRequest(album.getName(), album.getDescription(), album.getVisible()));
+        try {
+            galleryUseCase.create(new GalleryCreateRequest(album.getName(), album.getDescription(), album.getVisible()));
+            successfulStatusNC.addMessage(tgId, "Альбом "+ album.getName() + "создан успешно!");
+        } catch (Exception e){
+            userChatStates.addUser(tgId, UserState.NO_ACTION);
+            //TODO FAILURE
+            //successfulStatusNC.addMessage(tgId, "Альбом "+ album.getName() + "создан успешно!");
+
+        }
+
+
 
     }
 }
