@@ -19,7 +19,7 @@ import dev.chipichapa.memestore.service.ifc.RecommendationRabbitProducer;
 import dev.chipichapa.memestore.service.ifc.TagService;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
-import dev.chipichapa.memestore.utils.mapper.ImageToCreateMemeResponseMapper;
+import dev.chipichapa.memestore.utils.mapper.ImageMapper;
 import dev.chipichapa.memestore.utils.mapper.ImageToMemeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -80,7 +80,7 @@ public class MemeUseCaseImpl implements MemeUseCase {
                 RecommendationMarks.ADD_MEME.getMark()
         ));
 
-        return ImageToCreateMemeResponseMapper.toResponse(image, tagsIds);
+        return ImageMapper.toResponse(image, tagsIds);
     }
 
     @Override

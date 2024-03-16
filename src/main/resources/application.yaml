@@ -45,6 +45,8 @@ telegram:
   bot-token: 6728196094:AAGh5uSU04zF3RkM-BCzEEbapDsnbsTTmNs
   api-url: "https://api.telegram.org/"
 
-rabbit:
-  queue: ${FILTER_QUEUE}
-  exchange: ${FILTER_EXCHANGE}
+filter:
+  rabbit:
+    queue: ${FILTER_QUEUE}
+    exchange: ${FILTER_EXCHANGE}
+  baseUrl: ${FILTER_BASEURL}
