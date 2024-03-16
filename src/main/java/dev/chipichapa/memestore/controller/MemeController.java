@@ -10,6 +10,7 @@ import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +22,7 @@ public class MemeController {
     private final MemeTagsUseCase memeTagsUseCase;
 
     @PostMapping("/create")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<BasicApiResponse<?>> create(@RequestParam("asset") String assetTicket,
                                                @RequestParam("gallery_id") Integer galleryId,
                                                @RequestBody CreateMemeRequest createMemeRequest) {
@@ -33,6 +35,7 @@ public class MemeController {
     }
 
     @GetMapping("{gallery_id}_{id}")
+    @PreAuthorize("permitAll()")
     ResponseEntity<BasicApiResponse<?>> get(@PathVariable("gallery_id") long galleryId,
                                             @PathVariable("id") long memeId) {
 
@@ -41,6 +44,7 @@ public class MemeController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<BasicApiResponse<?>> update(@PathVariable("id") long memeId,
                                                @RequestBody UpdateMemeRequest updateRequest) {
 
@@ -50,7 +54,8 @@ public class MemeController {
 
 
     @GetMapping("{gallery_id}_{id}/tags")
-    ResponseEntity<BasicApiResponse<?>> voteMemeTag(@PathVariable("gallery_id") Long galleryId,
+    @PreAuthorize("isAuthenticated()")
+    ResponseEntity<BasicApiResponse<?>> getMemeTags(@PathVariable("gallery_id") Long galleryId,
                                                     @PathVariable("id") Long memeId){
 
         GetMemeTagsResponse response = memeTagsUseCase.getMemeTags(memeId, galleryId);
@@ -58,7 +63,8 @@ public class MemeController {
     }
 
     @PostMapping("{id}/vote/{tag_id}")
-    ResponseEntity<BasicApiResponse<?>> voteMemeTag(@PathVariable("id") Long memeId,
+    @PreAuthorize("isAuthenticated()")
+    ResponseEntity<BasicApiResponse<?>> getMemeTags(@PathVariable("id") Long memeId,
                                                     @PathVariable("tag_id") Long tagId,
                                                     @RequestBody VoteMemeTagRequest request){
 

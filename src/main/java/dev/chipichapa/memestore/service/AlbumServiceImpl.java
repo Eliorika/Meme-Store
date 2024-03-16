@@ -2,7 +2,7 @@ package dev.chipichapa.memestore.service;
 
 import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.domain.entity.user.User;
-import dev.chipichapa.memestore.domain.model.Gallery;
+import dev.chipichapa.memestore.domain.enumerated.AlbumType;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.AlbumRepository;
@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,19 +36,41 @@ public class AlbumServiceImpl implements AlbumService {
                 .setName(galleryCreateRequest.name())
                 .setDescription(galleryCreateRequest.description())
                 .setAuthor(user)
-                .setStatus(galleryCreateRequest.isPublic());
+                .setVisible(galleryCreateRequest.isPublic());
         return albumRepository.save(album);
     }
 
     @Override
-    @Transactional
     public Album saveChangesGallery(GalleryCreateRequest galleryChanges, int id) {
         Album album = getGalleryById(id);
         album
                 .setName(galleryChanges.name())
                 .setDescription(galleryChanges.description())
-                .setStatus(galleryChanges.isPublic());
+                .setVisible(galleryChanges.isPublic());
         return albumRepository.save(album);
+    }
+
+    @Override
+    public void addDefaultsGalleriesForUser(User user) {
+        Album defaultPublicAlbum = new Album()
+                .setAlbumType(AlbumType.DEFAULT)
+                .setVisible(true)
+                .setName("Мой открытый альбом")
+                .setAuthor(user);
+
+        Album defaultPrivateAlbum = new Album()
+                .setAlbumType(AlbumType.DEFAULT)
+                .setVisible(false)
+                .setName("Мой закрытый альбом")
+                .setAuthor(user);
+
+        Album defaultBinAlbum = new Album()
+                .setAlbumType(AlbumType.BIN)
+                .setVisible(false)
+                .setName("Корзина пользователя")
+                .setAuthor(user);
+
+        albumRepository.saveAll(List.of(defaultPublicAlbum, defaultPrivateAlbum, defaultBinAlbum));
     }
 
     @Override
@@ -59,6 +83,27 @@ public class AlbumServiceImpl implements AlbumService {
         return albumRepository.findAllByAuthorId(authorId);
     }
 
+    @Override
+    public boolean isVisibleAlbum(long albumId) {
+        return albumRepository.findByIdAndVisibleTrue((int) albumId);
+    }
+
+    @Override
+    public Set<Long> getAllContributorIdsIncludeOwner(long albumId) {
+
+        Album album = albumRepository.findById((int) albumId).orElseThrow(
+                () -> new ResourceNotFoundException("Album with id = %d is not found"
+                        .formatted(albumId))
+        );
+
+        Set<Long> contributors = album.getContributors()
+                .stream()
+                .map(User::getId)
+                .collect(Collectors.toSet());
+        contributors.add(album.getAuthor().getId());
+
+        return contributors;
+    }
 
 
 }

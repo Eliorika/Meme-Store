@@ -19,11 +19,13 @@ import dev.chipichapa.memestore.utils.ImageUtils;
 import io.trbl.blurhash.BlurHash;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
@@ -33,6 +35,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AssetsUseCaseImpl implements AssetsUseCase {
 
     private final AuthUtils authUtils;
@@ -52,6 +55,7 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
 
     @Override
     @SneakyThrows
+    @Transactional
     public AssetUploadResponse upload(AssetUploadRequest uploadRequest) {
         UserDetails userDetails = authUtils.getUserDetailsOrThrow();
         User user = userService.getByUsername(userDetails.getUsername());
@@ -79,6 +83,7 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
     }
 
     @Override
+    @Transactional
     public AssetGetResponse get(String assetTicket) {
         File file = getFileByAssetTicket(assetTicket);
         String fileExtension = FilenameUtils.getExtension(file.getFilename());
@@ -87,6 +92,7 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
     }
 
     @Override
+    @Transactional
     public SuggestionsTagsResponse getSuggestTags(String assetTicket) {
         File file = getFileByAssetTicket(assetTicket);
 
@@ -100,12 +106,14 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
     }
 
     @Override
+    @Transactional
     public AssetGetInfoResponse getAssetInfoById(Integer id) {
         Image image = imageService.getById((long) id);
         return buildAssetGetInfoResponse(image);
     }
 
     @Override
+    @Transactional
     public AssetGetInfoResponse getAssetInfoByTicket(String assetTicket) {
         Image image = imageService.getByTicket(assetTicket);
         return buildAssetGetInfoResponse(image);
@@ -122,6 +130,7 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
             image.setBlurhash(hash);
             imageRepository.save(image);
         } catch (IOException e) {
+            log.error(e.getMessage());
             throw new AppException(e);
         }
     }

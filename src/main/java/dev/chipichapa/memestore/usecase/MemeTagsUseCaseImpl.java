@@ -2,7 +2,10 @@ package dev.chipichapa.memestore.usecase;
 
 import dev.chipichapa.memestore.domain.entity.*;
 import dev.chipichapa.memestore.domain.entity.user.User;
+import dev.chipichapa.memestore.domain.enumerated.RecommendationMarks;
 import dev.chipichapa.memestore.domain.enumerated.VoteType;
+import dev.chipichapa.memestore.domain.model.tag.MemeTag;
+import dev.chipichapa.memestore.dto.recommedation.MarkRabbitDTO;
 import dev.chipichapa.memestore.dto.tags.GetMemeTagsResponse;
 import dev.chipichapa.memestore.dto.tags.VoteMemeTagResponse;
 import dev.chipichapa.memestore.exception.AppException;
@@ -11,17 +14,17 @@ import dev.chipichapa.memestore.repository.AlbumRepository;
 import dev.chipichapa.memestore.repository.ImageTagRepository;
 import dev.chipichapa.memestore.repository.UserTagVoteRepository;
 import dev.chipichapa.memestore.service.ifc.ImageService;
+import dev.chipichapa.memestore.service.ifc.RecommendationRabbitProducer;
 import dev.chipichapa.memestore.service.ifc.TagService;
 import dev.chipichapa.memestore.service.ifc.UserService;
 import dev.chipichapa.memestore.usecase.ifc.MemeTagsUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
-import dev.chipichapa.memestore.utils.mapper.ImageTagsToGetMemeTagsResponseMapper;
+import dev.chipichapa.memestore.utils.mapper.ImageTagsAndTagVotesToMemeTagMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -40,9 +43,12 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
     private final UserTagVoteRepository userTagVoteRepository;
 
     private final AuthUtils authUtils;
-    private final ImageTagsToGetMemeTagsResponseMapper imageTagsToGetMemeTagsResponseMapper;
+    private final ImageTagsAndTagVotesToMemeTagMapper imageTagsAndTagVotesToMemeTagMapper;
+
+    private final RecommendationRabbitProducer recommendationRabbitProducer;
 
     @Override
+    @Transactional
     public GetMemeTagsResponse getMemeTags(Long memeId, Long galleryId) {
         User user = getUserFormAuth();
 
@@ -53,11 +59,12 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
         List<UserTagVote> userTagVotes = userTagVoteRepository
                 .findUserTagVotesByUserAndImageAndTagIn(user, image, getTagList(imageTags));
 
-        return new GetMemeTagsResponse(imageTagsToGetMemeTagsResponseMapper
-                .toResponse(imageTags, userTagVotes));
+        List<MemeTag> result = imageTagsAndTagVotesToMemeTagMapper.toList(imageTags, userTagVotes);
+        return new GetMemeTagsResponse(result);
     }
 
     @Override
+    @Transactional
     public VoteMemeTagResponse voteMemeTag(Long memeId, Long tagId, @Nullable VoteType type) {
         User user = getUserFormAuth();
         Tag tag = tagService.getById(tagId);
@@ -69,8 +76,15 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
         List<UserTagVote> userTagVotes = userTagVoteRepository
                 .findUserTagVotesByUserAndImageAndTagIn(user, image, getTagList(imageTags));
 
-        return new VoteMemeTagResponse(imageTagsToGetMemeTagsResponseMapper
-                .toResponse(imageTags, userTagVotes));
+        List<MemeTag> result = imageTagsAndTagVotesToMemeTagMapper.toList(imageTags, userTagVotes);
+
+        recommendationRabbitProducer.sendMark(new MarkRabbitDTO(
+                image.getAuthor().getId(),
+                image.getId(),
+                RecommendationMarks.CHANGE_TAGS_MEME.getMark()
+        ));
+
+        return new VoteMemeTagResponse(result);
     }
 
     private void userVoteProcess(@Nullable VoteType type, User user, Image image, Tag tag) {

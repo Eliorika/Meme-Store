@@ -59,11 +59,10 @@ public class CreateGalleryStatusNC implements NoCommand {
     @Override
     public void handleState(Update update, Long tgId){
         Album album = userChatStates.getUserAlbum(tgId);
-        album.setStatus(update.getCallbackQuery().getData().equals("!gallery-create-status-public"));
+        album.setVisible(update.getCallbackQuery().getData().equals("!gallery-create-status-public"));
 
         userChatStates.addUser(tgId, getNextState());
-        galleryUseCase.create(new GalleryCreateRequest(album.getName(), album.getDescription(), album.getStatus()));
-        successfulStatusNC.message = "Альбом " + album.getName() + " создан успешно!";
-        //userChatStates.addUserAlbum();
+        galleryUseCase.create(new GalleryCreateRequest(album.getName(), album.getDescription(), album.getVisible()));
+
     }
 }

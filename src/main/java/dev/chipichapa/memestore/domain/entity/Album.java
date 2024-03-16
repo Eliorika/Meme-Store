@@ -1,6 +1,7 @@
 package dev.chipichapa.memestore.domain.entity;
 
 import dev.chipichapa.memestore.domain.entity.user.User;
+import dev.chipichapa.memestore.domain.enumerated.AlbumType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +33,12 @@ public class Album {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
-    private Boolean status;
+    @Column(name = "status")
+    private Boolean visible;
+
+    @Column(name = "type")
+    @Enumerated(value = EnumType.STRING)
+    private AlbumType albumType;
 
     private String description;
 

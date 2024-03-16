@@ -2,6 +2,9 @@ package dev.chipichapa.memestore.domain.enumerated;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Getter
 public enum TenantRole {
     ANONYMOUS(0),
@@ -29,5 +32,11 @@ public enum TenantRole {
 
     TenantRole(int value) {
         this.value = value;
+    }
+
+    public static List<Integer> getAllRoles() {
+        return Arrays.stream(TenantRole.values())
+                .map(tenantRole -> tenantRole.value)
+                .toList();
     }
 }

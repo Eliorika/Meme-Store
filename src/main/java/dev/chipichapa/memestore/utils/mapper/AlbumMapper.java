@@ -13,7 +13,7 @@ public class AlbumMapper {
                 null,
                 album.getName(),
                 album.getDescription(),
-                album.getStatus(),
+                album.getVisible(),
                 false,
                 false);
     }

@@ -5,7 +5,7 @@ import dev.chipichapa.memestore.dto.auth.JwtResponse;
 
 public interface AuthService {
 
-    JwtResponse login(JwtRequest request);
+    JwtResponse auth(JwtRequest request, Long telegramId);
 
     JwtResponse refresh(String refreshToken);
 }

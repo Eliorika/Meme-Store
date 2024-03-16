@@ -23,8 +23,6 @@ public class SuccessfulStatusNC implements NoCommand {
         return UserState.SUCCESS;
     }
 
-    public String message;
-
     @Override
     public SendMessage handleMessage(Update update, SendMessage sm) {
         long tgId = update.getCallbackQuery()==null?update.getMessage().getFrom().getId()
