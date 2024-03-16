@@ -1,9 +1,8 @@
 package dev.chipichapa.memestore.tgBot;
 
 import dev.chipichapa.memestore.tgBot.process.UpdateProcessor;
-import dev.chipichapa.memestore.tgBot.req.TelegramBotMethods;
+import dev.chipichapa.memestore.tgBot.req.TelegramBotUtils;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -13,11 +12,9 @@ import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.TelegramBot;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import org.json.JSONObject;
 
@@ -42,13 +39,13 @@ public class Bot extends TelegramLongPollingBot {
     @Value("${telegram.file.storage-uri}")
     private String fileStorageUri;
     private final UpdateProcessor updateProcessor;
-    private TelegramBotMethods telegramBotMethods;
+    private TelegramBotUtils telegramBotUtils;
 
     private static final Logger LOG = Logger.getLogger(Bot.class);
 
-    public Bot(UpdateProcessor updateProcessor, TelegramBotMethods telegramBotMethods) {
+    public Bot(UpdateProcessor updateProcessor, TelegramBotUtils telegramBotUtils) {
         this.updateProcessor = updateProcessor;
-        this.telegramBotMethods = telegramBotMethods;
+        this.telegramBotUtils = telegramBotUtils;
     }
 
 
@@ -84,7 +81,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @PostConstruct
     public void initMethods(){
-        telegramBotMethods.registerBot(this);
+        telegramBotUtils.registerBot(this);
     }
 
     public byte[] downloadMeme(String fileId){

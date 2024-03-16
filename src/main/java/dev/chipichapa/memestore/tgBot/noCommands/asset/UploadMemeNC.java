@@ -2,38 +2,34 @@ package dev.chipichapa.memestore.tgBot.noCommands.asset;
 
 import dev.chipichapa.memestore.domain.enumerated.AssetType;
 import dev.chipichapa.memestore.dto.asset.AssetUploadRequest;
-import dev.chipichapa.memestore.tgBot.Bot;
+import dev.chipichapa.memestore.dto.meme.CreateMemeRequest;
 import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
-import dev.chipichapa.memestore.tgBot.req.TelegramBotMethods;
+import dev.chipichapa.memestore.tgBot.req.TelegramBotUtils;
 import dev.chipichapa.memestore.tgBot.req.TelegramMultipartFile;
+import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import dev.chipichapa.memestore.usecase.ifc.AssetsUseCase;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.TelegramBot;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 
 @AllArgsConstructor
 @Component
 public class UploadMemeNC implements NoCommand {
     private final AssetsUseCase assetsUseCase;
-    private TelegramBotMethods bot;
-
-
+    private TelegramBotUtils bot;
+    private UserChatStates userChatStates;
 
     @Override
     public UserState getNextState() {
-        return UserState.NO_ACTION;
+        return UserState.UPLOAD_MEME_TAGS;
     }
 
     @Override
@@ -65,7 +61,10 @@ public class UploadMemeNC implements NoCommand {
         }
 
         if(multipartFile != null){
-            assetsUseCase.upload(new AssetUploadRequest(AssetType.IMAGE, multipartFile));
+            CreateMemeRequest req = userChatStates.getUserMeme(tgId);
+            var resp = assetsUseCase.upload(new AssetUploadRequest(AssetType.IMAGE, multipartFile));
+            req.setAssetTicket(resp.temporaryTicket());
+            //req.setTags(assetsUseCase.getSuggestTags(resp.temporaryTicket()).tags());
         }
 
 
