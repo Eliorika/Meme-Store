@@ -4,7 +4,7 @@ import dev.chipichapa.memestore.tgBot.states.UserState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public interface NoCommand {
+public interface INoCommand {
     UserState getNextState();
     UserState getState();
     SendMessage handleMessage(Update update, SendMessage sm);

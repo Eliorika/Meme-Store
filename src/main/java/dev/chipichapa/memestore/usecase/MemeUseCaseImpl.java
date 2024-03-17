@@ -27,10 +27,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -135,6 +133,22 @@ public class MemeUseCaseImpl implements MemeUseCase {
         List<Integer> tagsIds = getImageTagIds(saved);
 
         return new UpdateMemeResponse(imageToMemeMapper.toMeme(image, tagsIds));
+    }
+
+    @Override
+    public Set<GetMemeResponse> getMemesFromGallery(Integer galleryId) {
+        var album = albumRepository.findById(galleryId).orElse(null);
+        if (album == null)
+            return null;
+
+        var memes = album.getImages().stream()
+                .map(img -> (imageToMemeMapper.toMeme(img, getImageTagIds(img))))
+                .collect(Collectors.toSet());
+
+        Set<GetMemeResponse> res = new HashSet<>(memes.stream()
+                .map(GetMemeResponse::new)
+                .collect(Collectors.toList()));
+        return res;
     }
 
     private Image getMemeById(Long memeId) {

@@ -8,7 +8,7 @@ import java.util.List;
 public class AlbumMapper {
 
     public static Gallery map(Album album) {
-        return new Gallery(
+        var res = new Gallery(
                 album.getAuthor().getId(),
                 null,
                 album.getName(),
@@ -16,6 +16,8 @@ public class AlbumMapper {
                 album.getVisible(),
                 false,
                 false);
+        res.setId(album.getId());
+        return res;
     }
     public static List<Gallery> map(List<Album> albums) {
         return albums.stream().map(AlbumMapper::map).toList();

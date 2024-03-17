@@ -1,8 +1,8 @@
-package dev.chipichapa.memestore.tgBot.noCommands.gallery;
+package dev.chipichapa.memestore.tgBot.noCommands.gallery.create;
 
 import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
-import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
+import dev.chipichapa.memestore.tgBot.noCommands.INoCommand;
 import dev.chipichapa.memestore.tgBot.noCommands.SuccessfulStatusNC;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class CreateGalleryStatusNC implements NoCommand {
+public class CreateGalleryStatusNC implements INoCommand {
     private UserChatStates userChatStates;
     private GalleryUseCase galleryUseCase;
     private SuccessfulStatusNC successfulStatusNC;
@@ -62,10 +62,10 @@ public class CreateGalleryStatusNC implements NoCommand {
         Album album = userChatStates.getUserAlbum(tgId);
         album.setVisible(update.getCallbackQuery().getData().equals("!gallery-create-status-public"));
 
-        userChatStates.addUser(tgId, getNextState());
         try {
             galleryUseCase.create(new GalleryCreateRequest(album.getName(), album.getDescription(), album.getVisible()));
             successfulStatusNC.addMessage(tgId, "Альбом "+ album.getName() + "создан успешно!");
+            userChatStates.addUser(tgId, getNextState());
         } catch (Exception e){
             userChatStates.addUser(tgId, UserState.NO_ACTION);
             //TODO FAILURE

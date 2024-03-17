@@ -1,22 +1,18 @@
 package dev.chipichapa.memestore.tgBot.noCommands.asset;
 
 import dev.chipichapa.memestore.dto.meme.CreateMemeRequest;
-import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
+import dev.chipichapa.memestore.tgBot.noCommands.INoCommand;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
-import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 @AllArgsConstructor
 @Component
-public class UploadMemeTitleNC implements NoCommand {
+public class UploadMemeTitleNC implements INoCommand {
     private UserChatStates userChatStates;
 
     @Override

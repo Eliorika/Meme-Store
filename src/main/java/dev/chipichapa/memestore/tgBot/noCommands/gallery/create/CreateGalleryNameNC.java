@@ -1,7 +1,7 @@
-package dev.chipichapa.memestore.tgBot.noCommands.gallery;
+package dev.chipichapa.memestore.tgBot.noCommands.gallery.create;
 
 import dev.chipichapa.memestore.domain.entity.Album;
-import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
+import dev.chipichapa.memestore.tgBot.noCommands.INoCommand;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 @AllArgsConstructor
-public class CreateGalleryNameNC implements NoCommand {
+public class CreateGalleryNameNC implements INoCommand {
     private UserChatStates userChatStates;
     @Override
     public UserState getNextState() {

@@ -2,7 +2,7 @@ package dev.chipichapa.memestore.tgBot.callback.gallery;
 
 import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.tgBot.callback.CallBack;
-import dev.chipichapa.memestore.tgBot.noCommands.gallery.CreateGalleryNameNC;
+import dev.chipichapa.memestore.tgBot.noCommands.gallery.create.CreateGalleryNameNC;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import lombok.AllArgsConstructor;

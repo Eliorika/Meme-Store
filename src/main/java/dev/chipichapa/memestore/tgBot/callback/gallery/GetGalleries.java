@@ -38,10 +38,14 @@ public class GetGalleries implements CallBack {
     }
 
     private String galleryMessage(Gallery gallery){
-        return "Альбом \"" + gallery.getName() +"\"\n"
-                +gallery.getDescription() + "\n"
-                + "Посмотреть мемы: /***" + "\n\n";
+        StringBuilder answer = new StringBuilder();
+        answer.append("Альбом \"" + gallery.getName() +"\"\n");
+        if(gallery.getDescription() != null)
+           answer.append(gallery.getDescription() + "\n");
 
+        answer.append("Посмотреть мемы: /***" + "\n\n");
+
+        return answer.toString();
     }
 
 

@@ -3,7 +3,7 @@ package dev.chipichapa.memestore.tgBot.noCommands.asset;
 import dev.chipichapa.memestore.domain.enumerated.AssetType;
 import dev.chipichapa.memestore.dto.asset.AssetUploadRequest;
 import dev.chipichapa.memestore.dto.meme.CreateMemeRequest;
-import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
+import dev.chipichapa.memestore.tgBot.noCommands.INoCommand;
 import dev.chipichapa.memestore.tgBot.req.TelegramBotUtils;
 import dev.chipichapa.memestore.tgBot.req.TelegramMultipartFile;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
@@ -18,12 +18,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
-import java.util.List;
 
 
 @AllArgsConstructor
 @Component
-public class UploadMemeNC implements NoCommand {
+public class UploadMemeNC implements INoCommand {
     private final AssetsUseCase assetsUseCase;
     private TelegramBotUtils bot;
     private UserChatStates userChatStates;
@@ -65,7 +64,7 @@ public class UploadMemeNC implements NoCommand {
             CreateMemeRequest req = userChatStates.getUserMeme(tgId);
             var resp = assetsUseCase.upload(new AssetUploadRequest(AssetType.IMAGE, multipartFile));
             req.setAssetTicket(resp.temporaryTicket());
-            req.setTags((List<String>) assetsUseCase.getSuggestTags(resp.temporaryTicket()).tags());
+            req.setTags(assetsUseCase.getSuggestTags(resp.temporaryTicket()).tags().stream().toList());
         }
         userChatStates.addUser(tgId, getNextState());
     }

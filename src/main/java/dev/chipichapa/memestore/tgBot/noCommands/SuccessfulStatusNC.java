@@ -1,9 +1,7 @@
 package dev.chipichapa.memestore.tgBot.noCommands;
 
-import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,7 +12,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class SuccessfulStatusNC implements NoCommand {
+public class SuccessfulStatusNC implements INoCommand {
     private final UserChatStates userChatStates;
     private final Map<Long, String> messages = new HashMap<>();
     @Override
