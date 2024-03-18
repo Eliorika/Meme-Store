@@ -48,6 +48,10 @@ telegram:
     info-uri: "https://api.telegram.org/bot{token}/getFile?file_id={fileId}"
     storage-uri: "https://api.telegram.org/file/bot{token}/{filePath}"
 
-rabbit:
-  queue: ${FILTER_QUEUE}
-  exchange: ${FILTER_EXCHANGE}
+
+filter:
+  rabbit:
+    queue: ${FILTER_QUEUE}
+    exchange: ${FILTER_EXCHANGE}
+  baseUrl: ${FILTER_BASEURL}
+

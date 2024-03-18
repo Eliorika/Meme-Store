@@ -11,7 +11,7 @@ services:
       - rabbitmq
       - postgres
       - minio
-#      - filter
+      - filter
     build:
       context: .
     restart: on-failure
@@ -28,37 +28,37 @@ services:
       FILTER_QUEUE: ${FILTER_QUEUE}
       FILTER_EXCHANGE: ${FILTER_EXCHANGE}
       S3_URL: ${S3_URL}
+      FILTER_BASEURL: ${FILTER_BASEURL}
     ports:
       - "8080:8080"
     networks:
       - backend
 
-#  filter:
-#    container_name: filter_container
-#    image: filter_image
-#    depends_on:
-#      - rabbitmq
-#      - postgres
-#    build:
-#      context: ./item-item-collaborative-filtering
-#      dockerfile: ./item-item-collaborative-filtering/Dockerfile
-#    restart: on-failure
-#    env_file:
-#      - .env.docker
-#    environment:
-#      DB_URL: ${POSTGRES_DB_URL}
-#      DB_USERNAME: ${POSTGRES_DB_USER}
-#      DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
-#      RABBIT_HOST: ${RABBIT_HOST}
-#      RABBIT_USERNAME: ${RABBIT_USERNAME}
-#      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
-#      RABBIT_PORT: ${RABBIT_PORT}
-#      FILTER_QUEUE: ${FILTER_QUEUE}
-#      FILTER_EXCHANGE: ${FILTER_EXCHANGE}
-#      TIME_UPDATE_SIMILARITY: ${TIME_UPDATE_SIMILARITY}
-#      TIME_UPDATE_FILTER: ${TIME_UPDATE_FILTER}
-#    networks:
-#      - backend
+  filter:
+    container_name: filter_container
+    image: brashram/filter_image
+    depends_on:
+      - rabbitmq
+      - postgres
+    restart: on-failure
+    env_file:
+      - .env.docker
+    ports:
+      - "8081:8081"
+    environment:
+      DB_URL: ${POSTGRES_DB_URL}
+      DB_USERNAME: ${POSTGRES_DB_USER}
+      DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      RABBIT_HOST: ${RABBIT_HOST}
+      RABBIT_USERNAME: ${RABBIT_USERNAME}
+      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
+      RABBIT_PORT: ${RABBIT_PORT}
+      FILTER_QUEUE: ${FILTER_QUEUE}
+      FILTER_EXCHANGE: ${FILTER_EXCHANGE}
+      TIME_UPDATE_SIMILARITY: ${TIME_UPDATE_SIMILARITY}
+      TIME_UPDATE_FILTER: ${TIME_UPDATE_FILTER}
+    networks:
+      - backend
 
   rabbitmq:
     image: rabbitmq:3-management

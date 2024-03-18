@@ -5,8 +5,11 @@ import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.ImageRepository;
 import dev.chipichapa.memestore.service.ifc.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -34,6 +37,16 @@ public class ImageServiceImpl implements ImageService {
                     String message = "Not found Image with %s ticket";
                     return new ResourceNotFoundException(String.format(message, ticket));
                 });
+    }
+
+    @Override
+    public List<Image> getLastPublicImages(int offset, int limit) {
+        return imageRepository.findAllVisibleLastImages(PageRequest.of(offset, limit)).toList();
+    }
+
+    @Override
+    public Optional<Image> getImageIfPublicAlbumsExists(long imageId) {
+        return imageRepository.findImageIfVisibleAlbumsExist(imageId);
     }
 
     private UUID ticketToUuid(String ticket) {

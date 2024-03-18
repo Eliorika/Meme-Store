@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -28,6 +29,13 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
+
+    @ManyToMany
+    @JoinTable(
+            name = "album_images",
+            joinColumns = @JoinColumn(name = "image_id"),
+            inverseJoinColumns = @JoinColumn(name = "album_id"))
+    private Set<Album> albums;
 
     @OneToMany(mappedBy = "image")
     @OnDelete(action = OnDeleteAction.CASCADE)

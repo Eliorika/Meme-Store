@@ -49,7 +49,7 @@ public class RecommendationRabbitProducerImpl implements RecommendationRabbitPro
             rabbitTemplate.convertAndSend(rabbitMQConfig.exchange(), rabbitMQConfig.queue(), data);
             log.info("Rabbit request add data - " + data);
         } catch (Exception e) {
-           log.error(data.toString() + " --- " +  e.getMessage());
+            log.error(data.toString() + " --- " +  e.getMessage());
         }
     }
 }
