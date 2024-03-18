@@ -2,13 +2,9 @@ package dev.chipichapa.memestore.tgBot.process;
 
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.security.tg.TgAuthProvider;
-import dev.chipichapa.memestore.tgBot.commands.Command;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -35,7 +31,7 @@ public class UpdateProcessor {
             if (tgAuthProvider.authenticate(tgId)) {
                 UserState status = userChatStates.getUserState(tgId);
 
-                if (UserState.NO_ACTION.equals(status) && update.getCallbackQuery() != null) {
+                if ((UserState.NO_ACTION.equals(status) || UserState.GET_MEMES_SHOW.equals(status)) && update.getCallbackQuery() != null) {
                     return callBackProcessor.process(update);
                 }
 
@@ -48,7 +44,7 @@ public class UpdateProcessor {
                     :update.getCallbackQuery().getMessage().getChatId();
             sm.setChatId(chatId);
 
-            sm.setText("Похоже я вас не знаю... Введите /start и мы с вами познакомимся!");
+            sm.setText("Похоже я вас не знаю... Введите /start и мы познакомимся!");
 
             return sm;
         }

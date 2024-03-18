@@ -1,10 +1,7 @@
 package dev.chipichapa.memestore.tgBot.process;
 
 import dev.chipichapa.memestore.tgBot.callback.CallBack;
-import dev.chipichapa.memestore.tgBot.commands.Command;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;

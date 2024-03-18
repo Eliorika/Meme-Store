@@ -13,4 +13,6 @@ public interface AssetsUseCase {
 
     AssetGetInfoResponse getAssetInfoByTicket(String assetTicket);
 
+    AssetGetResponse getById(Long id);
+
 }

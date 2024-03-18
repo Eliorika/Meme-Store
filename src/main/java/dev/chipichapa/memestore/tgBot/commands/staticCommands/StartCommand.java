@@ -1,6 +1,5 @@
-package dev.chipichapa.memestore.tgBot.commands;
+package dev.chipichapa.memestore.tgBot.commands.staticCommands;
 
-import dev.chipichapa.memestore.dto.auth.JwtRequest;
 import dev.chipichapa.memestore.dto.auth.TgRegisterRequest;
 import dev.chipichapa.memestore.service.ifc.AuthService;
 import dev.chipichapa.memestore.usecase.ifc.UserRegisterUseCase;
@@ -12,7 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 
 @RequiredArgsConstructor
 @Component("/start")
-public class StartCommand implements Command{
+public class StartCommand implements IStaticCommand {
 
     private final UserRegisterUseCase userRegisterUseCase;
     private final AuthService authService;

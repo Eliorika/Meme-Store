@@ -43,7 +43,7 @@ public class GetGalleries implements CallBack {
         if(gallery.getDescription() != null)
            answer.append(gallery.getDescription() + "\n");
 
-        answer.append("Посмотреть мемы: /***" + "\n\n");
+        answer.append("Посмотреть мемы: /downloadGallery" + gallery.getId() + "\n\n");
 
         return answer.toString();
     }
