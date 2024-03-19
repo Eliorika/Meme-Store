@@ -66,6 +66,7 @@ public class SecurityConfiguration {
                         configurer
                                 .requestMatchers("/api/v1/service/tg/external_user/**").permitAll()
                                 .requestMatchers("/api/v1/meme/**").permitAll()
+                                .requestMatchers("/api/v1/search/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated())

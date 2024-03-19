@@ -14,12 +14,15 @@ import dev.chipichapa.memestore.repository.ImageRepository;
 import dev.chipichapa.memestore.repository.TagRepository;
 import dev.chipichapa.memestore.security.exception.AccessDeniedException;
 import dev.chipichapa.memestore.service.ifc.*;
+import dev.chipichapa.memestore.typesense.events.SaveMemeEvent;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
-import dev.chipichapa.memestore.utils.mapper.ImageMapper;
-import dev.chipichapa.memestore.utils.mapper.ImageToMemeMapper;
+import dev.chipichapa.memestore.utils.mapper.image.ImageMapper;
+import dev.chipichapa.memestore.utils.mapper.image.ImageToMemeMapper;
+import dev.chipichapa.memestore.utils.mapper.image.ImageToSavedMemeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,10 +45,13 @@ public class MemeUseCaseImpl implements MemeUseCase {
     private final AlbumRepository albumRepository;
 
     private final ImageToMemeMapper imageToMemeMapper;
+    private final ImageToSavedMemeMapper imageToSavedMemeMapper;
     private final AuthUtils authUtils;
     private final UserService userService;
 
     private final RecommendationRabbitProducer recommendationRabbitProducer;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     @Transactional
@@ -63,9 +69,10 @@ public class MemeUseCaseImpl implements MemeUseCase {
         Image savedImage = imageRepository.save(image);
 
         saveImageToAlbumOrThrow(createRequest.getGalleryId(), savedImage);
-
         List<Integer> tagsIds = tagService
                 .addTagsToImageAndReturnTagsIds(savedImage, createRequest.getTags());
+
+        applicationEventPublisher.publishEvent(new SaveMemeEvent(image ,imageToSavedMemeMapper.to(savedImage)));
 
         draftRepository.deleteById(UUID.fromString(assetTicket));
 

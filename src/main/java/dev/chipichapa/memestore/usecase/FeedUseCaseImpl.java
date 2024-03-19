@@ -1,6 +1,5 @@
 package dev.chipichapa.memestore.usecase;
 
-import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.model.FeedItem;
@@ -9,7 +8,7 @@ import dev.chipichapa.memestore.service.RecommendationClient;
 import dev.chipichapa.memestore.service.ifc.ImageService;
 import dev.chipichapa.memestore.usecase.ifc.FeedUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
-import dev.chipichapa.memestore.utils.mapper.ImageMapper;
+import dev.chipichapa.memestore.utils.mapper.image.ImageMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

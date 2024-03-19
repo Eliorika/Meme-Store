@@ -1,4 +1,4 @@
-package dev.chipichapa.memestore.utils.mapper;
+package dev.chipichapa.memestore.utils.mapper.image;
 
 import dev.chipichapa.memestore.domain.entity.ImageTag;
 import dev.chipichapa.memestore.domain.entity.Tag;

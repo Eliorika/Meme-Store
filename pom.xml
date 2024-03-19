@@ -20,6 +20,8 @@
 		<java.version>21</java.version>
 		<jjwt.version>0.12.5</jjwt.version>
 		<aws-s3.version>1.12.661</aws-s3.version>
+		<typesnse.version>0.6.0</typesnse.version>
+
 		<springdoc.version>2.3.0</springdoc.version>
 
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
@@ -97,6 +99,12 @@
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-s3</artifactId>
 			<version>${aws-s3.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.typesense</groupId>
+			<artifactId>typesense-java</artifactId>
+			<version>${typesnse.version}</version>
 		</dependency>
 
 
