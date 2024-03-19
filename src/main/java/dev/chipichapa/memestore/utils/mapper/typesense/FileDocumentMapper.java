@@ -13,7 +13,7 @@ public class FileDocumentMapper {
     public Map<String, Object> toDocument(File file) {
         Map<String, Object> document = new HashMap<>();
 
-        document.put("id", file.id());
+        document.put("id", String.valueOf(file.id()));
         document.put("title", file.title());
         document.put("description", file.description());
         document.put("ocrText", file.ocrText());
