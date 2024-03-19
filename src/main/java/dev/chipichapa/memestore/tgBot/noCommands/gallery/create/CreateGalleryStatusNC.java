@@ -64,7 +64,7 @@ public class CreateGalleryStatusNC implements INoCommand {
 
         try {
             galleryUseCase.create(new GalleryCreateRequest(album.getName(), album.getDescription(), album.getVisible()));
-            successfulStatusNC.addMessage(tgId, "Альбом "+ album.getName() + "создан успешно!");
+            successfulStatusNC.addMessage(tgId, "Альбом "+ album.getName() + " создан успешно!");
             userChatStates.addUser(tgId, getNextState());
         } catch (Exception e){
             userChatStates.addUser(tgId, UserState.NO_ACTION);

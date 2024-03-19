@@ -47,4 +47,14 @@ public class CommandProcessor {
             return false;
         }
     }
+
+    public boolean isStartCommand(Update update){
+        try{
+            String input = update.getMessage().getText().split(" ")[0];
+            return input.equals("/start");
+
+        } catch (Exception ex){
+            return false;
+        }
+    }
 }

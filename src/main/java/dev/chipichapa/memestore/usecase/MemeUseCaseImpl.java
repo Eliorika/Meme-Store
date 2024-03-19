@@ -13,10 +13,7 @@ import dev.chipichapa.memestore.repository.DraftRepository;
 import dev.chipichapa.memestore.repository.ImageRepository;
 import dev.chipichapa.memestore.repository.TagRepository;
 import dev.chipichapa.memestore.security.exception.AccessDeniedException;
-import dev.chipichapa.memestore.service.ifc.AlbumService;
-import dev.chipichapa.memestore.service.ifc.ImageService;
-import dev.chipichapa.memestore.service.ifc.RecommendationRabbitProducer;
-import dev.chipichapa.memestore.service.ifc.TagService;
+import dev.chipichapa.memestore.service.ifc.*;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
 import dev.chipichapa.memestore.utils.mapper.ImageMapper;
@@ -46,6 +43,7 @@ public class MemeUseCaseImpl implements MemeUseCase {
 
     private final ImageToMemeMapper imageToMemeMapper;
     private final AuthUtils authUtils;
+    private final UserService userService;
 
     private final RecommendationRabbitProducer recommendationRabbitProducer;
 
@@ -137,9 +135,18 @@ public class MemeUseCaseImpl implements MemeUseCase {
 
     @Override
     public Set<GetMemeResponse> getMemesFromGallery(Integer galleryId) {
+        UserDetails userDetails = authUtils.getUserDetailsOrThrow();
+
+        User user = userService.getByUsername(userDetails.getUsername());
         var album = albumRepository.findById(galleryId).orElse(null);
         if (album == null)
             return null;
+
+        var isContributor = album.getContributors().stream().anyMatch(us -> (us.getId() == user.getId()));
+        var isAuthor = album.getAuthor().getId() == user.getId();
+        if(!isContributor && !isAuthor )
+            return null;
+
 
         var memes = album.getImages().stream()
                 .map(img -> (imageToMemeMapper.toMeme(img, getImageTagIds(img))))

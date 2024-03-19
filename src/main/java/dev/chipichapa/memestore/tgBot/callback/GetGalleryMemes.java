@@ -8,11 +8,13 @@ import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import dev.chipichapa.memestore.usecase.ifc.AssetsUseCase;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
+import jakarta.ws.rs.NotAllowedException;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.media.InputMedia;
@@ -34,6 +36,7 @@ public class GetGalleryMemes implements CallBack {
     private final TelegramBotUtils bot;
     private final Map<Long, Integer> positions = new HashMap<>();
     private final Map<Long, Set<GetMemeResponse>> memes = new HashMap<>();
+    private final int imgCountPerMessage = 5;
 
 
     @Override
@@ -49,30 +52,35 @@ public class GetGalleryMemes implements CallBack {
 
         Set<GetMemeResponse> userMemes = memes.get(tgId);
 
-        List<InputMedia> media = new ArrayList<>();
+        List<SendPhoto> media = new ArrayList<>();
+        int i = 0;
         for (GetMemeResponse meme: userMemes) {
             var assetGetResponse = assetsUseCase.getById(meme.getAssetId());
             byte[] file = assetGetResponse.file();
             String extension = assetGetResponse.extension();
             InputStream photoStream = new ByteArrayInputStream(file);
-            InputMediaPhoto photo = new InputMediaPhoto();
-            photo.setMedia(photoStream, meme.hashCode() + "." + extension);
-            media.add(photo);
+            InputFile photo = new InputFile(photoStream, meme.hashCode() + "." + extension);
+            SendPhoto sendPhoto = new SendPhoto();
+            sendPhoto.setPhoto(photo);
+            sendPhoto.setCaption("Название: " + meme.getTitle() + "\n\nОписание: " + meme.getDescription());
+            sendPhoto.setChatId(tgId);
+            media.add(sendPhoto);
+            i++;
+            if(i>=imgCountPerMessage)
+                break;
         }
 
-        SendMediaGroup sendMediaGroup = new SendMediaGroup();
-        sendMediaGroup.setChatId(tgId);
-        sendMediaGroup.setMedias(media);
 
-        if(!bot.sendMedia(sendMediaGroup)){
+        if(!bot.sendMedia(media)){
             sm.setText("Что-то пошло не так");
             memes.remove(tgId);
             positions.remove(tgId);
             userChatStates.addUser(tgId, UserState.NO_ACTION);
             return sm;
         }
-        var newPos = position+10;
-        if(newPos+10 >= userMemes.size()){
+
+        var newPos = position+i;
+        if(newPos >= userMemes.size()){
             sm.setText("Конец альбома!");
             memes.remove(tgId);
             positions.remove(tgId);
@@ -80,15 +88,13 @@ public class GetGalleryMemes implements CallBack {
             return sm;
         }
 
-        sm.setText("");
+        sm.setText("Смотрим дальше?");
         InlineKeyboardButton forward = new InlineKeyboardButton();
-        forward.setText("Следующие 10");
+        forward.setText("Следующие " + imgCountPerMessage);
         forward.setCallbackData(getCallBack());
-        InlineKeyboardButton createAlbum = new InlineKeyboardButton();
-
+        positions.put(tgId, newPos);
 
         rowInline.add(forward);
-        rowInline.add(createAlbum);
         rowsInline.add(rowInline);
 
         markupInline.setKeyboard(rowsInline);
@@ -98,11 +104,13 @@ public class GetGalleryMemes implements CallBack {
 
     @Override
     public String getCallBack() {
-        return "!next10";
+        return "!nextMemes";
     }
 
     public void init(Long id, int galleryId){
         var userMemes = memeUseCase.getMemesFromGallery(galleryId);
+        if(userMemes == null)
+            throw new NotAllowedException("Не ходи, зашибут!");
         memes.put(id, userMemes);
         positions.put(id, 0);
 

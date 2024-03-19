@@ -3,7 +3,10 @@ package dev.chipichapa.memestore.tgBot.req;
 import dev.chipichapa.memestore.tgBot.Bot;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.List;
 
 @Component
 public class TelegramBotUtils {
@@ -18,9 +21,11 @@ public class TelegramBotUtils {
         telegramBot = bot;
     }
 
-    public boolean sendMedia(SendMediaGroup sm) {
+    public boolean sendMedia(List<SendPhoto> photos) {
         try {
-            telegramBot.execute(sm);
+            for (SendPhoto ph: photos) {
+                telegramBot.execute(ph);
+            }
             return true;
         } catch (TelegramApiException e) {
             return false;

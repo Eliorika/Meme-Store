@@ -14,7 +14,6 @@ import org.telegram.telegrambots.meta.api.objects.User;
 public class StartCommand implements IStaticCommand {
 
     private final UserRegisterUseCase userRegisterUseCase;
-    private final AuthService authService;
 
     @Override
     public String getCommand() {

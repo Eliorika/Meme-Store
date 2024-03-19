@@ -22,14 +22,15 @@ public class UpdateProcessor {
     public SendMessage process(Update update){
         long tgId = update.getCallbackQuery()==null?update.getMessage().getFrom().getId()
                 :update.getCallbackQuery().getFrom().getId();
-        if (commandProcessor.isCommand(update)){
+        if (commandProcessor.isStartCommand(update)){
             return commandProcessor.process(update);
         }
         try {
-
-
             if (tgAuthProvider.authenticate(tgId)) {
                 UserState status = userChatStates.getUserState(tgId);
+                if (commandProcessor.isCommand(update)){
+                    return commandProcessor.process(update);
+                }
 
                 if ((UserState.NO_ACTION.equals(status) || UserState.GET_MEMES_SHOW.equals(status)) && update.getCallbackQuery() != null) {
                     return callBackProcessor.process(update);
