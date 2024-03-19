@@ -111,6 +111,15 @@ services:
     networks:
       - backend
 
+  typesense:
+    image: typesense/typesense:0.25.2
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    volumes:
+      - ./typesense-data:/data
+    command: '--data-dir /data --api-key=somekey --enable-cors'
+
 volumes:
   dbdata:
     driver: local

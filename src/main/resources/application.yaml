@@ -37,6 +37,13 @@ s3-aws:
   secretKey: minioroot
   bucket: meme-store-bucket
 
+typesense:
+  protocol: http
+  host: localhost
+  port: 8108
+  apiKey: somekey
+  collection-name: meme
+
 springdoc:
   override-with-generic-response: false
 
