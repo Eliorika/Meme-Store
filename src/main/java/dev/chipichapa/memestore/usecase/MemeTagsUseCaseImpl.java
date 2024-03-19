@@ -19,7 +19,7 @@ import dev.chipichapa.memestore.service.ifc.TagService;
 import dev.chipichapa.memestore.service.ifc.UserService;
 import dev.chipichapa.memestore.usecase.ifc.MemeTagsUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
-import dev.chipichapa.memestore.utils.mapper.ImageTagsAndTagVotesToMemeTagMapper;
+import dev.chipichapa.memestore.utils.mapper.image.ImageTagsAndTagVotesToMemeTagMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
