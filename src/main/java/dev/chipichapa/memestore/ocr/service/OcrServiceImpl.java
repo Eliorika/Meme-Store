@@ -35,7 +35,7 @@ public class OcrServiceImpl implements OcrService {
     @Override
     public String extractTextFromImage(OcrImage image) {
         String textFromImage = ocrClient.processImage(new ProcessImageRequest(
-                "JPEG",
+                getMimeTypeByExtension(image.extension()),
                 List.of("*"),
                 "page",
                 imageToBase64(image.imageContent())
@@ -44,7 +44,6 @@ public class OcrServiceImpl implements OcrService {
         return textFromImage;
     }
 
-    //todo Сделать авто определение!!!
     private String getMimeTypeByExtension(String extension) {
         return URLConnection.guessContentTypeFromName("." + extension);
     }
