@@ -4,6 +4,7 @@ spring:
       ddl-auto: none
     show-sql: true
 
+
   liquibase:
     enabled: true
     change-log: db/changelog/master.xml
@@ -43,6 +44,12 @@ typesense:
   port: 8108
   apiKey: somekey
   collection-name: meme
+
+ocr:
+  oAuthToken: y0_AgAAAAA6W_5yAATuwQAAAAD-PWR3AADdQHwJVNlH2Kl8gbQUpk7sNDPP_Q
+  folderId: b1gjm6cm3l4moflelitg
+  authServerUrl: https://iam.api.cloud.yandex.net/iam/v1/tokens
+  imageProcessServerUrl: https://ocr.api.cloud.yandex.net/ocr/v1/recognizeText
 
 springdoc:
   override-with-generic-response: false
