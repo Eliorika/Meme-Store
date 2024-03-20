@@ -57,3 +57,10 @@ filter:
     queue: ${FILTER_QUEUE}
     exchange: ${FILTER_EXCHANGE}
   baseUrl: ${FILTER_BASEURL}
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
