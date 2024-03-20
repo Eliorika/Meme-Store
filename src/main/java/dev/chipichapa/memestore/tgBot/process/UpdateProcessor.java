@@ -2,13 +2,9 @@ package dev.chipichapa.memestore.tgBot.process;
 
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.security.tg.TgAuthProvider;
-import dev.chipichapa.memestore.tgBot.commands.Command;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;

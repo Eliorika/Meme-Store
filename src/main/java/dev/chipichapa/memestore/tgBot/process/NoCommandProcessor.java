@@ -1,8 +1,6 @@
 package dev.chipichapa.memestore.tgBot.process;
 
-import dev.chipichapa.memestore.tgBot.callback.CallBack;
-import dev.chipichapa.memestore.tgBot.commands.Command;
-import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
+ import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import lombok.AllArgsConstructor;
