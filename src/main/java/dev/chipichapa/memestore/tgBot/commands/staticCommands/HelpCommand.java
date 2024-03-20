@@ -1,4 +1,4 @@
-package dev.chipichapa.memestore.tgBot.commands;
+package dev.chipichapa.memestore.tgBot.commands.staticCommands;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,9 +10,9 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component("/help")
-public class HelpCommand implements Command{
+public class HelpCommand implements IStaticCommand {
 
-    private final List<Command> commands;
+    private final List<IStaticCommand> IStaticCommands;
 
     @Override
     public String getCommand() {
@@ -28,7 +28,7 @@ public class HelpCommand implements Command{
     public SendMessage handleCommand(Update update, SendMessage sm) {
         StringBuilder answer = new StringBuilder();
         answer.append("Что я умею:\n");
-        for (Command c : commands) {
+        for (IStaticCommand c : IStaticCommands) {
             answer.append(c.getCommand());
             answer.append(" - ");
             answer.append(c.getAbout());

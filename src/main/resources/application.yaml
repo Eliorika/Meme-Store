@@ -4,7 +4,6 @@ spring:
       ddl-auto: none
     show-sql: true
 
-
   liquibase:
     enabled: true
     change-log: db/changelog/master.xml
@@ -58,6 +57,10 @@ telegram:
   bot-name: meme_st0re_bot
   bot-token: 6728196094:AAGh5uSU04zF3RkM-BCzEEbapDsnbsTTmNs
   api-url: "https://api.telegram.org/"
+  file:
+    info-uri: "https://api.telegram.org/bot{token}/getFile?file_id={fileId}"
+    storage-uri: "https://api.telegram.org/file/bot{token}/{filePath}"
+
 
 filter:
   rabbit:
@@ -71,3 +74,4 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+

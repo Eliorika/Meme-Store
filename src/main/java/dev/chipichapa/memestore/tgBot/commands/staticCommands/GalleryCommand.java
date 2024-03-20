@@ -1,4 +1,4 @@
-package dev.chipichapa.memestore.tgBot.commands;
+package dev.chipichapa.memestore.tgBot.commands.staticCommands;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component("/gallery")
-public class GalleryCommand implements Command{
+public class GalleryCommand implements IStaticCommand {
 
     @Override
     public String getCommand() {

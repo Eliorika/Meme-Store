@@ -1,32 +1,27 @@
-package dev.chipichapa.memestore.tgBot.noCommands.gallery;
+package dev.chipichapa.memestore.tgBot.noCommands;
 
-import dev.chipichapa.memestore.domain.entity.Album;
-import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
-import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
-import dev.chipichapa.memestore.usecase.ifc.GalleryUseCase;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
-@AllArgsConstructor
-public class SuccesfulStatusStatusNC implements NoCommand {
-    private UserChatStates userChatStates;
+@RequiredArgsConstructor
+public class SuccessfulStatusNC implements INoCommand {
+    private final UserChatStates userChatStates;
+    private final Map<Long, String> messages = new HashMap<>();
     @Override
-    public UserState getNextState() {
+    public final UserState getNextState() {
         return UserState.NO_ACTION;
     }
 
     @Override
-    public UserState getState() {
+    public final UserState getState() {
         return UserState.SUCCESS;
     }
 
@@ -35,12 +30,17 @@ public class SuccesfulStatusStatusNC implements NoCommand {
         long tgId = update.getCallbackQuery()==null?update.getMessage().getFrom().getId()
                 :update.getCallbackQuery().getFrom().getId();
         handleState(update, tgId);
-        sm.setText("Успешно!");
+        sm.setText(messages.get(tgId));
+        messages.remove(tgId);
         return sm;
     }
 
     @Override
     public void handleState(Update update, Long tgId){
         userChatStates.addUser(tgId, getNextState());
+    }
+
+    public void addMessage(Long tgId,String message){
+        messages.put(tgId, message);
     }
 }

@@ -1,6 +1,7 @@
 package dev.chipichapa.memestore.tgBot.states;
 
 import dev.chipichapa.memestore.domain.entity.Album;
+import dev.chipichapa.memestore.dto.meme.CreateMemeRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -10,6 +11,8 @@ import java.util.Map;
 public class UserChatStates {
     private Map<Long, UserState> mapStates = new HashMap<>();
     private Map<Long, Album> mapAlbums = new HashMap<>();
+    private Map<Long, CreateMemeRequest> mapMemes = new HashMap<>();
+
 
     public void addUser(long id, UserState state){
         mapStates.put(id, state);
@@ -28,5 +31,13 @@ public class UserChatStates {
 
     public Album getUserAlbum(long id){
         return mapAlbums.get(id);
+    }
+
+    public void addUserMeme(long id, CreateMemeRequest req){
+        mapMemes.put(id, req);
+    }
+
+    public CreateMemeRequest getUserMeme(long id){
+        return mapMemes.get(id);
     }
 }

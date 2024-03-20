@@ -1,6 +1,6 @@
 package dev.chipichapa.memestore.tgBot.process;
 
- import dev.chipichapa.memestore.tgBot.noCommands.NoCommand;
+import dev.chipichapa.memestore.tgBot.noCommands.INoCommand;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class NoCommandProcessor {
     private UserChatStates userChatStates;
-    private List<NoCommand> noCommandList;
+    private List<INoCommand> INoCommandList;
 
     public SendMessage process(Update update){
         SendMessage sm = new SendMessage();
@@ -24,14 +24,14 @@ public class NoCommandProcessor {
         long tgId = update.getCallbackQuery()==null?update.getMessage().getFrom().getId()
                 :update.getCallbackQuery().getFrom().getId();
         UserState status = userChatStates.getUserState(tgId);
-        NoCommand noCommand = noCommandList.stream().filter(c->c.getState().equals(status)).findFirst().orElse(null);
-            if(noCommand != null){
-                noCommand.handleState(update, tgId);
+        INoCommand INoCommand = INoCommandList.stream().filter(c->c.getState().equals(status)).findFirst().orElse(null);
+            if(INoCommand != null){
+                INoCommand.handleState(update, tgId);
                 UserState newStatus = userChatStates.getUserState(tgId);
                 if(!UserState.NO_ACTION.equals(newStatus)){
-                    noCommand = noCommandList.stream().filter(c->c.getState().equals(newStatus)).findFirst().orElse(null);
-                    if(noCommand != null){
-                       return noCommand.handleMessage(update, sm);
+                    INoCommand = INoCommandList.stream().filter(c->c.getState().equals(newStatus)).findFirst().orElse(null);
+                    if(INoCommand != null){
+                       return INoCommand.handleMessage(update, sm);
                     }
                 }
             }

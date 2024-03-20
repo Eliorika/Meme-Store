@@ -48,7 +48,7 @@ public class Album {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "album_images",
             joinColumns = @JoinColumn(name = "album_id"),
@@ -56,7 +56,7 @@ public class Album {
     private Set<Image> images;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "album_contributors",
             joinColumns = @JoinColumn(name = "user_id"),

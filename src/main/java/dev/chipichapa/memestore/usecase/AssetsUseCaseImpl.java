@@ -84,6 +84,16 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
 
     @Override
     @Transactional
+    public AssetGetResponse getById(Long id) {
+        Image asset = imageService.getById(id);
+        File file = fileService.get(asset.getFilenameWithExtension());
+        String fileExtension = FilenameUtils.getExtension(file.getFilename());
+
+        return new AssetGetResponse(file.getContent(), fileExtension);
+    }
+
+    @Override
+    @Transactional
     public AssetGetResponse get(String assetTicket) {
         File file = getFileByAssetTicket(assetTicket);
         String fileExtension = FilenameUtils.getExtension(file.getFilename());

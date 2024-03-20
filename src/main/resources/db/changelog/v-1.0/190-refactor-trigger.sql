@@ -1,6 +1,6 @@
 drop trigger if exists update_image_tags_score_trigger on user_tag_votes;
 
-drop function if exists update_image_tags_score();
+drop function if exists update_image_tags_score;
 
 CREATE OR REPLACE FUNCTION update_image_tag_score() RETURNS TRIGGER AS $$
 BEGIN

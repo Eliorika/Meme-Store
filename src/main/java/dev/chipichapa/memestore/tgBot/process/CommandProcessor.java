@@ -1,6 +1,8 @@
 package dev.chipichapa.memestore.tgBot.process;
 
-import dev.chipichapa.memestore.tgBot.commands.Command;
+import dev.chipichapa.memestore.tgBot.commands.ICommand;
+import dev.chipichapa.memestore.tgBot.commands.dynamicCommands.IDynamicCommands;
+import dev.chipichapa.memestore.tgBot.commands.staticCommands.IStaticCommand;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import lombok.AllArgsConstructor;
@@ -14,7 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CommandProcessor {
     private UserChatStates userChatStates;
-    private List<Command> commandList;
+    private List<IStaticCommand> staticCommands;
+    private List<IDynamicCommands> dynamicCommands;
 
     public SendMessage process(Update update){
         String input = update.getMessage().getText().split(" ")[0];
@@ -23,9 +26,13 @@ public class CommandProcessor {
         userChatStates.addUser(update.getMessage().getFrom().getId(), UserState.NO_ACTION);
 
         if (input.startsWith("/")) {
-            Command command = commandList.stream().filter(c->c.getCommand().equals(input)).findFirst().orElse(null);
+            ICommand command = staticCommands.stream().filter(c->c.getCommand().equals(input)).findFirst().orElse(null);
             if(command != null)
                 return command.handleCommand(update, sm);
+            command = dynamicCommands.stream().filter(c->input.contains(c.getCommand())).findFirst().orElse(null);
+            if(command != null)
+                return command.handleCommand(update, sm);
+
         }
         sm.setText("Простите, я вас не понимаю. Используйте /help для справки.");
         return sm;
@@ -35,6 +42,16 @@ public class CommandProcessor {
         try{
             String input = update.getMessage().getText().split(" ")[0];
             return input.startsWith("/");
+
+        } catch (Exception ex){
+            return false;
+        }
+    }
+
+    public boolean isStartCommand(Update update){
+        try{
+            String input = update.getMessage().getText().split(" ")[0];
+            return input.equals("/start");
 
         } catch (Exception ex){
             return false;

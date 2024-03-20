@@ -95,9 +95,13 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
     }
 
     public List<Gallery> getAll() {
-        User user = (User) authUtils.getUserDetailsOrThrow();
+        UserDetails userDetails = authUtils.getUserDetailsOrThrow();
+
+        User user = userService.getByUsername(userDetails.getUsername());
         List<Album> galleryList = albumService.getAllByAuthor(user.getId());
         return AlbumMapper.map(galleryList);
     }
+
+
 
 }
