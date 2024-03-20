@@ -1,6 +1,6 @@
 package dev.chipichapa.memestore.tgBot.commands.dynamicCommands;
 
-import dev.chipichapa.memestore.tgBot.callback.GetGalleryMemes;
+import dev.chipichapa.memestore.tgBot.callback.GetMemes;
 import jakarta.ws.rs.NotAllowedException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Component
 @AllArgsConstructor
 public class GetGalleryMemesCommand implements IDynamicCommands{
-    private final GetGalleryMemes getGalleryMemes;
+    private final GetMemes getGalleryMemes;
 
     @Override
     public String getCommand() {
@@ -26,7 +26,7 @@ public class GetGalleryMemesCommand implements IDynamicCommands{
 
 
         try {
-            getGalleryMemes.init(tgId, Integer.valueOf(result));
+            getGalleryMemes.initByGallery(tgId, Integer.valueOf(result));
         } catch (NotAllowedException e){
             sm.setText("Не ходи, зашибут!");
             return sm;

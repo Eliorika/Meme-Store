@@ -165,6 +165,13 @@ public class MemeUseCaseImpl implements MemeUseCase {
         return res;
     }
 
+    @Override
+    public GetMemeResponse getById(Integer id) {
+        var img = imageService.getById((long)id);
+        var meme = imageToMemeMapper.toMeme(img, getImageTagIds(img));
+        return new GetMemeResponse(meme);
+    }
+
     private Image getMemeById(Long memeId) {
         return imageService.getById(memeId);
     }

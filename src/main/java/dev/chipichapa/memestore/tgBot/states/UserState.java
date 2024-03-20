@@ -14,6 +14,9 @@ public enum UserState {
     GET_MEMES_GALLERY,
     GET_MEMES_SHOW,
 
+    FIND_MEME,
+
     SUCCESS,
-    NO_ACTION
+    NO_ACTION,
+    ROUTE
 }

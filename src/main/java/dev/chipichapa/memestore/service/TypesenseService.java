@@ -91,6 +91,7 @@ public class TypesenseService implements SearchService {
         return searchResultToFileMapper.map(result);
     }
 
+
     private void createSchema() {
         CollectionSchema collectionSchema = new CollectionSchema();
 

@@ -1,5 +1,6 @@
 package dev.chipichapa.memestore.service.ifc;
 
+import dev.chipichapa.memestore.dto.meme.GetMemeResponse;
 import dev.chipichapa.memestore.typesense.dto.File;
 
 import java.util.List;

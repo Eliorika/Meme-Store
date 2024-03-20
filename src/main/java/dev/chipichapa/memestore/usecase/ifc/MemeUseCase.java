@@ -12,4 +12,5 @@ public interface MemeUseCase {
 
     UpdateMemeResponse update(UpdateMemeRequest request ,Long memeId);
     Set<GetMemeResponse> getMemesFromGallery(Integer galleryId);
+    GetMemeResponse getById(Integer id);
 }
