@@ -28,5 +28,6 @@
     <include file="210-changeset-add-type-column-into-album.xml" relativeToChangelogFile="true"/>
     <include file="220-changeset-add-createted-column-into-images.xml" relativeToChangelogFile="true"/>
     <include file="230-changeset-refactor-trigger.xml" relativeToChangelogFile="true"/>
+    <include file="240-changeset-ocr-tokens.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
