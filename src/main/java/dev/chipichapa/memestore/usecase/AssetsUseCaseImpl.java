@@ -92,6 +92,14 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
     }
 
     @Override
+    public AssetGetResponse getById(long id) {
+        File file = getFileById(id);
+        String fileExtension = FilenameUtils.getExtension(file.getFilename());
+
+        return new AssetGetResponse(file.getContent(), fileExtension);
+    }
+
+    @Override
     @Transactional
     public SuggestionsTagsResponse getSuggestTags(String assetTicket) {
         File file = getFileByAssetTicket(assetTicket);
@@ -102,6 +110,11 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
 
     private File getFileByAssetTicket(String ticket) {
         Image asset = imageService.getByTicket(ticket);
+        return fileService.get(asset.getFilenameWithExtension());
+    }
+
+    private File getFileById(long id) {
+        Image asset = imageService.getById(id);
         return fileService.get(asset.getFilenameWithExtension());
     }
 

@@ -65,4 +65,15 @@ public class AssetsController {
                 .body(response.file());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<byte[]> getById(@PathVariable("id") long id) {
+        AssetGetResponse response = assetsUseCase.getById(id);
+        String contentType = URLConnection.guessContentTypeFromName("." + response.extension());
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(response.file());
+    }
+
 }
