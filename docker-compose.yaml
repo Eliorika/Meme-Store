@@ -17,18 +17,6 @@ services:
     restart: on-failure
     env_file:
       - .env.docker
-    environment:
-      POSTGRES_DB_URL: ${POSTGRES_DB_URL}
-      POSTGRES_DB_USER: ${POSTGRES_DB_USER}
-      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
-      RABBIT_HOST: ${RABBIT_HOST}
-      RABBIT_USERNAME: ${RABBIT_USERNAME}
-      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
-      RABBIT_PORT: ${RABBIT_PORT}
-      FILTER_QUEUE: ${FILTER_QUEUE}
-      FILTER_EXCHANGE: ${FILTER_EXCHANGE}
-      S3_URL: ${S3_URL}
-      FILTER_BASEURL: ${FILTER_BASEURL}
     ports:
       - "8080:8080"
     networks:
@@ -45,18 +33,6 @@ services:
       - .env.docker
     ports:
       - "8081:8081"
-    environment:
-      DB_URL: ${POSTGRES_DB_URL}
-      DB_USERNAME: ${POSTGRES_DB_USER}
-      DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
-      RABBIT_HOST: ${RABBIT_HOST}
-      RABBIT_USERNAME: ${RABBIT_USERNAME}
-      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
-      RABBIT_PORT: ${RABBIT_PORT}
-      FILTER_QUEUE: ${FILTER_QUEUE}
-      FILTER_EXCHANGE: ${FILTER_EXCHANGE}
-      TIME_UPDATE_SIMILARITY: ${TIME_UPDATE_SIMILARITY}
-      TIME_UPDATE_FILTER: ${TIME_UPDATE_FILTER}
     networks:
       - backend
 
