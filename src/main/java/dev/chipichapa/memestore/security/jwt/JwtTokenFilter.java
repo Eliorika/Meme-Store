@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,10 @@ public class JwtTokenFilter extends GenericFilterBean {
 
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             bearerToken = bearerToken.substring(7);
+        } else if (getTokenFromCookie((HttpServletRequest) servletRequest) != null) {
+            bearerToken = getTokenFromCookie((HttpServletRequest) servletRequest);
+        } else {
+            bearerToken = (String) servletRequest.getAttribute("token");
         }
 
         try {
@@ -39,5 +44,14 @@ public class JwtTokenFilter extends GenericFilterBean {
         } catch (Exception ignored) {
         }
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    private String getTokenFromCookie(HttpServletRequest request) {
+        for (Cookie cookie : request.getCookies()) {
+            if (cookie.getName().equals("x_api_token")) {
+                return cookie.getValue();
+            }
+        }
+        return null;
     }
 }
