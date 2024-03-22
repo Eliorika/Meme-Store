@@ -114,6 +114,8 @@ services:
   typesense:
     image: typesense/typesense:0.25.2
     restart: on-failure
+    networks:
+      - backend
     ports:
       - "8108:8108"
     volumes:

@@ -40,7 +40,7 @@ s3-aws:
 
 typesense:
   protocol: http
-  host: localhost
+  host: ${TYPESENS_HOST}
   port: 8108
   apiKey: somekey
   collection-name: meme
