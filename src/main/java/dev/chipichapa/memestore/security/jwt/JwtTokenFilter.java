@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,13 +22,7 @@ public class JwtTokenFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws ServletException, IOException {
-
-        String bearerToken = ((HttpServletRequest) servletRequest).getHeader("Authorization");
-
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            bearerToken = bearerToken.substring(7);
-        }
-
+        String bearerToken = getToken((HttpServletRequest) servletRequest);
         try {
             if (bearerToken != null
                     && jwtTokenProvider.isValid(bearerToken)) {
@@ -39,5 +34,33 @@ public class JwtTokenFilter extends GenericFilterBean {
         } catch (Exception ignored) {
         }
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    private String getToken(HttpServletRequest request) {
+        String bearer = request.getHeader("Authorization");
+        if (bearer != null && bearer.startsWith("Bearer ")) {
+            return bearer.substring(7);
+        }
+        String cookie = getTokenFromCookie(request);
+        if (cookie != null) {
+            return cookie;
+        }
+        String attribute = (String) request.getParameter("token");
+        if (attribute != null) {
+            return attribute;
+        }
+        return null;
+    }
+
+    private String getTokenFromCookie(HttpServletRequest request) {
+        var cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("x_api_token")) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

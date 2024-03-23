@@ -8,9 +8,9 @@ spring:
     enabled: true
     change-log: db/changelog/master.xml
   datasource:
-    username: ${POSTGRES_DB_USER}
-    password: ${POSTGRES_DB_PASSWORD}
-    url: ${POSTGRES_DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
     driver-class-name: org.postgresql.Driver
 
   rabbitmq:
@@ -29,7 +29,7 @@ security:
   jwt:
     secret: amJ1eWd0aXZmdHlyY2Z5dWdpdW9ndW95Z2l1Z295dWd5dW9ndXlmdHlmdXlndXR5dWpndXlvZ3l2aXBqaWhpdWl1aGlqbmlqbg==
     access: 1
-    refresh: 30
+    refresh: ${REFRESH_JWT_TOKEN}
 
 s3-aws:
   url: ${S3_URL}
@@ -39,7 +39,7 @@ s3-aws:
 
 typesense:
   protocol: http
-  host: localhost
+  host: ${TYPESENS_HOST}
   port: 8108
   apiKey: somekey
   collection-name: meme

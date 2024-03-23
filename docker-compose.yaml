@@ -17,18 +17,6 @@ services:
     restart: on-failure
     env_file:
       - .env.docker
-    environment:
-      POSTGRES_DB_URL: ${POSTGRES_DB_URL}
-      POSTGRES_DB_USER: ${POSTGRES_DB_USER}
-      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
-      RABBIT_HOST: ${RABBIT_HOST}
-      RABBIT_USERNAME: ${RABBIT_USERNAME}
-      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
-      RABBIT_PORT: ${RABBIT_PORT}
-      FILTER_QUEUE: ${FILTER_QUEUE}
-      FILTER_EXCHANGE: ${FILTER_EXCHANGE}
-      S3_URL: ${S3_URL}
-      FILTER_BASEURL: ${FILTER_BASEURL}
     ports:
       - "8080:8080"
     networks:
@@ -45,18 +33,6 @@ services:
       - .env.docker
     ports:
       - "8081:8081"
-    environment:
-      DB_URL: ${POSTGRES_DB_URL}
-      DB_USERNAME: ${POSTGRES_DB_USER}
-      DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
-      RABBIT_HOST: ${RABBIT_HOST}
-      RABBIT_USERNAME: ${RABBIT_USERNAME}
-      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
-      RABBIT_PORT: ${RABBIT_PORT}
-      FILTER_QUEUE: ${FILTER_QUEUE}
-      FILTER_EXCHANGE: ${FILTER_EXCHANGE}
-      TIME_UPDATE_SIMILARITY: ${TIME_UPDATE_SIMILARITY}
-      TIME_UPDATE_FILTER: ${TIME_UPDATE_FILTER}
     networks:
       - backend
 
@@ -83,9 +59,9 @@ services:
     env_file:
       - .env.docker
     environment:
-      - POSTGRES_DB=${POSTGRES_DB_NAME}
-      - POSTGRES_USER=${POSTGRES_DB_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - "5500:5432"
     volumes:
@@ -102,7 +78,7 @@ services:
     environment:
       - MINIO_ROOT_USER=${MINIO_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD}
-    command: server ~/minio --console-address :9090
+    command: server /minio --console-address :9090
     ports:
       - '9090:9090'
       - '9000:9000'
@@ -114,14 +90,10 @@ services:
   typesense:
     image: typesense/typesense:0.25.2
     restart: on-failure
+    networks:
+      - backend
     ports:
       - "8108:8108"
     volumes:
-      - ./typesense-data:/data
+      - ./volumes/typesense-data:/data
     command: '--data-dir /data --api-key=somekey --enable-cors'
-
-volumes:
-  dbdata:
-    driver: local
-  minio-data:
-    driver: local
