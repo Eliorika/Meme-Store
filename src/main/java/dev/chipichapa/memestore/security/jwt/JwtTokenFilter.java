@@ -22,17 +22,7 @@ public class JwtTokenFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws ServletException, IOException {
-
-        String bearerToken = ((HttpServletRequest) servletRequest).getHeader("Authorization");
-
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            bearerToken = bearerToken.substring(7);
-        } else if (getTokenFromCookie((HttpServletRequest) servletRequest) != null) {
-            bearerToken = getTokenFromCookie((HttpServletRequest) servletRequest);
-        } else {
-            bearerToken = (String) servletRequest.getAttribute("token");
-        }
-
+        String bearerToken = getToken((HttpServletRequest) servletRequest);
         try {
             if (bearerToken != null
                     && jwtTokenProvider.isValid(bearerToken)) {
@@ -46,10 +36,29 @@ public class JwtTokenFilter extends GenericFilterBean {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
+    private String getToken(HttpServletRequest request) {
+        String bearer = request.getHeader("Authorization");
+        if (bearer != null && bearer.startsWith("Bearer ")) {
+            return bearer.substring(7);
+        }
+        String cookie = getTokenFromCookie(request);
+        if (cookie != null) {
+            return cookie;
+        }
+        String attribute = (String) request.getParameter("token");
+        if (attribute != null) {
+            return attribute;
+        }
+        return null;
+    }
+
     private String getTokenFromCookie(HttpServletRequest request) {
-        for (Cookie cookie : request.getCookies()) {
-            if (cookie.getName().equals("x_api_token")) {
-                return cookie.getValue();
+        var cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("x_api_token")) {
+                    return cookie.getValue();
+                }
             }
         }
         return null;
