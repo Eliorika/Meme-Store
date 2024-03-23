@@ -83,7 +83,7 @@ services:
       - '9090:9090'
       - '9000:9000'
     volumes:
-      - ./volumes/minio-data:/minio
+      - ./volumes/minio-data:/data
     networks:
       - backend
 
@@ -95,11 +95,5 @@ services:
     ports:
       - "8108:8108"
     volumes:
-      - ./typesense-data:/data
+      - ./volumes/typesense-data:/data
     command: '--data-dir /data --api-key=somekey --enable-cors'
-
-volumes:
-  dbdata:
-    driver: local
-  minio-data:
-    driver: local
