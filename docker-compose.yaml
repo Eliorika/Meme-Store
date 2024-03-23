@@ -83,7 +83,7 @@ services:
       - '9090:9090'
       - '9000:9000'
     volumes:
-      - ./volumes/minio-data:/data
+      - ./volumes/minio-data:/minio
     networks:
       - backend
 
