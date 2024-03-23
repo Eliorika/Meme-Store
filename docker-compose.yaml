@@ -78,7 +78,7 @@ services:
     environment:
       - MINIO_ROOT_USER=${MINIO_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD}
-    command: server ~/minio --console-address :9090
+    command: server /minio --console-address :9090
     ports:
       - '9090:9090'
       - '9000:9000'
