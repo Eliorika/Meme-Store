@@ -59,7 +59,7 @@ public class MemeController {
                                                     @PathVariable("id") Long memeId){
 
         GetMemeTagsResponse response = memeTagsUseCase.getMemeTags(memeId, galleryId);
-        return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
+        return new ResponseEntity<>(new BasicApiResponse<>(false, response.tags()), HttpStatus.OK);
     }
 
     @PostMapping("{id}/vote/{tag_id}")
