@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/service/feed")
+@RequestMapping("/api/v1/feed")
 public class FeedController {
 
     private final FeedUseCase feedUseCase;
