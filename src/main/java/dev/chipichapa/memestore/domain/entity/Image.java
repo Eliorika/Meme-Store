@@ -5,9 +5,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -46,6 +48,9 @@ public class Image {
     private String description;
     private String blurhash;
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Date createdAt;
     public String getFilenameWithExtension(){
         return this.uuid + "." + this.getExtension();
     }
