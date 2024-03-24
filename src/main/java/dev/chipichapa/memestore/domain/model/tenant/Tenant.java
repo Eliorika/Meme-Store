@@ -1,5 +1,6 @@
 package dev.chipichapa.memestore.domain.model.tenant;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.chipichapa.memestore.domain.enumerated.TenantOrigin;
 import dev.chipichapa.memestore.domain.enumerated.TenantType;
 import dev.chipichapa.memestore.domain.model.BaseModel;
@@ -18,6 +19,7 @@ public class Tenant extends BaseModel {
     private TenantOrigin origin;
     private String displayName;
     private String uniqueName;
+    @JsonProperty("is_restricted")
     private boolean isRestricted;
     private long extremistDate;
     private long foreignAgentDate;

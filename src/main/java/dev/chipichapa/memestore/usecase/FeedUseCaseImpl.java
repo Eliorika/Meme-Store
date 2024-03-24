@@ -48,7 +48,14 @@ public class FeedUseCaseImpl implements FeedUseCase {
     @Transactional
     public List<FeedItem> getRecommendedFeed(int offset, int limit) {
         User user = authUtils.getUserEntity();
-        RecommendedItems recommendedItems = client.getRecommendedItems(offset, limit, user.getId());
+        RecommendedItems recommendedItems;
+
+        try {
+            recommendedItems = client.getRecommendedItems(offset, limit, user.getId());
+        } catch (Exception e) {
+            log.error(Arrays.toString(e.getStackTrace()));
+            return getPublicFeed(offset, limit);
+        }
         List<FeedItem> feedItems = new ArrayList<>();
 
         for (var imageId : recommendedItems.ids()) {
