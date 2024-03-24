@@ -28,8 +28,8 @@ file-storage:
 security:
   jwt:
     secret: amJ1eWd0aXZmdHlyY2Z5dWdpdW9ndW95Z2l1Z295dWd5dW9ndXlmdHlmdXlndXR5dWpndXlvZ3l2aXBqaWhpdWl1aGlqbmlqbg==
-    access: 1
-    refresh: ${REFRESH_JWT_TOKEN}
+    access: ${ACCESS_JWT_TOKEN_AGE}
+    refresh: ${REFRESH_JWT_TOKEN_AGE}
 
 s3-aws:
   url: ${S3_URL}

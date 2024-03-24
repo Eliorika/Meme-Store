@@ -9,6 +9,6 @@ import org.springframework.lang.Nullable;
 public interface MemeTagsUseCase {
     GetMemeTagsResponse getMemeTags(Long memeId, Long galleryId);
 
-    VoteMemeTagResponse voteMemeTag(Long memeId, Long tagId, @Nullable VoteType type);
+    VoteMemeTagResponse voteMemeTag(Long galleryId, Long memeId, Long tagId, @Nullable VoteType type) throws Exception;
 
 }

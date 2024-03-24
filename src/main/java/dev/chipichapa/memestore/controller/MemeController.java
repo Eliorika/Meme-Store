@@ -62,14 +62,15 @@ public class MemeController {
         return new ResponseEntity<>(new BasicApiResponse<>(false, response.tags()), HttpStatus.OK);
     }
 
-    @PostMapping("{id}/vote/{tag_id}")
+    @PostMapping("{gallery_id}_{id}/vote/{tag_id}")
     @PreAuthorize("isAuthenticated()")
-    ResponseEntity<BasicApiResponse<?>> getMemeTags(@PathVariable("id") Long memeId,
+    ResponseEntity<BasicApiResponse<?>> getMemeTags(@PathVariable("gallery_id") Long galleryId,
+                                                    @PathVariable("id") Long memeId,
                                                     @PathVariable("tag_id") Long tagId,
-                                                    @RequestBody VoteMemeTagRequest request){
+                                                    @RequestBody VoteMemeTagRequest request) throws Exception {
 
-        VoteMemeTagResponse response = memeTagsUseCase.voteMemeTag(memeId, tagId, request.type());
-        return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
+        VoteMemeTagResponse response = memeTagsUseCase.voteMemeTag(galleryId, memeId, tagId, request.type());
+        return new ResponseEntity<>(new BasicApiResponse<>(false, response.tags()), HttpStatus.OK);
     }
 
 
