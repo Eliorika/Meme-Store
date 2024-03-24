@@ -1,5 +1,6 @@
 package dev.chipichapa.memestore.controller;
 
+import dev.chipichapa.memestore.domain.dto.BasicApiResponse;
 import dev.chipichapa.memestore.domain.model.FeedItem;
 import dev.chipichapa.memestore.usecase.ifc.FeedUseCase;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,12 @@ public class FeedController {
     private final FeedUseCase feedUseCase;
 
     @GetMapping("/public")
-    public ResponseEntity<List<FeedItem>> getPublicFeed(@RequestParam int offset, @RequestParam int limit) {
-        return ResponseEntity.ok(feedUseCase.getPublicFeed(offset, limit));
+    public ResponseEntity<BasicApiResponse<List<FeedItem>>> getPublicFeed(@RequestParam int offset, @RequestParam int limit) {
+        return ResponseEntity.ok(new BasicApiResponse<>(feedUseCase.getPublicFeed(offset, limit)));
     }
 
     @GetMapping("/recommended")
-    public ResponseEntity<List<FeedItem>> getRecommendedFeed(@RequestParam int offset, @RequestParam int limit) {
-        return ResponseEntity.ok(feedUseCase.getRecommendedFeed(offset, limit));
+    public ResponseEntity<BasicApiResponse<List<FeedItem>>> getRecommendedFeed(@RequestParam int offset, @RequestParam int limit) {
+        return ResponseEntity.ok(new BasicApiResponse<>(feedUseCase.getRecommendedFeed(offset, limit)));
     }
 }
