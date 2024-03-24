@@ -16,7 +16,11 @@ public enum UserState {
 
     FIND_MEME,
 
+    DELETE_MEME,
+
+
     SUCCESS,
+    FAIL,
     NO_ACTION,
     ROUTE
 }

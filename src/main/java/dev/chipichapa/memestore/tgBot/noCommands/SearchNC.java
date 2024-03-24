@@ -37,7 +37,8 @@ public class SearchNC implements INoCommand{
         var list = service.getFilesByQuery(req);
 
         var ids = list.stream().mapToInt(file -> file.id()).boxed().toList();
-        getGalleryMemes.initById(tgId, ids);
+        getGalleryMemes.initById(tgId, ids,true);
+
         userChatStates.addUser(tgId, getNextState());
     }
 }

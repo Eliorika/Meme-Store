@@ -26,7 +26,7 @@ public class GetGalleryMemesCommand implements IDynamicCommands{
 
 
         try {
-            getGalleryMemes.initByGallery(tgId, Integer.valueOf(result));
+            getGalleryMemes.initByGallery(tgId, Integer.valueOf(result), true);
         } catch (NotAllowedException e){
             sm.setText("Не ходи, зашибут!");
             return sm;
