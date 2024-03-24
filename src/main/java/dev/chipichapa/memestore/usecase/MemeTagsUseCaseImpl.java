@@ -4,6 +4,7 @@ import dev.chipichapa.memestore.domain.entity.*;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.enumerated.RecommendationMarks;
 import dev.chipichapa.memestore.domain.enumerated.VoteType;
+import dev.chipichapa.memestore.domain.model.Gallery;
 import dev.chipichapa.memestore.domain.model.tag.MemeTag;
 import dev.chipichapa.memestore.dto.recommedation.MarkRabbitDTO;
 import dev.chipichapa.memestore.dto.tags.GetMemeTagsResponse;
@@ -13,21 +14,20 @@ import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.AlbumRepository;
 import dev.chipichapa.memestore.repository.ImageTagRepository;
 import dev.chipichapa.memestore.repository.UserTagVoteRepository;
-import dev.chipichapa.memestore.service.ifc.ImageService;
-import dev.chipichapa.memestore.service.ifc.RecommendationRabbitProducer;
-import dev.chipichapa.memestore.service.ifc.TagService;
-import dev.chipichapa.memestore.service.ifc.UserService;
+import dev.chipichapa.memestore.service.ifc.*;
 import dev.chipichapa.memestore.usecase.ifc.MemeTagsUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
 import dev.chipichapa.memestore.utils.mapper.image.ImageTagsAndTagVotesToMemeTagMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +37,7 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
     private final ImageService imageService;
     private final UserService userService;
     private final TagService tagService;
+    private final AlbumService albumService;
 
     private final ImageTagRepository imageTagRepository;
     private final AlbumRepository albumRepository;
@@ -65,10 +66,29 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
 
     @Override
     @Transactional
-    public VoteMemeTagResponse voteMemeTag(Long memeId, Long tagId, @Nullable VoteType type) {
+    public VoteMemeTagResponse voteMemeTag(Long galleryId, Long memeId, Long tagId, @Nullable VoteType type) throws Exception {
         User user = getUserFormAuth();
-        Tag tag = tagService.getById(tagId);
         Image image = imageService.getById(memeId);
+        Optional<Tag> optionalTag = image
+                .getImageTags()
+                .stream()
+                .map(ImageTag::getTag)
+                .filter(tag -> tag.getId() == tagId.intValue())
+                .findAny();
+
+        Album album = albumService.getGalleryById(galleryId.intValue());
+
+        if (optionalTag.isEmpty()) {
+            throw new Exception("Tag " + tagId + " not found for image " + memeId);
+        }
+        if (!album.getImages().contains(image)) {
+            throw new Exception("Album " + galleryId + " not contains image " + memeId);
+        }
+        if (!album.getVisible()) {
+            throw new Exception("Album " + galleryId + " not public for image " + memeId);
+        }
+
+        Tag tag = optionalTag.get();
 
         userVoteProcess(type, user, image, tag);
 

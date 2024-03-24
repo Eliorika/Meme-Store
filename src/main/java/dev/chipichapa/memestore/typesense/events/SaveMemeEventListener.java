@@ -9,7 +9,6 @@ import dev.chipichapa.memestore.service.ifc.SearchService;
 import dev.chipichapa.memestore.typesense.dto.File;
 import dev.chipichapa.memestore.typesense.dto.SavedMeme;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 

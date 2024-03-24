@@ -1,5 +1,6 @@
 package dev.chipichapa.memestore.domain.model.tag;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
 
@@ -10,6 +11,7 @@ public class MemeTag extends Tag{
     private final int score;
 
     @Nullable
+    @JsonProperty("my_vote")
     private final Integer vote;
 
     public MemeTag(long id, String name, long memeId, int score, @Nullable Integer vote) {

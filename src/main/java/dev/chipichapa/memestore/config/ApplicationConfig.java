@@ -8,7 +8,9 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -44,6 +46,11 @@ public class ApplicationConfig implements WebMvcConfigurer {
         registry.addMapping("/**");
     }
 
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        WebMvcConfigurer.super.addFormatters(registry);
+        registry.addConverter(new VoteTypeConverter());
+    }
 
     @Bean
     public Queue queue() {

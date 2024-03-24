@@ -57,7 +57,7 @@ public class OcrServiceImpl implements OcrService {
         OcrToken iamToken = getIamTokenOrThrow();
 
         Instant expiredTime = iamToken.getExpiredAt().toInstant();
-        Duration duration = Duration.between(expiredTime, Instant.now());
+        Duration duration = Duration.between(Instant.now(), expiredTime);
 
         return duration.toHours() < 2;
     }

@@ -21,8 +21,15 @@ public class RecommendationClient {
 
     @SneakyThrows
     public RecommendedItems getRecommendedItems(int offset, int limit, long userId) {
-        ResponseEntity<RecommendedItems> response = filterRestClient.get()
-                .uri("/generated", Map.of("userId", userId, "offset", offset, "limit", limit))
+        ResponseEntity<RecommendedItems> response = filterRestClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/generated")
+                        .queryParam("userId", userId)
+                        .queryParam("offset", offset)
+                        .queryParam("limit", limit)
+                        .build()
+                )
                 .retrieve()
                 .toEntity(RecommendedItems.class);
         if (response.getStatusCode().is2xxSuccessful()) {

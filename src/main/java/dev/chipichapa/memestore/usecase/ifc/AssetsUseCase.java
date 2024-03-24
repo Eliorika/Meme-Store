@@ -6,6 +6,7 @@ public interface AssetsUseCase {
     AssetUploadResponse upload(AssetUploadRequest uploadRequest);
 
     AssetGetResponse get(String assetTicket);
+    AssetGetResponse getById(long id);
 
     SuggestionsTagsResponse getSuggestTags(String assetTicket);
 
