@@ -17,4 +17,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     boolean existsByTgId(Long tgId);
 
+
 }

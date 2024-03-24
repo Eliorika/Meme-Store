@@ -43,4 +43,6 @@ public class Tenant extends BaseModel {
         this.extremistDate = extremistDate;
         this.foreignAgentDate = foreignAgentDate;
     }
+
+
 }

@@ -22,4 +22,20 @@ public class TenantsController {
                 HttpStatus.OK
         );
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BasicApiResponse<?>> getTenantById(@PathVariable Long id) {
+        return new ResponseEntity<>(
+                new BasicApiResponse<>(false, tenantUseCase.getTenantById(id)),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/{id}/profile")
+    public ResponseEntity<BasicApiResponse<?>> getTenantProfileById(@PathVariable Long id) {
+        return new ResponseEntity<>(
+                new BasicApiResponse<>(false, tenantUseCase.getTenantProfile(id)),
+                HttpStatus.OK
+        );
+    }
 }
