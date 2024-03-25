@@ -1,6 +1,7 @@
-package dev.chipichapa.memestore.tgBot.callback;
+package dev.chipichapa.memestore.tgBot.callback.meme;
 
 import dev.chipichapa.memestore.dto.meme.GetMemeResponse;
+import dev.chipichapa.memestore.tgBot.callback.ICallBack;
 import dev.chipichapa.memestore.tgBot.req.TelegramBotUtils;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
@@ -22,7 +23,7 @@ import java.util.*;
 
 @Component
 @AllArgsConstructor
-public class GetMemes implements CallBack {
+public class GetMemes implements ICallBack {
 
     private final AssetsUseCase assetsUseCase;
     private final MemeUseCase memeUseCase;
@@ -30,6 +31,8 @@ public class GetMemes implements CallBack {
     private final TelegramBotUtils bot;
     private final Map<Long, Integer> positions = new HashMap<>();
     private final Map<Long, Set<GetMemeResponse>> memes = new HashMap<>();
+    private final Map<Long, Integer> gallery = new HashMap<>();
+
     private final Set<Long> isSearch = new HashSet<>();
     private final int imgCountPerMessage = 5;
 
@@ -68,7 +71,8 @@ public class GetMemes implements CallBack {
             sendPhoto.setCaption("Название: " + meme.getTitle() + "\n\nОписание: " + meme.getDescription());
             sendPhoto.setChatId(tgId);
             if(!isSearch.contains(tgId)){
-                sendPhoto.setReplyMarkup(createEditionKeyboard());
+                int galleyId = gallery.get(tgId);
+                sendPhoto.setReplyMarkup(createEditionKeyboard(meme.getId(), galleyId));
             }
 
             media.add(sendPhoto);
@@ -120,6 +124,7 @@ public class GetMemes implements CallBack {
             throw new NotAllowedException("Не ходи, зашибут!");
         memes.put(id, userMemes);
         positions.put(id, 0);
+        gallery.put(id, galleryId);
 
         if(canEdit)
             isSearch.remove(id);
@@ -146,25 +151,25 @@ public class GetMemes implements CallBack {
         isSearch.remove(tgId);
     }
 
-    private InlineKeyboardMarkup createEditionKeyboard(long memeId){
+    private InlineKeyboardMarkup createEditionKeyboard(long memeId, long galleryId){
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
 
-        InlineKeyboardButton edit = new InlineKeyboardButton();
-        edit.setText("Редактировать мем");
-        edit.setCallbackData("!meme-edit-" + memeId);
+//        InlineKeyboardButton edit = new InlineKeyboardButton();
+//        edit.setText("Редактировать мем");
+//        edit.setCallbackData("!meme-edit-" + memeId + "-" + galleryId);
+//        rowInline.add(edit);
 
         InlineKeyboardButton delete = new InlineKeyboardButton();
         delete.setText("Удалить мем");
-        delete.setCallbackData("!meme-delete" + memeId);
+        delete.setCallbackData("!meme-delete-" + memeId + "-" + galleryId);
+        rowInline.add(delete);
 
         InlineKeyboardButton move = new InlineKeyboardButton();
         move.setText("Переместить мем");
-        move.setCallbackData("!meme-move" + memeId);
+        move.setCallbackData("!meme-move-" + memeId + "-" + galleryId);
 
-        rowInline.add(edit);
-        rowInline.add(delete);
         rowInline.add(move);
         rowsInline.add(rowInline);
 

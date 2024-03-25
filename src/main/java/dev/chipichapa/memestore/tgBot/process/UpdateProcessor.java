@@ -32,7 +32,7 @@ public class UpdateProcessor {
                     return commandProcessor.process(update);
                 }
 
-                if ((UserState.NO_ACTION.equals(status) || UserState.GET_MEMES_SHOW.equals(status)) && update.getCallbackQuery() != null) {
+                if (UserState.isCallBackIgnore(status) && update.getCallbackQuery() != null) {
                     return callBackProcessor.process(update);
                 }
 

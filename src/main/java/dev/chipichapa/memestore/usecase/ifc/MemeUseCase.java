@@ -13,4 +13,8 @@ public interface MemeUseCase {
     UpdateMemeResponse update(UpdateMemeRequest request ,Long memeId);
     Set<GetMemeResponse> getMemesFromGallery(Integer galleryId);
     GetMemeResponse getById(Integer id);
+
+    void deleteMeme(Long memeId, Long galleryId);
+
+    void moveMeme(Long memeId, Long galleryIdFrom, Long galleryIdTo);
 }

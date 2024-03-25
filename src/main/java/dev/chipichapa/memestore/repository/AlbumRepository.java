@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AlbumRepository extends CrudRepository<Album, Integer> {
 
@@ -20,4 +21,12 @@ public interface AlbumRepository extends CrudRepository<Album, Integer> {
             "FROM Album a " +
             "WHERE a.id = :id AND a.visible = TRUE")
     boolean findByIdAndVisibleTrue(@Param("id") Integer id);
+
+
+    @Query(value = """
+            select *
+            from albums
+            where (author_id = :author and type = 'BIN')
+            """, nativeQuery = true)
+    Optional<Album> findBinByUser(@Param("author")int author);
 }

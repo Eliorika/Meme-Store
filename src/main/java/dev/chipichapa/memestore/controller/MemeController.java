@@ -43,6 +43,7 @@ public class MemeController {
         return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
     }
 
+
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     ResponseEntity<BasicApiResponse<?>> update(@PathVariable("id") long memeId,
@@ -51,6 +52,7 @@ public class MemeController {
         UpdateMemeResponse response = memeUseCase.update(updateRequest, memeId);
         return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);
     }
+
 
 
     @GetMapping("{gallery_id}_{id}/tags")

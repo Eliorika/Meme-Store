@@ -30,19 +30,28 @@ public class GalleryCommand implements IStaticCommand {
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-        List<InlineKeyboardButton> rowInline = new ArrayList<>();
 
+        List<InlineKeyboardButton> rowInlineGetAlbums = new ArrayList<>();
         InlineKeyboardButton getAlbums = new InlineKeyboardButton();
         getAlbums.setText("Посмотреть альбомы");
         getAlbums.setCallbackData("!gallery-get-all");
 
+        List<InlineKeyboardButton> rowInlineCreateAlbum = new ArrayList<>();
         InlineKeyboardButton createAlbum = new InlineKeyboardButton();
         createAlbum.setText("Создать альбом");
         createAlbum.setCallbackData("!gallery-create-album");
 
-        rowInline.add(getAlbums);
-        rowInline.add(createAlbum);
-        rowsInline.add(rowInline);
+        List<InlineKeyboardButton> rowInlineDeleteAlbum = new ArrayList<>();
+        InlineKeyboardButton deleteAlbum = new InlineKeyboardButton();
+        deleteAlbum.setText("Удалить альбом");
+        deleteAlbum.setCallbackData("!deleteAlbum");
+
+        rowInlineGetAlbums.add(getAlbums);
+        rowInlineCreateAlbum.add(createAlbum);
+        rowInlineDeleteAlbum.add(deleteAlbum);
+        rowsInline.add(rowInlineGetAlbums);
+        rowsInline.add(rowInlineCreateAlbum);
+        rowsInline.add(rowInlineDeleteAlbum);
 
         markupInline.setKeyboard(rowsInline);
         sm.setReplyMarkup(markupInline);

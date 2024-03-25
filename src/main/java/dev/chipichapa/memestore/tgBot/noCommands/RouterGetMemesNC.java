@@ -1,16 +1,12 @@
 package dev.chipichapa.memestore.tgBot.noCommands;
 
-import dev.chipichapa.memestore.service.ifc.SearchService;
-import dev.chipichapa.memestore.tgBot.callback.GetMemes;
+import dev.chipichapa.memestore.tgBot.callback.meme.GetMemes;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 @AllArgsConstructor
