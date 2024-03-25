@@ -58,7 +58,10 @@ public class MemeUseCaseImpl implements MemeUseCase {
     @Override
     @Transactional
     public CreateMemeResponse create(CreateMemeRequest createRequest) {
+        User user = authUtils.getUserEntity();
         String assetTicket = createRequest.getAssetTicket();
+
+        isOwnerOrContributor(user.getId(), createRequest.getGalleryId());
 
         boolean isDraftExist = draftRepository.existsById(UUID.fromString(assetTicket));
         if (!isDraftExist) {
@@ -86,6 +89,12 @@ public class MemeUseCaseImpl implements MemeUseCase {
         ));
 
         return ImageMapper.toResponse(image, tagsIds);
+    }
+
+    private void isOwnerOrContributor(Long userId, Integer albumId) {
+        if(!albumRepository.isOwnerOrContributor(userId, albumId)){
+            throw new AccessDeniedException("You can't do anything with this album, because you are not the owner");
+        }
     }
 
     @Override
