@@ -1,11 +1,9 @@
 package dev.chipichapa.memestore.domain.model;
 
-import dev.chipichapa.memestore.domain.entity.Image;
-import dev.chipichapa.memestore.domain.entity.user.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -15,6 +13,8 @@ public class Gallery extends BaseModel{
     private Set<Long> contributorsIds;
     private String name;
     private String description;
+
+    @JsonProperty(value = "public")
     private boolean isPublic;
     private boolean ownerByExtremist;
     private boolean currentTenantCanEdit;
