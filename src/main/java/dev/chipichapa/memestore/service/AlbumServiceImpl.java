@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class AlbumServiceImpl implements AlbumService {
 
 
     @Override
-    public Album saveGallery(GalleryCreateRequest galleryCreateRequest, User user){
+    public Album saveGallery(GalleryCreateRequest galleryCreateRequest, User user) {
         Album album = new Album()
                 .setName(galleryCreateRequest.name())
                 .setDescription(galleryCreateRequest.description())
@@ -82,8 +83,17 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<Album> getAllByAuthor(long authorId){
+    public List<Album> getAllByAuthor(long authorId) {
         return albumRepository.findAllByAuthorId(authorId);
+    }
+
+    @Override
+    public Set<Album> getAllAlbumsForUserContributorInclude(long userId) {
+        List<Album> byAuthorId = albumRepository.findAllByAuthorId(userId);
+        List<Album> byContributorsId = albumRepository.findByContributorsId(userId);
+
+        return Stream.concat(byAuthorId.stream(), byContributorsId.stream())
+                .collect(Collectors.toSet());
     }
 
     @Override

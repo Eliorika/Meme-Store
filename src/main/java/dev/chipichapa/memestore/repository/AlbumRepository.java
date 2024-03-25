@@ -29,4 +29,6 @@ public interface AlbumRepository extends CrudRepository<Album, Integer> {
             where (author_id = :author and type = 'BIN')
             """, nativeQuery = true)
     Optional<Album> findBinByUser(@Param("author")int author);
+
+    List<Album> findByContributorsId(long authorId);
 }
