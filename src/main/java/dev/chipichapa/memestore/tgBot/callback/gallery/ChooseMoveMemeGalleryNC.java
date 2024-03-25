@@ -1,8 +1,8 @@
-package dev.chipichapa.memestore.tgBot.noCommands.asset;
+package dev.chipichapa.memestore.tgBot.callback.gallery;
 
 import dev.chipichapa.memestore.domain.model.Gallery;
-import dev.chipichapa.memestore.dto.meme.CreateMemeRequest;
-import dev.chipichapa.memestore.tgBot.noCommands.INoCommand;
+import dev.chipichapa.memestore.tgBot.callback.ICallBack;
+import dev.chipichapa.memestore.tgBot.callback.meme.MoveMeme;
 import dev.chipichapa.memestore.tgBot.noCommands.SuccessfulStatusNC;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
@@ -20,38 +20,36 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class UploadMemeGalleryNC implements INoCommand {
+public class ChooseMoveMemeGalleryNC implements ICallBack {
     private final MemeUseCase memeUseCase;
     private UserChatStates userChatStates;
     private GalleryUseCase galleryUseCase;
-    private SuccessfulStatusNC successfulStatusNC;
-    @Override
-    public UserState getNextState() {
-        return UserState.SUCCESS;
-    }
+    private MoveMeme moveMeme;
 
     @Override
-    public UserState getState() {
-        return UserState.UPLOAD_MEME_GALLERY;
-    }
-
-    @Override
-    public SendMessage handleMessage(Update update, SendMessage sm) {
+    public SendMessage handle(Update update, SendMessage sm) {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        userChatStates.addUser(update.getCallbackQuery().getFrom().getId(), UserState.MOVE_MEME);
+        String input = update.getCallbackQuery().getData();
+        String[] result = input.replace(getCallBack(), "").split("-");
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        long tgId = update.getCallbackQuery()==null?update.getMessage().getFrom().getId()
+                :update.getCallbackQuery().getFrom().getId();
 
-        var albums = galleryUseCase.getAll();
+        var albums = galleryUseCase.getAll().stream().filter(al->(al.getId()!=Long.valueOf(result[1]))).toList();
+        moveMeme.addToMove(tgId, Long.valueOf(result[0]), Long.valueOf(result[1]));
 
-        sm.setText("Выберите альбом для сохранения:");
+        sm.setText("Куда переместить мем:");
         for(Gallery gallery: albums){
             InlineKeyboardButton getAlbums = new InlineKeyboardButton();
             getAlbums.setText(gallery.getName());
-            getAlbums.setCallbackData(String.valueOf(gallery.getId()));
+            getAlbums.setCallbackData("!meme-gallery-move-"+ gallery.getId());
             List<InlineKeyboardButton> rowInline = new ArrayList<>();
             rowInline.add(getAlbums);
             rowsInline.add(rowInline);
         }
 
+        //userChatStates.addUser(tgId, UserState.DELETE_GALLERY);
 
         markupInline.setKeyboard(rowsInline);
         sm.setReplyMarkup(markupInline);
@@ -59,22 +57,9 @@ public class UploadMemeGalleryNC implements INoCommand {
     }
 
     @Override
-    public void handleState(Update update, Long tgId){
-        CreateMemeRequest req = userChatStates.getUserMeme(tgId);
-        req.setGalleryId(Integer.valueOf(update.getCallbackQuery().getData()));
-
-        try {
-            memeUseCase.create(req);
-            userChatStates.addUser(tgId, getNextState());
-            successfulStatusNC.addMessage(tgId, "Мем \"" +req.getTitle()+"\" успешно добавлен!");
-
-        } catch (Exception e){
-            //TODO FAILURE
-            userChatStates.addUser(tgId, UserState.NO_ACTION);
-
-        }
-
-
-
+    public String getCallBack() {
+        return "!meme-move-";
     }
+
+
 }

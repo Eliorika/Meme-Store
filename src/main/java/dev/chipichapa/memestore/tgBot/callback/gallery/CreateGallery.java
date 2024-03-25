@@ -1,7 +1,7 @@
 package dev.chipichapa.memestore.tgBot.callback.gallery;
 
 import dev.chipichapa.memestore.domain.entity.Album;
-import dev.chipichapa.memestore.tgBot.callback.CallBack;
+import dev.chipichapa.memestore.tgBot.callback.ICallBack;
 import dev.chipichapa.memestore.tgBot.noCommands.gallery.create.CreateGalleryNameNC;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 @AllArgsConstructor
-public class CreateGallery implements CallBack {
+public class CreateGallery implements ICallBack {
     private UserChatStates userChatStates;
     private CreateGalleryNameNC createGalleryNameNC;
     @Override

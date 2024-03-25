@@ -23,4 +23,10 @@ public interface AlbumService {
     boolean isVisibleAlbum (long albumId);
 
     Set<Long> getAllContributorIdsIncludeOwner(long albumId);
+
+    Album getBin(int userId);
+
+    void deleteFromBin(int userId, long memeId);
+
+    void moveTo(long imageId, long from, long to);
 }

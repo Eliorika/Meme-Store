@@ -13,4 +13,6 @@ public interface ImageService {
     List<Image> getLastPublicImages(int offset, int limit);
 
     Optional<Image> getImageIfPublicAlbumsExists(long imageId);
+
+
 }

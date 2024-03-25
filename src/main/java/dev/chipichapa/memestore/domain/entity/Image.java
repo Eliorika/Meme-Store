@@ -55,4 +55,21 @@ public class Image {
         return this.uuid + "." + this.getExtension();
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Image other = (Image) o;
+
+        return uuid != null ? uuid.equals(other.uuid) : other.uuid == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid != null ? uuid.hashCode() : 0;
+    }
+
+
 }

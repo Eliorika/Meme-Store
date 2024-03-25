@@ -2,7 +2,7 @@ package dev.chipichapa.memestore.tgBot.callback.gallery;
 
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.model.Gallery;
-import dev.chipichapa.memestore.tgBot.callback.CallBack;
+import dev.chipichapa.memestore.tgBot.callback.ICallBack;
 import dev.chipichapa.memestore.usecase.ifc.GalleryUseCase;
 import dev.chipichapa.memestore.usecase.ifc.GetUserUseCase;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component("!gallery-get-all")
 @AllArgsConstructor
-public class GetGalleries implements CallBack {
+public class GetGalleries implements ICallBack {
     private final GalleryUseCase galleryUseCase;
     private final GetUserUseCase getUserUseCase;
 

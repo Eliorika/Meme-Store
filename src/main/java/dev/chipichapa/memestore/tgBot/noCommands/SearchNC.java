@@ -1,7 +1,7 @@
 package dev.chipichapa.memestore.tgBot.noCommands;
 
 import dev.chipichapa.memestore.service.ifc.SearchService;
-import dev.chipichapa.memestore.tgBot.callback.GetMemes;
+import dev.chipichapa.memestore.tgBot.callback.meme.GetMemes;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,8 @@ public class SearchNC implements INoCommand{
         var list = service.getFilesByQuery(req);
 
         var ids = list.stream().mapToInt(file -> file.id()).boxed().toList();
-        getGalleryMemes.initById(tgId, ids);
+        getGalleryMemes.initById(tgId, ids,true);
+
         userChatStates.addUser(tgId, getNextState());
     }
 }

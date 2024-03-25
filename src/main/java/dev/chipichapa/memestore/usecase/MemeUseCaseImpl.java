@@ -1,8 +1,10 @@
 package dev.chipichapa.memestore.usecase;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.domain.entity.user.User;
+import dev.chipichapa.memestore.domain.enumerated.AlbumType;
 import dev.chipichapa.memestore.domain.enumerated.RecommendationMarks;
 import dev.chipichapa.memestore.dto.meme.*;
 import dev.chipichapa.memestore.dto.recommedation.ItemRabbitDTO;
@@ -170,6 +172,25 @@ public class MemeUseCaseImpl implements MemeUseCase {
         var img = imageService.getById((long)id);
         var meme = imageToMemeMapper.toMeme(img, getImageTagIds(img));
         return new GetMemeResponse(meme);
+    }
+
+    @Override
+    public void deleteMeme(Long memeId, Long galleryId) {
+        UserDetails userDetails = authUtils.getUserDetailsOrThrow();
+        Album album = albumRepository.findById(galleryId.intValue()).orElse(null);
+
+
+        User user = userService.getByUsername(userDetails.getUsername());
+        if(galleryId != -200 && album != null && !album.getAlbumType().equals(AlbumType.BIN)){
+           albumService.moveTo(memeId, galleryId, albumService.getBin((int) user.getId()).getId());
+        } else {
+            albumService.deleteFromBin((int) user.getId(), memeId);
+        }
+    }
+
+    @Override
+    public void moveMeme(Long memeId, Long galleryIdFrom, Long galleryIdTo) {
+        albumService.moveTo(memeId, galleryIdFrom, galleryIdTo);
     }
 
     private Image getMemeById(Long memeId) {

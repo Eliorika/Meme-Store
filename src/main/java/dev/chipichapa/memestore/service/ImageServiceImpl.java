@@ -2,6 +2,7 @@ package dev.chipichapa.memestore.service;
 
 import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
+import dev.chipichapa.memestore.repository.AlbumRepository;
 import dev.chipichapa.memestore.repository.ImageRepository;
 import dev.chipichapa.memestore.service.ifc.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
+    private final AlbumRepository albumRepository;
 
     @Override
     public Image getById(Long id) {
@@ -52,4 +54,6 @@ public class ImageServiceImpl implements ImageService {
     private UUID ticketToUuid(String ticket) {
         return UUID.fromString(ticket);
     }
+
+
 }
