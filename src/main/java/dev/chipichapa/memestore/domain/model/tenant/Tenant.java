@@ -46,5 +46,27 @@ public class Tenant extends BaseModel {
         this.foreignAgentDate = foreignAgentDate;
     }
 
+    public Tenant(long id, List<Integer> roles, String type, String origin, String displayName, String uniqueName, boolean isRestricted) {
+        super(id);
+        this.roles = roles;
+        this.type = type;
+        this.origin = origin;
+        this.displayName = displayName;
+        this.uniqueName = uniqueName;
+        this.isRestricted = isRestricted;
+    }
+
+    public Tenant(long id, List<Integer> roles, String type, String origin, String displayName, String uniqueName, boolean isRestricted, long extremistDate, long foreignAgentDate) {
+        super(id);
+        this.roles = roles;
+        this.type = type;
+        this.origin = origin;
+        this.displayName = displayName;
+        this.uniqueName = uniqueName;
+        this.isRestricted = isRestricted;
+        this.extremistDate = extremistDate;
+        this.foreignAgentDate = foreignAgentDate;
+    }
+
 
 }
