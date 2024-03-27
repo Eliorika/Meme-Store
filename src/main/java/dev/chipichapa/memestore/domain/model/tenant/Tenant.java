@@ -15,8 +15,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Tenant extends BaseModel {
     private List<Integer> roles;
-    private TenantType type;
-    private TenantOrigin origin;
+    private String type;
+    private String origin;
     private String displayName;
     private String uniqueName;
     @JsonProperty("is_restricted")
@@ -27,6 +27,28 @@ public class Tenant extends BaseModel {
     public Tenant(long id, List<Integer> roles, TenantType type, TenantOrigin origin, String displayName, String uniqueName, boolean isRestricted) {
         super(id);
         this.roles = roles;
+        this.type = type.getValue();
+        this.origin = origin.getValue();
+        this.displayName = displayName;
+        this.uniqueName = uniqueName;
+        this.isRestricted = isRestricted;
+    }
+
+    public Tenant(long id, List<Integer> roles, TenantType type, TenantOrigin origin, String displayName, String uniqueName, boolean isRestricted, long extremistDate, long foreignAgentDate) {
+        super(id);
+        this.roles = roles;
+        this.type = type.getValue();
+        this.origin = origin.getValue();
+        this.displayName = displayName;
+        this.uniqueName = uniqueName;
+        this.isRestricted = isRestricted;
+        this.extremistDate = extremistDate;
+        this.foreignAgentDate = foreignAgentDate;
+    }
+
+    public Tenant(long id, List<Integer> roles, String type, String origin, String displayName, String uniqueName, boolean isRestricted) {
+        super(id);
+        this.roles = roles;
         this.type = type;
         this.origin = origin;
         this.displayName = displayName;
@@ -34,7 +56,7 @@ public class Tenant extends BaseModel {
         this.isRestricted = isRestricted;
     }
 
-    public Tenant(long id, List<Integer> roles, TenantType type, TenantOrigin origin, String displayName, String uniqueName, boolean isRestricted, long extremistDate, long foreignAgentDate) {
+    public Tenant(long id, List<Integer> roles, String type, String origin, String displayName, String uniqueName, boolean isRestricted, long extremistDate, long foreignAgentDate) {
         super(id);
         this.roles = roles;
         this.type = type;

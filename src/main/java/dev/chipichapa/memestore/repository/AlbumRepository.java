@@ -22,6 +22,11 @@ public interface AlbumRepository extends CrudRepository<Album, Integer> {
             "WHERE a.id = :id AND a.visible = TRUE")
     boolean findByIdAndVisibleTrue(@Param("id") Integer id);
 
+    @Query(value = """
+            select count (*) > 0 from albums a, album_contributors ac 
+            where (a.author_id = :userId or (ac.user_id = :userId and ac.album_id = :albumId))
+            """, nativeQuery = true)
+    boolean isOwnerOrContributor(@Param("userId") Long userId, @Param("albumId") Integer albumId);
 
     @Query(value = """
             select *
@@ -29,4 +34,6 @@ public interface AlbumRepository extends CrudRepository<Album, Integer> {
             where (author_id = :author and type = 'BIN')
             """, nativeQuery = true)
     Optional<Album> findBinByUser(@Param("author")int author);
+
+    List<Album> findByContributorsId(long authorId);
 }

@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/tenants")
+@RequestMapping("/api/v1/tenant")
 @RequiredArgsConstructor
 public class TenantsController {
 
     private final TenantUseCase tenantUseCase;
 
-    @GetMapping("/me")
+    @GetMapping("/my_profile")
     public ResponseEntity<BasicApiResponse<?>> getTenant() {
         return new ResponseEntity<>(
                 new BasicApiResponse<>(false, tenantUseCase.getTenant()),

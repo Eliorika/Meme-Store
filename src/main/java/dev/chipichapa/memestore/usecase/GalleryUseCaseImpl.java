@@ -5,6 +5,7 @@ import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.enumerated.AlbumType;
 import dev.chipichapa.memestore.domain.model.Gallery;
+import dev.chipichapa.memestore.dto.AvailableName;
 import dev.chipichapa.memestore.dto.gallery.ContributorsGallery;
 import dev.chipichapa.memestore.dto.gallery.GalleryCreateRequest;
 import dev.chipichapa.memestore.service.ifc.AlbumService;
@@ -18,11 +19,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,10 +59,10 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
     public boolean deleteGallery(int id) {
         try {
             Album album = albumService.getGalleryById(id);
-            if(!album.getAlbumType().equals(AlbumType.USER_CREATED))
+            if (!album.getAlbumType().equals(AlbumType.USER_CREATED))
                 return false;
-            for (Image img: album.getImages()) {
-                memeUseCase.deleteMeme((long)img.getId(), (long) id);
+            for (Image img : album.getImages()) {
+                memeUseCase.deleteMeme((long) img.getId(), (long) id);
             }
 
             albumService.deleteGallery(id);
@@ -77,8 +76,20 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
     @Override
     @Transactional
     public List<Gallery> getAllForUser(User user) {
-        var res = albumService.getAllByAuthor(user.getId()).stream().map(al-> AlbumMapper.map(al)).collect(Collectors.toList());
+        var res = albumService.getAllByAuthor(user.getId()).stream().map(al -> AlbumMapper.map(al)).collect(Collectors.toList());
         return res;
+    }
+
+    @Override
+    @Transactional
+    public List<AvailableName> getAvailableMemes() {
+        User user = authUtils.getUserEntity();
+
+        return albumService
+                .getAllAlbumsForUserContributorInclude(user.getId())
+                .stream()
+                .map(album -> new AvailableName(album.getId(), album.getName()))
+                .toList();
     }
 
 
@@ -93,6 +104,7 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
         }
         return AlbumMapper.map(album);
     }
+
     @Override
     @Transactional
     public Gallery deleteContributors(int id, ContributorsGallery contributorsGallery) {
@@ -112,7 +124,6 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
         List<Album> galleryList = albumService.getAllByAuthor(user.getId());
         return AlbumMapper.map(galleryList);
     }
-
 
 
 }

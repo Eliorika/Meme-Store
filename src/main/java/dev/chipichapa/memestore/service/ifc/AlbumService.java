@@ -20,7 +20,9 @@ public interface AlbumService {
 
     List<Album> getAllByAuthor(long authorId);
 
-    boolean isVisibleAlbum (long albumId);
+    Set<Album> getAllAlbumsForUserContributorInclude(long userId);
+
+    boolean isVisibleAlbum(long albumId);
 
     Set<Long> getAllContributorIdsIncludeOwner(long albumId);
 
