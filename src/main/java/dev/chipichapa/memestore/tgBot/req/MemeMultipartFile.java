@@ -1,5 +1,6 @@
 package dev.chipichapa.memestore.tgBot.req;
 
+import dev.chipichapa.memestore.utils.FileUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @AllArgsConstructor
-public class TelegramMultipartFile implements MultipartFile {
+public class MemeMultipartFile implements MultipartFile {
     private final String name;
     private final byte[] content;
 
@@ -25,7 +26,7 @@ public class TelegramMultipartFile implements MultipartFile {
 
     @Override
     public String getContentType() {
-        return "jpeg";
+        return FileUtils.getRealMimeType(content).toString();
     }
 
     @Override

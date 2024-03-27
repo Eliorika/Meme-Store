@@ -15,6 +15,7 @@ import dev.chipichapa.memestore.service.ifc.ImageService;
 import dev.chipichapa.memestore.service.ifc.UserService;
 import dev.chipichapa.memestore.usecase.ifc.AssetsUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
+import dev.chipichapa.memestore.utils.FileUtils;
 import dev.chipichapa.memestore.utils.ImageUtils;
 import io.trbl.blurhash.BlurHash;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +62,14 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
         User user = userService.getByUsername(userDetails.getUsername());
 
         MultipartFile file = uploadRequest.getFile();
-        String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (file == null)
+            throw new IllegalArgumentException("Missing file body");
+
+        var fileType = FileUtils.getRealMimeType(file.getBytes());
+        String fileExtension = FileUtils.ALLOWED_MIME_EXTENSIONS.get(fileType);
+
+        if (fileExtension == null)
+            throw new IllegalArgumentException("Wrong extension");
 
         UUID uuid = UUID.randomUUID();
 

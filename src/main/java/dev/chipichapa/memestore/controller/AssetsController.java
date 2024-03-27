@@ -3,13 +3,13 @@ package dev.chipichapa.memestore.controller;
 import dev.chipichapa.memestore.domain.dto.BasicApiResponse;
 import dev.chipichapa.memestore.domain.enumerated.AssetType;
 import dev.chipichapa.memestore.dto.asset.*;
+import dev.chipichapa.memestore.tgBot.req.MemeMultipartFile;
 import dev.chipichapa.memestore.usecase.ifc.AssetsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URLConnection;
 
@@ -20,11 +20,11 @@ public class AssetsController {
 
     private final AssetsUseCase assetsUseCase;
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/upload", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<BasicApiResponse<AssetUploadResponse>> upload(@RequestParam(name = "type") AssetType type,
-                                                                        @RequestBody MultipartFile file) {
+                                                                        @RequestBody byte[] file) {
         AssetUploadResponse response = assetsUseCase.upload(
-                new AssetUploadRequest(type, file)
+                new AssetUploadRequest(type, new MemeMultipartFile("", file))
         );
 
         return new ResponseEntity<>(new BasicApiResponse<>(false, response), HttpStatus.OK);

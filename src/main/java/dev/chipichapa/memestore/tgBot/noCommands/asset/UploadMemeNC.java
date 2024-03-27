@@ -5,7 +5,7 @@ import dev.chipichapa.memestore.dto.asset.AssetUploadRequest;
 import dev.chipichapa.memestore.dto.meme.CreateMemeRequest;
 import dev.chipichapa.memestore.tgBot.noCommands.INoCommand;
 import dev.chipichapa.memestore.tgBot.req.TelegramBotUtils;
-import dev.chipichapa.memestore.tgBot.req.TelegramMultipartFile;
+import dev.chipichapa.memestore.tgBot.req.MemeMultipartFile;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import dev.chipichapa.memestore.usecase.ifc.AssetsUseCase;
@@ -81,7 +81,7 @@ public class UploadMemeNC implements INoCommand {
 
                 byte[] fileBytes = bot.downloadFile(fileId);
 
-                return new TelegramMultipartFile(photo.getFileId(), fileBytes);
+                return new MemeMultipartFile(photo.getFileId(), fileBytes);
 
         }
         return null;
