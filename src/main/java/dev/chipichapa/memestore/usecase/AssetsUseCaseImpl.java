@@ -82,7 +82,7 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
         imageRepository.save(savingAsset);
 
         executor.execute(() -> {
-            calculateBlurHashForImageAndSave(file, savingAsset);
+            calculateBlurHashForImageAndSave(file, savingAsset.getId());
         });
 
         fileService.save(new File(savingAsset.getFilenameWithExtension(), file.getBytes()));
@@ -155,9 +155,10 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
         return new AssetGetInfoResponse(image.getId(), image.getBlurhash(), AssetType.IMAGE, url);
     }
 
-    private void calculateBlurHashForImageAndSave(MultipartFile file, Image image) {
+    private void calculateBlurHashForImageAndSave(MultipartFile file, Integer id) {
         try {
             String hash = getHashForFile(file.getBytes());
+            Image image = imageService.getById((long) id);
             image.setBlurhash(hash);
             imageRepository.save(image);
         } catch (IOException e) {
