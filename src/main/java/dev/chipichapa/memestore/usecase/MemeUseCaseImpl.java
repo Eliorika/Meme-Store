@@ -92,7 +92,8 @@ public class MemeUseCaseImpl implements MemeUseCase {
     }
 
     private void isOwnerOrContributor(Long userId, Integer albumId) {
-        if(!albumRepository.isOwnerOrContributor(userId, albumId)){
+        Set<Long> contributorIdsIncludeOwner = albumService.getAllContributorIdsIncludeOwner(albumId);
+        if(!contributorIdsIncludeOwner.contains(userId)){
             throw new AccessDeniedException("You can't do anything with this album, because you are not the owner");
         }
     }
