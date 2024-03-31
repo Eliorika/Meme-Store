@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,11 +64,20 @@ public class TenantUseCaseImpl implements TenantUseCase {
                 .map(BaseModel::getId)
                 .toList();
 
-        var privateGalleries = allGalleries.stream()
-                .filter(g -> (user.equals(currentUser) || (!g.isPublic() && g.getContributorIds().contains(currentUser.getId()))))
-                .map(BaseModel::getId)
-                .toList();
+        List<Long> privateGalleries;
+        if (user.equals(currentUser)) {
+            privateGalleries = allGalleries.stream()
+                    .filter(g -> (!g.isPublic()))
+                    .map(BaseModel::getId)
+                    .toList();
 
+        } else {
+            privateGalleries = allGalleries.stream()
+                    .filter(g -> (!g.isPublic() && g.getContributorIds().contains(currentUser.getId())))
+                    .map(BaseModel::getId)
+                    .toList();
+
+        }
         return new TenantProfile(getTenantByUser(user), publicGalleries, privateGalleries);
     }
 

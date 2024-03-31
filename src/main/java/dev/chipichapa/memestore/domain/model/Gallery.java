@@ -16,6 +16,6 @@ public class Gallery extends BaseModel{
 
     @JsonProperty(value = "public")
     private boolean isPublic;
-    private boolean ownerByExtremist;
+    private boolean ownedByExtremist;
     private boolean currentTenantCanEdit;
 }
