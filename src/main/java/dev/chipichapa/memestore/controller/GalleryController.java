@@ -21,44 +21,44 @@ public class GalleryController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<Gallery> create(@RequestBody GalleryCreateRequest galleryCreateRequest) {
+    public ResponseEntity<BasicApiResponse<Gallery>> create(@RequestBody GalleryCreateRequest galleryCreateRequest) {
         Gallery gallery = galleryUseCase.create(galleryCreateRequest);
-        return ResponseEntity.ok(gallery);
+        return ResponseEntity.ok(new BasicApiResponse<>(gallery));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Gallery> getGalleryById(@PathVariable int id) {
+    public ResponseEntity<BasicApiResponse<Gallery>> getGalleryById(@PathVariable int id) {
         Gallery gallery = galleryUseCase.getById(id);
-        return ResponseEntity.ok(gallery);
+        return ResponseEntity.ok(new BasicApiResponse<>(gallery));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Gallery> saveGalleryChanges(@PathVariable int id, @RequestBody GalleryCreateRequest galleryCreateRequest) {
+    public ResponseEntity<BasicApiResponse<Gallery>> saveGalleryChanges(@PathVariable int id, @RequestBody GalleryCreateRequest galleryCreateRequest) {
         Gallery gallery = galleryUseCase.saveGalleryChanges(galleryCreateRequest, id);
-        return ResponseEntity.ok(gallery);
+        return ResponseEntity.ok(new BasicApiResponse<>(gallery));
     }
 
     @PostMapping("/{id}/contributors/add")
-    public ResponseEntity<Gallery> add(@PathVariable int id, @RequestBody ContributorsGallery contributorsGallery) {
+    public ResponseEntity<BasicApiResponse<Gallery>> add(@PathVariable int id, @RequestBody ContributorsGallery contributorsGallery) {
         Gallery gallery = galleryUseCase.addContributors(id, contributorsGallery);
-        return ResponseEntity.ok(gallery);
+        return ResponseEntity.ok(new BasicApiResponse<>(gallery));
     }
 
     @PostMapping("/{id}/contributors/remove")
-    public ResponseEntity<Gallery> delete(@PathVariable int id, @RequestBody ContributorsGallery contributorsGallery) {
+    public ResponseEntity<BasicApiResponse<Gallery>> delete(@PathVariable int id, @RequestBody ContributorsGallery contributorsGallery) {
         Gallery gallery = galleryUseCase.deleteContributors(id, contributorsGallery);
-        return ResponseEntity.ok(gallery);
+        return ResponseEntity.ok(new BasicApiResponse<>(gallery));
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteGallery(@PathVariable int id) {
-        return ResponseEntity.ok(galleryUseCase.deleteGallery(id));
+    public ResponseEntity<BasicApiResponse<Boolean>> deleteGallery(@PathVariable int id) {
+        return ResponseEntity.ok(new BasicApiResponse<>(galleryUseCase.deleteGallery(id)));
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Gallery>> getAll() {
-        return ResponseEntity.ok(galleryUseCase.getAll());
+    public ResponseEntity<BasicApiResponse<List<Gallery>>> getAll() {
+        return ResponseEntity.ok(new BasicApiResponse<>(galleryUseCase.getAll()));
     }
 
     @GetMapping("/available_names")

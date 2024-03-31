@@ -62,12 +62,5 @@ public class Album {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "album_id"))
     private Set<User> contributors;
-    public Set<User> getContributors() {
-        return contributors;
-    }
-
-    public void setContributors(Set<User> contributors) {
-        this.contributors = contributors;
-    }
 
 }

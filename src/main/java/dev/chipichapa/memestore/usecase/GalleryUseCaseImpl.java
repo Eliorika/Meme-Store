@@ -76,8 +76,7 @@ public class GalleryUseCaseImpl implements GalleryUseCase {
     @Override
     @Transactional
     public List<Gallery> getAllForUser(User user) {
-        var res = albumService.getAllByAuthor(user.getId()).stream().map(al -> AlbumMapper.map(al)).collect(Collectors.toList());
-        return res;
+        return albumService.getAllByAuthor(user.getId()).stream().map(AlbumMapper::map).collect(Collectors.toList());
     }
 
     @Override

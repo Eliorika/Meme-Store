@@ -64,7 +64,7 @@ public class TenantUseCaseImpl implements TenantUseCase {
                 .toList();
 
         var privateGalleries = allGalleries.stream()
-                .filter(g -> (!g.isPublic() && g.getContributorsIds().contains(currentUser.getId())))
+                .filter(g -> (user.equals(currentUser) || (!g.isPublic() && g.getContributorIds().contains(currentUser.getId()))))
                 .map(BaseModel::getId)
                 .toList();
 

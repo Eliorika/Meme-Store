@@ -1,16 +1,18 @@
 package dev.chipichapa.memestore.utils.mapper;
 
 import dev.chipichapa.memestore.domain.entity.Album;
+import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.model.Gallery;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AlbumMapper {
 
     public static Gallery map(Album album) {
         var res = new Gallery(
                 album.getAuthor().getId(),
-                null,
+                album.getContributors().stream().map(User::getId).collect(Collectors.toSet()),
                 album.getName(),
                 album.getDescription(),
                 album.getVisible(),

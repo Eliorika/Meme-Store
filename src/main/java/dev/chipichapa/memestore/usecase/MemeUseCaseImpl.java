@@ -114,7 +114,7 @@ public class MemeUseCaseImpl implements MemeUseCase {
             Set<Long> contributors = albumService
                     .getAllContributorIdsIncludeOwner(albumId);
 
-            if (contributors.contains(user.getId())){
+            if (!contributors.contains(user.getId())){
                 throw new AccessDeniedException();
             }
         }

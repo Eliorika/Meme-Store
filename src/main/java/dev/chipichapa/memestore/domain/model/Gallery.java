@@ -10,7 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class Gallery extends BaseModel{
     private long ownerId;
-    private Set<Long> contributorsIds;
+    private Set<Long> contributorIds;
     private String name;
     private String description;
 
