@@ -32,8 +32,15 @@ public class TenantUseCaseImpl implements TenantUseCase {
         User user = authUtils.getUserEntity();
         List<Gallery> allGalleries = galleryUseCase.getAllForUser(user);
 
-        var publicGalleries = allGalleries.stream().filter(Gallery::isPublic).map(BaseModel::getId).toList();
-        var privateGalleries = allGalleries.stream().filter(g -> (!g.isPublic())).map(BaseModel::getId).toList();
+        var publicGalleries = allGalleries.stream()
+                .filter(Gallery::isPublic)
+                .map(BaseModel::getId)
+                .toList();
+
+        var privateGalleries = allGalleries.stream()
+                .filter(g -> (!g.isPublic()))
+                .map(BaseModel::getId)
+                .toList();
         return new TenantProfile(getTenantByUser(user), publicGalleries, privateGalleries);
     }
 
@@ -48,10 +55,18 @@ public class TenantUseCaseImpl implements TenantUseCase {
     @Override
     public TenantProfile getTenantProfile(Long id) {
         User user = userService.getById(id);
+        User currentUser = authUtils.getUserEntity();
         List<Gallery> allGalleries = galleryUseCase.getAllForUser(user);
 
-        var publicGalleries = allGalleries.stream().filter(Gallery::isPublic).map(BaseModel::getId).toList();
-        var privateGalleries = allGalleries.stream().filter(g -> (!g.isPublic())).map(BaseModel::getId).toList();
+        var publicGalleries = allGalleries.stream()
+                .filter(Gallery::isPublic)
+                .map(BaseModel::getId)
+                .toList();
+
+        var privateGalleries = allGalleries.stream()
+                .filter(g -> (!g.isPublic() && g.getContributorsIds().contains(currentUser.getId())))
+                .map(BaseModel::getId)
+                .toList();
 
         return new TenantProfile(getTenantByUser(user), publicGalleries, privateGalleries);
     }
