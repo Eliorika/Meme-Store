@@ -7,6 +7,7 @@ import dev.chipichapa.memestore.repository.ImageRepository;
 import dev.chipichapa.memestore.service.ifc.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,7 +44,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<Image> getLastPublicImages(int offset, int limit) {
-        return imageRepository.findAllVisibleLastImages(PageRequest.of(offset, limit)).toList();
+        return imageRepository.findAllVisibleLastImages(
+                PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"))
+        ).toList();
     }
 
     @Override

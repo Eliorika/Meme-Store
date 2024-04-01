@@ -1,9 +1,11 @@
 package dev.chipichapa.memestore.utils.mapper;
 
 import dev.chipichapa.memestore.domain.entity.Album;
+import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.model.Gallery;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +19,12 @@ public class AlbumMapper {
                 album.getDescription(),
                 album.getVisible(),
                 false,
-                false);
+                false,
+                album.getImages()
+                        .stream().min(Comparator.comparing(Image::getCreatedAt))
+                        .orElseGet(Image::new)
+                        .getId()
+        );
         res.setId(album.getId());
         return res;
     }

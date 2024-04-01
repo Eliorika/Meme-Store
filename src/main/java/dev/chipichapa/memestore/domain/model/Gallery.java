@@ -18,4 +18,5 @@ public class Gallery extends BaseModel{
     private boolean isPublic;
     private boolean ownedByExtremist;
     private boolean currentTenantCanEdit;
+    private Integer previewId;
 }

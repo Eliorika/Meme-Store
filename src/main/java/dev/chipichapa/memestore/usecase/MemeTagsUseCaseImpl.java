@@ -84,7 +84,7 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
         if (!album.getImages().contains(image)) {
             throw new Exception("Album " + galleryId + " not contains image " + memeId);
         }
-        if (!album.getVisible()) {
+        if (!album.getVisible() && !(album.getAuthor().equals(user) || album.getContributors().contains(user))) {
             throw new Exception("Album " + galleryId + " not public for image " + memeId);
         }
 
