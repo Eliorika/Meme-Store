@@ -1,5 +1,6 @@
 package dev.chipichapa.memestore.repository;
 
+import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.domain.entity.Image;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +45,8 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
         FROM Image image
         JOIN image.albums album
         WHERE image.id = :imageId AND album.visible = true
-""")
+        """)
     Optional<Image> findImageIfVisibleAlbumsExist(@Param("imageId") long imageId);
+
+    Page<Image> findAllByAlbumsContaining(Album album, Pageable pageable);
 }

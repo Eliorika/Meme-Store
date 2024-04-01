@@ -5,10 +5,7 @@ import dev.chipichapa.memestore.domain.model.FeedItem;
 import dev.chipichapa.memestore.usecase.ifc.FeedUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +24,10 @@ public class FeedController {
     @GetMapping("/recommended")
     public ResponseEntity<BasicApiResponse<List<FeedItem>>> getRecommendedFeed(@RequestParam int offset, @RequestParam int limit) {
         return ResponseEntity.ok(new BasicApiResponse<>(feedUseCase.getRecommendedFeed(offset, limit)));
+    }
+
+    @GetMapping("/gallery/{id}")
+    public ResponseEntity<BasicApiResponse<List<FeedItem>>> getGalleryFeed(@PathVariable("id") int id, @RequestParam int offset, @RequestParam int limit) {
+        return ResponseEntity.ok(new BasicApiResponse<>(feedUseCase.getGalleryFeed(id, offset, limit)));
     }
 }

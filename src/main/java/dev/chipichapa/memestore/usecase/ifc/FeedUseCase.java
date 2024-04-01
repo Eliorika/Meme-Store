@@ -7,4 +7,5 @@ import java.util.List;
 public interface FeedUseCase {
     List<FeedItem> getPublicFeed(int offset, int limit);
     List<FeedItem> getRecommendedFeed(int offset, int limit);
+    List<FeedItem> getGalleryFeed(int galleryId, int offset, int limit);
 }

@@ -1,10 +1,12 @@
 package dev.chipichapa.memestore.usecase;
 
+import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.model.FeedItem;
 import dev.chipichapa.memestore.dto.recommedation.RecommendedItems;
 import dev.chipichapa.memestore.service.RecommendationClient;
+import dev.chipichapa.memestore.service.ifc.AlbumService;
 import dev.chipichapa.memestore.service.ifc.ImageService;
 import dev.chipichapa.memestore.usecase.ifc.FeedUseCase;
 import dev.chipichapa.memestore.utils.AuthUtils;
@@ -22,6 +24,7 @@ import java.util.*;
 public class FeedUseCaseImpl implements FeedUseCase {
 
     private final ImageService imageService;
+    private final AlbumService albumService;
 
     private final RecommendationClient client;
 
@@ -70,5 +73,13 @@ public class FeedUseCaseImpl implements FeedUseCase {
         }
 
         return feedItems;
+    }
+
+    @Override
+    @Transactional
+    public List<FeedItem> getGalleryFeed(int galleryId, int offset, int limit) {
+        Album album = albumService.getGalleryById(galleryId);
+        List<Image> images = imageService.getImagesFromAlbum(album, offset, limit);
+        return images.stream().map(i -> new FeedItem(album.getId(), i.getId())).toList();
     }
 }

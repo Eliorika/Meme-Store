@@ -1,5 +1,6 @@
 package dev.chipichapa.memestore.service;
 
+import dev.chipichapa.memestore.domain.entity.Album;
 import dev.chipichapa.memestore.domain.entity.Image;
 import dev.chipichapa.memestore.exception.ResourceNotFoundException;
 import dev.chipichapa.memestore.repository.AlbumRepository;
@@ -45,6 +46,14 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public List<Image> getLastPublicImages(int offset, int limit) {
         return imageRepository.findAllVisibleLastImages(
+                PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"))
+        ).toList();
+    }
+
+    @Override
+    public List<Image> getImagesFromAlbum(Album album, int offset, int limit) {
+        return imageRepository.findAllByAlbumsContaining(
+                album,
                 PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"))
         ).toList();
     }
