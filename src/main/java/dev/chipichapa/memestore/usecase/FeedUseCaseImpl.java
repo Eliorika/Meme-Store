@@ -59,6 +59,10 @@ public class FeedUseCaseImpl implements FeedUseCase {
             log.error(Arrays.toString(e.getStackTrace()));
             return getPublicFeed(offset, limit);
         }
+
+        if (recommendedItems.ids().isEmpty()) {
+            return getPublicFeed(offset, limit);
+        }
         List<FeedItem> feedItems = new ArrayList<>();
 
         for (var imageId : recommendedItems.ids()) {

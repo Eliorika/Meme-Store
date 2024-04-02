@@ -26,7 +26,7 @@ public class RecommendationSyncScheduler {
     private final RecommendationRabbitProducer recommendationRabbitProducer;
 
     @Async
-    @Scheduled(fixedDelay = 100000000L, initialDelay = 1L)
+    @Scheduled(fixedDelay = 100000000L, initialDelay = 10000L)
     public void updateRecommendations() {
         List<Image> images = imageRepository.findAll();
         List<User> users = userRepository.findAll();
