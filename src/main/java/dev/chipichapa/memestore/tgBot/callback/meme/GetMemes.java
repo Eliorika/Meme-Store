@@ -90,8 +90,8 @@ public class GetMemes implements ICallBack {
             return sm;
         }
 
-        var newPos = position+i;
-        if(newPos >= userMemes.size()){
+        //var newPos = position+i;
+        if(userMemes.isEmpty()){
             sm.setText("Конец альбома!");
             clear(tgId);
             userChatStates.addUser(tgId, UserState.NO_ACTION);
@@ -103,7 +103,7 @@ public class GetMemes implements ICallBack {
         InlineKeyboardButton forward = new InlineKeyboardButton();
         forward.setText("Следующие " + imgCountPerMessage);
         forward.setCallbackData(getCallBack());
-        positions.put(tgId, newPos);
+        //positions.put(tgId, newPos);
 
         rowInline.add(forward);
         rowsInline.add(rowInline);
