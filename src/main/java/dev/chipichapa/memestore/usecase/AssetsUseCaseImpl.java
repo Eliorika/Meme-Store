@@ -81,9 +81,10 @@ public class AssetsUseCaseImpl implements AssetsUseCase {
         draftRepository.save(new Draft().setId(uuid));
         imageRepository.save(savingAsset);
 
-        executor.execute(() -> {
-            calculateBlurHashForImageAndSave(file, savingAsset.getId());
-        });
+        // Causes data race
+        // executor.execute(() -> {
+        //     calculateBlurHashForImageAndSave(file, savingAsset.getId());
+        // });
 
         fileService.save(new File(savingAsset.getFilenameWithExtension(), file.getBytes()));
 
