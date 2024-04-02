@@ -1,11 +1,14 @@
 package dev.chipichapa.memestore.tgBot.callback.meme;
 
+import dev.chipichapa.memestore.domain.model.tag.MemeTag;
 import dev.chipichapa.memestore.dto.meme.GetMemeResponse;
+import dev.chipichapa.memestore.dto.tags.GetMemeTagsResponse;
 import dev.chipichapa.memestore.tgBot.callback.ICallBack;
 import dev.chipichapa.memestore.tgBot.req.TelegramBotUtils;
 import dev.chipichapa.memestore.tgBot.states.UserChatStates;
 import dev.chipichapa.memestore.tgBot.states.UserState;
 import dev.chipichapa.memestore.usecase.ifc.AssetsUseCase;
+import dev.chipichapa.memestore.usecase.ifc.MemeTagsUseCase;
 import dev.chipichapa.memestore.usecase.ifc.MemeUseCase;
 import jakarta.ws.rs.NotAllowedException;
 import lombok.AllArgsConstructor;
@@ -29,6 +32,7 @@ public class GetMemes implements ICallBack {
     private final MemeUseCase memeUseCase;
     private UserChatStates userChatStates;
     private final TelegramBotUtils bot;
+    private final MemeTagsUseCase memeTagsUseCase;
     private final Map<Long, Integer> positions = new HashMap<>();
     private final Map<Long, Set<GetMemeResponse>> memes = new HashMap<>();
     private final Map<Long, Integer> gallery = new HashMap<>();
@@ -68,7 +72,15 @@ public class GetMemes implements ICallBack {
             InputFile photo = new InputFile(photoStream, meme.hashCode() + "." + extension);
             SendPhoto sendPhoto = new SendPhoto();
             sendPhoto.setPhoto(photo);
-            sendPhoto.setCaption("Название: " + meme.getTitle() + "\n\nОписание: " + meme.getDescription());
+            String format = "#%s";
+            StringBuilder tags = new StringBuilder();
+            var res = memeTagsUseCase.getMemeTagsByMemeOnly(meme.getId()).tags();
+            for (MemeTag memeTag : res) {
+              tags.append("#" + memeTag.getName() + " ");
+            }
+            sendPhoto.setCaption("Название: " + meme.getTitle() + "\n\nОписание: " + meme.getDescription()
+                +"\n\nТеги: " + tags);
+
             sendPhoto.setChatId(tgId);
             if(!isSearch.contains(tgId)){
                 int galleyId = gallery.get(tgId);

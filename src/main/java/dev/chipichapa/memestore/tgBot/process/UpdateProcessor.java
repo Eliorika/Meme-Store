@@ -48,6 +48,15 @@ public class UpdateProcessor {
             sm.setText("Похоже я вас не знаю... Введите /start и мы познакомимся!");
 
             return sm;
+        } catch (Exception e){
+            SendMessage sm = new SendMessage();
+            long chatId = update.getCallbackQuery()==null?update.getMessage().getChatId()
+                    :update.getCallbackQuery().getMessage().getChatId();
+            sm.setChatId(chatId);
+
+            sm.setText("Что-то пошло не так...");
+
+            return sm;
         }
 
 

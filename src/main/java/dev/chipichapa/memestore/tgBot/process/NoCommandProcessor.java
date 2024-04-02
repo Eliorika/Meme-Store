@@ -36,7 +36,7 @@ public class NoCommandProcessor {
                 }
             }
 
-        sm.setText("кусь");
+        //sm.setText("кусь");
         return sm;
     }
 }

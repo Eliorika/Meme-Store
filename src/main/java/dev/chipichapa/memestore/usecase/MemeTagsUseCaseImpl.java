@@ -4,7 +4,6 @@ import dev.chipichapa.memestore.domain.entity.*;
 import dev.chipichapa.memestore.domain.entity.user.User;
 import dev.chipichapa.memestore.domain.enumerated.RecommendationMarks;
 import dev.chipichapa.memestore.domain.enumerated.VoteType;
-import dev.chipichapa.memestore.domain.model.Gallery;
 import dev.chipichapa.memestore.domain.model.tag.MemeTag;
 import dev.chipichapa.memestore.dto.recommedation.MarkRabbitDTO;
 import dev.chipichapa.memestore.dto.tags.GetMemeTagsResponse;
@@ -20,7 +19,6 @@ import dev.chipichapa.memestore.utils.AuthUtils;
 import dev.chipichapa.memestore.utils.mapper.image.ImageTagsAndTagVotesToMemeTagMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -55,6 +53,21 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
 
         Image image = imageService.getById(memeId);
         checkImageContainsInAlbumOrThrow(galleryId, memeId);
+        List<ImageTag> imageTags = imageTagRepository.findByImage(image);
+
+        List<UserTagVote> userTagVotes = userTagVoteRepository
+                .findUserTagVotesByUserAndImageAndTagIn(user, image, getTagList(imageTags));
+
+        List<MemeTag> result = imageTagsAndTagVotesToMemeTagMapper.toList(imageTags, userTagVotes);
+        return new GetMemeTagsResponse(result);
+    }
+
+    @Override
+    @Transactional
+    public GetMemeTagsResponse getMemeTagsByMemeOnly(Long memeId) {
+        User user = getUserFormAuth();
+
+        Image image = imageService.getById(memeId);
         List<ImageTag> imageTags = imageTagRepository.findByImage(image);
 
         List<UserTagVote> userTagVotes = userTagVoteRepository
@@ -146,7 +159,8 @@ public class MemeTagsUseCaseImpl implements MemeTagsUseCase {
                 .findById(new UserTagVotePK(user, image, tag)).get();
     }
 
-    private List<Tag> getTagList(List<ImageTag> imageTags) {
+    @Override
+    public List<Tag> getTagList(List<ImageTag> imageTags) {
         List<Tag> tags = imageTags
                 .stream()
                 .map(ImageTag::getTag)
