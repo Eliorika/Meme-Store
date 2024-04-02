@@ -24,7 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-
+@Component
 public class Bot extends TelegramLongPollingBot {
 
     @Value("${telegram.bot-name}")
